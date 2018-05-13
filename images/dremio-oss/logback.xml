@@ -24,7 +24,7 @@
     </encoder>
   </appender>
 
-  <logger name="com.dremio">
+  <logger name="com.dremio" additivity="false">
     <level value="${dremio.log.level:-info}"/>
     <appender-ref ref="console"/>
   </logger>
@@ -34,7 +34,7 @@
     <appender-ref ref="console"/>
   </logger>
 
-  <root>
+  <root> 
     <level value="${dremio.log.root.level:-error}"/>
     <appender-ref ref="console"/>
   </root>
