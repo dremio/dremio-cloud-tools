@@ -189,7 +189,7 @@ case $startStopStatus in
   DREMIO_JAVA_OPTS="$DREMIO_JAVA_OPTS $DREMIO_JAVA_SERVER_EXTRA_OPTS $DREMIO_JAVA_EXTRA_OPTS"
   echo "`date` Starting $command on `hostname`"
   echo "`ulimit -a`"
-  exec $JAVA $DREMIO_JAVA_OPTS -cp "$DREMIO_CLASSPATH" com.dremio.dac.daemon.DremioDaemon $command "$@" start
+  exec $JAVA $DREMIO_JAVA_OPTS -cp "$DREMIO_CLASSPATH" "$@" com.dremio.dac.daemon.DremioDaemon $command  start
   ;;
 
 (internal_start)

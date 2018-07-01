@@ -20,7 +20,7 @@
   <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
   <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%date{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
+      <pattern>%date{ISO8601, UTC} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
 

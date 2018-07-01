@@ -14,14 +14,6 @@
 # limitations under the License.
 #
 
-# Build Image.
-FROM maven:3.5.3-jdk-8 as builder
-RUN mkdir /src \
-    && echo "35.190.5.79 maven.dremio.com" >> /etc/hosts \
-    && git clone https://github.com/dremio/dremio-oss.git /src/dremio-oss \
-    && mvn -B install -f /src/dremio-oss/pom.xml install -DskipTests
-
-# Run Image
 FROM openjdk:8-jdk as run
 
 MAINTAINER Dremio
@@ -29,8 +21,9 @@ MAINTAINER Dremio
 LABEL org.label-schema.name='dremio/dremio-oss'
 LABEL org.label-schema.description='Dremio OSS.'
 
-COPY --from=builder  /src/dremio-oss/distribution/server/target/dremio-community-*.tar.gz .
-RUN  mkdir -p /opt/dremio \
+ARG DOWNLOAD_URL=https://download.dremio.com/community-server/2.0.5-201806021755080191-767cfb5/dremio-community-2.0.5-201806021755080191-767cfb5.tar.gz
+RUN \
+  mkdir -p /opt/dremio \
   && mkdir -p /var/lib/dremio \
   && mkdir -p /var/run/dremio \
   && mkdir -p /var/log/dremio \
@@ -42,8 +35,9 @@ RUN  mkdir -p /opt/dremio \
   && chown -R dremio:dremio /var/run/dremio \
   && chown -R dremio:dremio /var/log/dremio \
   && chown -R dremio:dremio /var/lib/dremio \
-  && tar vxfz dremio-community-*.tar.gz -C /opt/dremio --strip-components=1 \
-  && rm -rf dremio-community-*.tar.gz
+  && wget -q ${DOWNLOAD_URL} \
+  && tar vxfz dremio-*.tar.gz -C /opt/dremio --strip-components=1 \
+  && rm -rf dremio-*.tar.gz
 
 COPY logback.xml /opt/dremio/conf/
 COPY dremio /opt/dremio/bin/
@@ -51,10 +45,12 @@ COPY logback-access.xml /opt/dremio/conf/
 
 EXPOSE 9047/tcp
 EXPOSE 31010/tcp
+EXPOSE 45678/tcp
 
 USER dremio
 WORKDIR /opt/dremio
 ENV DREMIO_HOME /opt/dremio
 ENV DREMIO_GC_LOGS_ENABLED="no"
+ENV DREMIO_LOG_DIR="/var/log/dremio"
 ENV SERVER_GC_OPTS="-XX:+PrintGCDetails -XX:+PrintGCDateStamps"
 ENTRYPOINT ["bin/dremio", "start-fg"]
