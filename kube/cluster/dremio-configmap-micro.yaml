@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dremio-config
+data:
+  paths.dist: "pdfs:///tmp/pdfs"
+  coordinator.memory.heap: "1000"
+  coordinator.memory.direct: "1000"
+  executor.memory.heap: "1000"
+  executor.memory.direct: "1000"
