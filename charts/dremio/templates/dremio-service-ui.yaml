@@ -10,4 +10,4 @@ spec:
     name: web
   selector:
     app: dremio-coordinator
-  type: NodePort
+  type: {{ .Values.serviceType | default "NodePort" }}

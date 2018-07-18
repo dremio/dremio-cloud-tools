@@ -7,7 +7,7 @@ metadata:
 spec:
   ports:
   - port: 31010
-    name: web
+    name: client
   selector:
     app: dremio-coordinator
-  type: NodePort
+  type: {{ .Values.serviceType | default "NodePort" }}
