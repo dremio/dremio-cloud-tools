@@ -51,11 +51,11 @@ dremio-client   NodePort   10.97.16.239   <none>        31010:31823/TCP   1h
 ```
 
 #### Scale by adding additional Coordinators or Executors (optional)
-Get the name of the release. In the example below, the release name is quarreling-sponge.
+Get the name of the release. In the example below, the release name is plundering-alpaca.
 ```bash
 helm list
 NAME             	REVISION	UPDATED                 	STATUS  	CHART       	NAMESPACE
-plundering-alpaca	1       	Wed Jul 18 09:36:14 2018	DEPLOYED	dremio-2.0.5	default
+plundering-alpaca	1       	Wed Jul 18 09:36:14 2018	DEPLOYED	dremio-0.0.5	default
 ```
 
 Add additional coordinators
