@@ -10,4 +10,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/dremio-master-volume"
+    path: "/var/dremio/dremio-master-volume"
