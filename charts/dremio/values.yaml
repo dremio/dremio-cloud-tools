@@ -1,0 +1,17 @@
+image: dremio/dremio-oss
+path:
+  dist: "pdfs:///tmp/pdfs"
+coordinator:
+  memory:
+    heap: 1000
+    direct: 1000
+  count: 1
+  master_count: 1
+executor:
+  memory:
+    heap: 1000
+    direct: 1000
+  count: 1
+# If you are deploying in the cloud that support LoadBalanced services,
+# uncomment the line below to get a external ip assigned to the services.
+#serviceType: LoadBalancer
