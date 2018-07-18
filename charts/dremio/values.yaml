@@ -1,0 +1,18 @@
+image: dremio/dremio-oss
+path:
+  dist: "pdfs:///tmp/pdfs"
+# Check out Dremio documentation for memory and cpu requirements for
+# the coordinators and the executors.
+# The value of memory should be in MB. CPU is in no of cores.
+coordinator:
+  memory: 16384
+  cpu: 8
+  count: 1
+  master_count: 1
+executor:
+  memory: 16384
+  cpu: 4
+  count: 1
+# If you are deploying in the cloud that support LoadBalanced services,
+# uncomment the line below to get a external ip assigned to the services.
+#serviceType: LoadBalancer
