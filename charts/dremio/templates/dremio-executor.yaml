@@ -4,7 +4,7 @@ metadata:
   name: dremio-executor
 spec:
   serviceName: "dremio-executor"
-  replicas: 1
+  replicas: {{.Values.executor.count}}
   selector:
     matchLabels:
       app: dremio-executor
@@ -15,27 +15,22 @@ spec:
     spec:
       containers:
       - name: dremio-executor
-        image: dremio/dremio-oss
+        image: {{.Values.image}}
+        resources:
+          requests:
+            memory: {{.Values.coordinator.memory}}M
+            cpu: {{.Values.coordinator.cpu}}
         env:
         - name: DIST_PATH
-          valueFrom:
-            configMapKeyRef:
-              name: dremio-config
-              key: paths.dist
+          value: {{.Values.path.dist}}
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
-          valueFrom:
-            configMapKeyRef:
-              name: dremio-config
-              key: coordinator.memory.heap
+          value: "{{ template "HeapMemory" .Values.executor.memory }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
-          valueFrom:
-            configMapKeyRef:
-              name: dremio-config
-              key: coordinator.memory.direct
+          value: "{{ template "DirectMemory" .Values.executor.memory }}"
         - name: LOCAL_POD_IP
           valueFrom:
             fieldRef:
-              fieldPath: status.podIP    
+              fieldPath: status.podIP
         command: ["/opt/dremio/bin/dremio"]
         args:
         - "start-fg"
@@ -47,3 +42,7 @@ spec:
         ports:
         - containerPort: 45678
           name: server
+      initContainers:
+      - name: wait-for-zk
+        image: busybox
+        command:  ["sh", "-c", "until nc -z zk-hs 2181; do echo waiting for zookeeper; sleep 2; done;"]
