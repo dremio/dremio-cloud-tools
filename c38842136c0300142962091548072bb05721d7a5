@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "734c6a63_af941403",
+        "filename": "charts/dremio/templates/dremio-coordinator.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T04:05:48Z",
+      "side": 1,
+      "message": "I had seen restarts of the containers and logs of the failed containers showed failures with zk-hs not available. However, I was not able to reproduce it right now. Does Dremio wait for zk to be available?",
+      "parentUuid": "292fa12b_4b1a002e",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 103
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "110ef79a_9cbe7c0d",
         "filename": "charts/dremio/values.yaml",
         "patchSetId": 1
@@ -82,6 +106,30 @@
       "writtenOn": "2018-07-23T03:31:28Z",
       "side": 1,
       "message": "let\u0027s make the defaults:\ncoord: 8/2\nexec: 4/12, same as the normal deployment",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "19d5219c_346a1d76",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T04:05:48Z",
+      "side": 1,
+      "message": "Let me make sure I got that right: the values are cpu/memory?",
+      "parentUuid": "110ef79a_9cbe7c0d",
       "range": {
         "startLine": 7,
         "startChar": 10,
