@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "38313cb6_3e3cc6ff",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T04:33:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90d4ca72_8f4f01f6",
+      "range": {
+        "startLine": 6,
+        "startChar": 2,
+        "endLine": 6,
+        "endChar": 56
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "816a77e8_b9e891ff",
         "filename": "charts/dremio/Chart.yaml",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2018-07-23T03:31:28Z",
       "side": 1,
       "message": "let\u0027s not include maintainers",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 26
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4a1caf9c_4503e16c",
+        "filename": "charts/dremio/Chart.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T04:33:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "816a77e8_b9e891ff",
       "range": {
         "startLine": 8,
         "startChar": 0,
@@ -261,6 +309,30 @@
     },
     {
       "key": {
+        "uuid": "e97c45b9_78c332d8",
+        "filename": "images/dremio-oss/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T04:33:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fb9e138_89a0aa51",
+      "range": {
+        "startLine": 35,
+        "startChar": 10,
+        "endLine": 35,
+        "endChar": 32
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91a2f714_ec446c93",
         "filename": "images/dremio-oss/README.md",
         "patchSetId": 1
@@ -272,6 +344,30 @@
       "writtenOn": "2018-07-23T03:31:28Z",
       "side": 1,
       "message": "should also expose 9047, 45678",
+      "range": {
+        "startLine": 46,
+        "startChar": 17,
+        "endLine": 46,
+        "endChar": 31
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a42d335_d9a5997f",
+        "filename": "images/dremio-oss/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T04:33:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91a2f714_ec446c93",
       "range": {
         "startLine": 46,
         "startChar": 17,
