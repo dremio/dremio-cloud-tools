@@ -190,6 +190,30 @@
     },
     {
       "key": {
+        "uuid": "9b71595e_b9932474",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T04:26:12Z",
+      "side": 1,
+      "message": "I was asking for the total memory for the container and was calculating the heap/direct based on the Jira ticket DX-12363. We could change this to ask for heap/direct and calculate the total memory for the container to be as a sum of the two values. Should I do that? I am not sure what would make more sense for the user.",
+      "parentUuid": "01cc1447_a3a26b9d",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6fb9e138_89a0aa51",
         "filename": "images/dremio-oss/README.md",
         "patchSetId": 1
