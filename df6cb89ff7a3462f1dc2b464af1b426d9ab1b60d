@@ -22,6 +22,30 @@
       "revId": "df6cb89ff7a3462f1dc2b464af1b426d9ab1b60d",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8c6c0dec_15788f6b",
+        "filename": "charts/dremio/templates/_helpers.tpl",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T04:45:45Z",
+      "side": 1,
+      "message": "I have not yet but was looking through some of the published charts in https://github.com/helm/charts/tree/master/stable for examples.",
+      "parentUuid": "06be4bcb_5631c3ce",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 27
+      },
+      "revId": "df6cb89ff7a3462f1dc2b464af1b426d9ab1b60d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
