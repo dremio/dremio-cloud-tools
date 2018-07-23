@@ -14,7 +14,7 @@ Note: This should work for both Community and Enterprise editions of Dremio.
 ## Single Node Deployment
 
 ```bash
-docker run dremio/dremio-oss
+docker run -p 9047:9047 -p 31010:31010 -p 45678:45678 dremio/dremio-oss
 ```
 This includes a single node deployment that starts up a single daemon that includes:
 * Embedded Zookeeper
@@ -32,7 +32,7 @@ To run Dremio in a distributed deployment, you should create a separate zookeepe
 You only need one of these.
 
 ```bash
-docker run dremio/dremio-oss -Dz \
+docker run -p 9047:9047 -p 31010:31010 dremio/dremio-oss -Dz \
   -Dzookeeper=my_zk_quorum \
   -Dservices.coordinator.master.embedded-zookeeper.enabled=false \
   -Dservices.executor.enabled=false
@@ -43,7 +43,7 @@ docker run dremio/dremio-oss -Dz \
 You can have an unlimited number of these.
 
 ```bash
-docker run dremio/dremio-oss -Dz \
+docker run -p 31010:31010 dremio/dremio-oss -Dz \
   -Dzookeeper=my_zk_quorum \
   -Dservices.coordinator.master.enabled=false \
   -Dservices.executor.enabled=false
@@ -54,7 +54,7 @@ docker run dremio/dremio-oss -Dz \
 You can have an unlimited number of these.
 
 ```bash
-docker run dremio/dremio-oss -Dz \
+docker run -p 45678:45678 dremio/dremio-oss -Dz \
   -Dzookeeper=my_zk_quorum \
   -Dservices.coordinator.enabled=false
 ```
@@ -63,4 +63,3 @@ docker run dremio/dremio-oss -Dz \
 
 ## Dealing with name resolution in clusters
 When having Dremio communicate information between nodes, you need to have Dremio use the name it registers in Zookeeper to be resolvable from other nodes. The easiest way to do this is to use IP addresses and set the following additional property: `-Dregistration.publish-host=$LOCAL_CONTAINER_IP`
-
