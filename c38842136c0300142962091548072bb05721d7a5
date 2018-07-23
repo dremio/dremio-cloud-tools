@@ -95,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "5756fa44_c19c3eb7",
+        "filename": "charts/dremio/templates/dremio-coordinator.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2018-07-23T04:18:06Z",
+      "side": 1,
+      "message": "I could imagine a failure if the host doesn\u0027t resolve. But that shouldn\u0027t happen just because zk is down. Dremio should be resilient to that. So maybe just wait for the hostname to resolve, not actually zookeeper up.",
+      "parentUuid": "734c6a63_af941403",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 103
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "110ef79a_9cbe7c0d",
         "filename": "charts/dremio/values.yaml",
         "patchSetId": 1
@@ -130,6 +154,30 @@
       "side": 1,
       "message": "Let me make sure I got that right: the values are cpu/memory?",
       "parentUuid": "110ef79a_9cbe7c0d",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "01cc1447_a3a26b9d",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2018-07-23T04:18:06Z",
+      "side": 1,
+      "message": "Those were memory: heap/direct.\n\nFor cores, I would probably set to 4 cores for Coordinator direct memory/4 +1 for executors as a default (with ability to override directly)",
+      "parentUuid": "19d5219c_346a1d76",
       "range": {
         "startLine": 7,
         "startChar": 10,
