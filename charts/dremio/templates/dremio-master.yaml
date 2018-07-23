@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: dremio-master
+  labels:
+    app: dremio-master
 spec:
   serviceName: "dremio-master"
   replicas: {{.Values.coordinator.master_count}}
@@ -13,28 +15,33 @@ spec:
       labels:
         app: dremio-coordinator
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - dremio-master
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: dremio-master-coordinator
         image: {{.Values.image}}
+        resources:
+          requests:
+            memory: {{.Values.coordinator.memory}}M
+            cpu: {{.Values.coordinator.cpu}}
         volumeMounts:
         - name: dremio-master-volume
           mountPath: /opt/dremio/data
         env:
         - name: DIST_PATH
-          valueFrom:
-            configMapKeyRef:
-              name: dremio-config
-              key: paths.dist
+          value: {{.Values.path.dist}}
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
-          valueFrom:
-            configMapKeyRef:
-              name: dremio-config
-              key: coordinator.memory.heap
+          value: "{{ template "HeapMemory" .Values.coordinator.memory }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
-          valueFrom:
-            configMapKeyRef:
-              name: dremio-config
-              key: coordinator.memory.direct
+          value: "{{ template "DirectMemory" .Values.coordinator.memory }}"
         - name: LOCAL_POD_IP
           valueFrom:
             fieldRef:
