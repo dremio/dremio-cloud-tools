@@ -167,6 +167,30 @@
     },
     {
       "key": {
+        "uuid": "228c25a9_0083e949",
+        "filename": "charts/dremio/templates/dremio-coordinator.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T06:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5756fa44_c19c3eb7",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 103
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "110ef79a_9cbe7c0d",
         "filename": "charts/dremio/values.yaml",
         "patchSetId": 1
@@ -298,6 +322,30 @@
       "side": 1,
       "message": "I came across this page: https://docs.dremio.com/deployment/system-requirements.html\n\nThis basically says 16GB/8 for coordinator and 16GB/4 for executor. Should I stick with that? \n\nAlso, I am only setting the cpu for the container and not setting the dremio property for cpu since the container is not shared with other processes and it should be able to go full throttle on the cpu allocated to the container.",
       "parentUuid": "0d2c425c_e0e696d0",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "c38842136c0300142962091548072bb05721d7a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f06936f_efd1bf44",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-07-23T06:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8111501_7fde0629",
       "range": {
         "startLine": 7,
         "startChar": 10,
