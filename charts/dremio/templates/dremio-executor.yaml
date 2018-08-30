@@ -18,8 +18,8 @@ spec:
         image: {{.Values.image}}
         resources:
           requests:
-            memory: {{.Values.coordinator.memory}}M
-            cpu: {{.Values.coordinator.cpu}}
+            memory: {{.Values.executor.memory}}M
+            cpu: {{.Values.executor.cpu}}
         env:
         - name: DIST_PATH
           value: {{.Values.path.dist}}
