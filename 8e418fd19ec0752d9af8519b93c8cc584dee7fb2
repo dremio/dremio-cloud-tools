@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8cd1a200_0b5bbbf9",
+        "filename": "images/dremio-oss/logback-access.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2018-09-05T15:30:04Z",
+      "side": 1,
+      "message": "where is the else to stdout?",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 47
+      },
+      "revId": "8e418fd19ec0752d9af8519b93c8cc584dee7fb2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
