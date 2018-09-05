@@ -21,7 +21,7 @@ MAINTAINER Dremio
 LABEL org.label-schema.name='dremio/dremio-oss'
 LABEL org.label-schema.description='Dremio OSS.'
 
-ARG DOWNLOAD_URL=https://download.dremio.com/community-server/2.0.5-201806021755080191-767cfb5/dremio-community-2.0.5-201806021755080191-767cfb5.tar.gz
+ARG DOWNLOAD_URL=https://download.dremio.com/community-server/2.1.4-201808302048550610-0981242/dremio-community-2.1.4-201808302048550610-0981242.tar.gz
 RUN \
   mkdir -p /opt/dremio \
   && mkdir -p /var/lib/dremio \
@@ -29,7 +29,7 @@ RUN \
   && mkdir -p /var/log/dremio \
   && mkdir -p /opt/dremio/data \
   \
-  && groupadd --system dremio \ 
+  && groupadd --system dremio \
   && useradd --base-dir /var/lib/dremio --system --gid dremio dremio \
   && chown -R dremio:dremio /opt/dremio/data \
   && chown -R dremio:dremio /var/run/dremio \
@@ -39,9 +39,8 @@ RUN \
   && tar vxfz dremio-*.tar.gz -C /opt/dremio --strip-components=1 \
   && rm -rf dremio-*.tar.gz
 
-COPY logback.xml /opt/dremio/conf/
-COPY dremio /opt/dremio/bin/
-COPY logback-access.xml /opt/dremio/conf/
+ COPY logback.xml logback-access.xml /opt/dremio/conf/
+ COPY dremio /opt/dremio/bin/
 
 EXPOSE 9047/tcp
 EXPOSE 31010/tcp
@@ -50,6 +49,7 @@ EXPOSE 45678/tcp
 USER dremio
 WORKDIR /opt/dremio
 ENV DREMIO_HOME /opt/dremio
+ENV DREMIO_PID_DIR /var/run/dremio
 ENV DREMIO_GC_LOGS_ENABLED="no"
 ENV DREMIO_LOG_DIR="/var/log/dremio"
 ENV SERVER_GC_OPTS="-XX:+PrintGCDetails -XX:+PrintGCDateStamps"

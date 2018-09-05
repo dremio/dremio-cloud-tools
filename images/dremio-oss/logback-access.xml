@@ -17,9 +17,32 @@
 
 -->
 <configuration>
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%h %l %u %user %date "%r" %s %b</pattern>
-    </encoder>
-  </appender>
+
+  <!-- The following appender is only available if dremio.log.path is defined -->
+  <if condition='isDefined("dremio.log.path")'>
+    <then>
+      <appender name="access-text" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${dremio.log.path}/access.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>${dremio.log.path}/archive/access.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+          <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+          <pattern>combined</pattern>
+        </encoder>
+      </appender>
+
+      <appender-ref ref="access-text" />
+    </then>
+    <else>
+      <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+          <pattern>combined</pattern>
+        </encoder>
+      </appender>
+
+      <appender-ref ref="console"/>
+    </else>
+  </if>
 </configuration>
