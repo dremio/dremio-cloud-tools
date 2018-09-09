@@ -45,4 +45,4 @@ spec:
       initContainers:
       - name: wait-for-zk
         image: busybox
-        command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
+        command:  ["sh", "-c", "until nc -z dremio-coordinator-ui 9047 > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
