@@ -8,6 +8,8 @@ spec:
   ports:
   - port: 31010
     name: client
+  - port: 9047
+    name: web
   selector:
     app: dremio-coordinator
   type: {{ .Values.serviceType | default "NodePort" }}
