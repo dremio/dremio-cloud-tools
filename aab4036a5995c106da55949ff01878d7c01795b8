@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8fd85a2d_2c393610",
+        "filename": "charts/dremio/templates/dremio-executor.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2018-09-15T00:31:41Z",
+      "side": 1,
+      "message": "not needed.",
+      "range": {
+        "startLine": 48,
+        "startChar": 38,
+        "endLine": 48,
+        "endChar": 71
+      },
+      "revId": "aab4036a5995c106da55949ff01878d7c01795b8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
