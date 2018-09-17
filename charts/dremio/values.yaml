@@ -13,6 +13,6 @@ executor:
   memory: 16384
   cpu: 4
   count: 1
-# If you are deploying in the cloud that support LoadBalanced services,
-# uncomment the line below to get a external ip assigned to the services.
-#serviceType: LoadBalancer
+# If your Kubernetes cluster does not support LoadBalancer,
+# comment out the line below for the helm chart to succeed.
+serviceType: LoadBalancer
