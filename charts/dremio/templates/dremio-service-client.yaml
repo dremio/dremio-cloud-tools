@@ -6,9 +6,11 @@ metadata:
     app: dremio-client
 spec:
   ports:
-  - port: 31010
+  - port: {{ .Values.coordinator.client.port | default 31010 }}
+    targetPort: 31010
     name: client
-  - port: 9047
+  - port: {{ .Values.coordinator.web.port | default 9047 }}
+    targetPort: 9047
     name: web
   selector:
     app: dremio-coordinator
