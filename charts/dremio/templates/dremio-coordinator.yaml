@@ -50,4 +50,4 @@ spec:
       initContainers:
       - name: wait-for-zk
         image: busybox
-        command:  ["sh", "-c", "until nc -z dremio-client 9047 > /dev/null; do echo waiting for dremio master; sleep 2; done;"]
+        command:  ["sh", "-c", "until nc -z dremio-client {{ .Values.coordinator.web.port | default 9047 }} > /dev/null; do echo waiting for dremio master; sleep 2; done;"]
