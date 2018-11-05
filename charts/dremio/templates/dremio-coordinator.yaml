@@ -31,6 +31,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
+        - name: COORDINATOR_WEB_PORT
+          value: "{{ .Values.coordinator.web.port | default 9047 }}"
         command: ["/opt/dremio/bin/dremio"]
         args:
         - "start-fg"
@@ -50,4 +52,7 @@ spec:
       initContainers:
       - name: wait-for-zk
         image: busybox
-        command:  ["sh", "-c", "until nc -z dremio-client 9047 > /dev/null; do echo waiting for dremio master; sleep 2; done;"]
+        env:
+        - name: COORDINATOR_WEB_PORT
+          value: "{{ .Values.coordinator.web.port | default 9047 }}"
+        command:  ["sh", "-c", "until nc -z dremio-client $(COORDINATOR_WEB_PORT) > /dev/null; do echo waiting for dremio master; sleep 2; done;"]
