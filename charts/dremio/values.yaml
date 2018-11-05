@@ -9,6 +9,10 @@ coordinator:
   cpu: 8
   count: 1
   master_count: 1
+  web:
+    port: 9047
+  client:
+    port: 31010
 executor:
   memory: 16384
   cpu: 4
