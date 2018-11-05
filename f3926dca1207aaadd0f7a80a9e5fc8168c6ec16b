@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c9d8e8b7_bd7da10c",
+        "filename": "charts/dremio/templates/dremio-coordinator.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2018-11-05T21:41:14Z",
+      "side": 1,
+      "message": "I  believe you can have command as:\n\nuntil nc -z dremio-client {{.Values.coordinator.web.port | default 9047}} ....\n\nand not require additional env",
+      "revId": "f3926dca1207aaadd0f7a80a9e5fc8168c6ec16b",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
