@@ -14,10 +14,10 @@ Run this from the charts directory
 cd charts
 helm install --wait dremio
 ```
-If it takes longer than a couple of minutes to complete, check the status of the pods to see where they are waiting. If they are pending scheduling due to limited memory or cpu, either adjust the values in values.yaml and restart the process or add more resources to your kubernetes cluster. 
+If it takes longer than a couple of minutes to complete, check the status of the pods to see where they are waiting. If they are pending scheduling due to limited memory or cpu, either adjust the values in values.yaml and restart the process or add more resources to your kubernetes cluster.
 
 #### Connect to the Dremio UI
-If your kubernetes supports serviceType LoadBalancer, you can get to the Dremio UI on the load balancer external ip. 
+If your kubernetes supports serviceType LoadBalancer, you can get to the Dremio UI on the load balancer external ip.
 
 For example, if your service output is:
 
@@ -52,10 +52,10 @@ NAME            TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)        
 dremio-client   LoadBalancer   10.99.227.180   35.226.31.211     31010:32260/TCP,9047:30620/TCP   2d
 ```
 
-For example, in the above output, the service is exposed on an external-ip. So, you can use 35.226.31.211:31010 in your ODBC or JDBC connections. 
+For example, in the above output, the service is exposed on an external-ip. So, you can use 35.226.31.211:31010 in your ODBC or JDBC connections.
 
 #### Scale by adding additional Coordinators or Executors (optional)
-Get the name of the release. In the example below, the release name is plundering-alpaca.
+Get the name of the helm release. In the example below, the release name is plundering-alpaca.
 ```bash
 helm list
 NAME             	REVISION	UPDATED                 	STATUS  	CHART       	NAMESPACE
@@ -73,3 +73,30 @@ helm upgrade <release name> dremio --set executor.count=5
 ```
 
 You can also scale down the same way.
+
+#### Upgrading Dremio
+You should attempt upgrade when no queries are running on the cluster. Update the Dremio image tag in your values.yaml file. E.g.
+```bash
+image: dremio/dremio-oss:3.0.0
+...
+```
+
+Get the name of the helm release. In the example below, the release name is plundering-alpaca.
+```bash
+helm list
+NAME             	REVISION	UPDATED                 	STATUS  	CHART       	NAMESPACE
+plundering-alpaca	1       	Wed Jul 18 09:36:14 2018	DEPLOYED	dremio-0.0.5	default
+```
+
+Upgrade the deployment via helm upgrade command:
+```
+helm upgrade <release name> .
+```
+
+Existing pods will be terminated and new pods will be created with the new image. You can
+monitor the status of the pods by running:
+```
+kubectl get pods
+```
+
+Once all the pods are restarted and running, your Dremio cluster is upgraded.

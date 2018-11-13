@@ -1,10 +1,16 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
   name: dremio-coordinator
 spec:
   serviceName: "dremio-coordinator"
   replicas: {{.Values.coordinator.count}}
+  revisionHistoryLimit: 1
+  strategy:
+      type: RollingUpdate
+      rollingUpdate:
+         maxSurge: 0
+         maxUnavailable: 1
   selector:
     matchLabels:
       app: dremio-coordinator
@@ -13,6 +19,7 @@ spec:
       labels:
         app: dremio-coordinator
     spec:
+      terminationGracePeriodSeconds: 5
       containers:
       - name: dremio-coordinator
         image: {{.Values.image}}
