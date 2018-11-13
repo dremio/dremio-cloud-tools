@@ -25,6 +25,7 @@ spec:
                     values:
                     - dremio-master
               topologyKey: "kubernetes.io/hostname"
+      terminationGracePeriodSeconds: 5
       containers:
       - name: dremio-master-coordinator
         image: {{.Values.image}}
@@ -76,6 +77,14 @@ spec:
         args:
         - "999:999"
         - "/opt/dremio/data"
+      - name: upgrade-task
+        image: {{.Values.image}}
+        volumeMounts:
+        - name: dremio-master-volume
+          mountPath: /opt/dremio/data
+        command: ["/opt/dremio/bin/dremio-admin"]
+        args:
+        - "upgrade"
       volumes:
       - name: dremio-master-volume
         persistentVolumeClaim:
