@@ -104,8 +104,10 @@ dremio_internal_start() {
     # Add to the command log file vital stats on our environment.
     echo "`date` Starting $command on `hostname`" >> $logout
     echo "`ulimit -a`" >> $logout 2>&1
-    echo $$ > "$pid"
-    exec $JAVA $DREMIO_JAVA_OPTS -cp "$DREMIO_CLASSPATH" com.dremio.dac.daemon.DremioDaemon 
+    if [ $$ != 1 ]; then
+      echo $$ > "$pid"
+    fi
+    exec $JAVA $DREMIO_JAVA_OPTS -cp "$DREMIO_CLASSPATH" com.dremio.dac.daemon.DremioDaemon
 }
 
 check_before_start() {
