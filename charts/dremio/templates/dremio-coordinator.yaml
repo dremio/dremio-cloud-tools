@@ -38,15 +38,16 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
+        - name: DREMIO_JAVA_EXTRA_OPTS
+          value: >-
+            -Dzookeeper=zk-hs:2181
+            -Dregistration.publish-host=$(LOCAL_POD_IP)
+            -Dservices.coordinator.master.enabled=false
+            -Dservices.executor.enabled=false
+            -Dpaths.dist=$(DIST_PATH)
         command: ["/opt/dremio/bin/dremio"]
         args:
         - "start-fg"
-        - ""
-        - "-Dzookeeper=zk-hs:2181"
-        - "-Dregistration.publish-host=$(LOCAL_POD_IP)"
-        - "-Dservices.coordinator.master.enabled=false"
-        - "-Dservices.executor.enabled=false"
-        - "-Dpaths.dist=$(DIST_PATH)"
         ports:
         - containerPort: 9047
           name: web
