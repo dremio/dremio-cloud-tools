@@ -32,10 +32,13 @@ To run Dremio in a distributed deployment, you should create a separate zookeepe
 You only need one of these.
 
 ```bash
-docker run -p 9047:9047 -p 31010:31010 -p 45678:45678 dremio/dremio-oss -Dz \
+docker run -p 9047:9047 -p 31010:31010 -p 45678:45678 \
+  -e "DREMIO_JAVA_EXTRA_OPTS=\
   -Dzookeeper=my_zk_quorum \
   -Dservices.coordinator.master.embedded-zookeeper.enabled=false \
-  -Dservices.executor.enabled=false
+  -Dservices.executor.enabled=false" \
+  dremio/dremio-oss
+
 ```
 
 ### Coordinator (slave)
@@ -43,10 +46,13 @@ docker run -p 9047:9047 -p 31010:31010 -p 45678:45678 dremio/dremio-oss -Dz \
 You can have an unlimited number of these.
 
 ```bash
-docker run -p 9047:9047 -p 31010:31010 -p 45678:45678 dremio/dremio-oss -Dz \
+docker run -p 9047:9047 -p 31010:31010 -p 45678:45678 \
+  -e "DREMIO_JAVA_EXTRA_OPTS=\
   -Dzookeeper=my_zk_quorum \
   -Dservices.coordinator.master.enabled=false \
-  -Dservices.executor.enabled=false
+  -Dservices.executor.enabled=false" \
+  dremio/dremio-oss
+
 ```
 
 ### Executor
@@ -54,9 +60,12 @@ docker run -p 9047:9047 -p 31010:31010 -p 45678:45678 dremio/dremio-oss -Dz \
 You can have an unlimited number of these.
 
 ```bash
-docker run -p 45678:45678 dremio/dremio-oss -Dz \
+docker run -p 45678:45678 \
+  -e "DREMIO_JAVA_EXTRA_OPTS=\
   -Dzookeeper=my_zk_quorum \
-  -Dservices.coordinator.enabled=false
+  -Dservices.coordinator.enabled=false" \
+  dremio/dremio-oss
+
 ```
 
 ---
