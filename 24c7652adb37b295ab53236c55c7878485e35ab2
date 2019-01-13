@@ -22,6 +22,30 @@
       "revId": "24c7652adb37b295ab53236c55c7878485e35ab2",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "39c4c2f9_bc00993f",
+        "filename": "images/dremio-oss/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2019-01-13T17:54:25Z",
+      "side": 1,
+      "message": "Not sure I got the question. Only values we are overriding from the defaults in dremio.conf are provided here.",
+      "parentUuid": "c4dbd833_5f027312",
+      "range": {
+        "startLine": 66,
+        "startChar": 2,
+        "endLine": 66,
+        "endChar": 39
+      },
+      "revId": "24c7652adb37b295ab53236c55c7878485e35ab2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
