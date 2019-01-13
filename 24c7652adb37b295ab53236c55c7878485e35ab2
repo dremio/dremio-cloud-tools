@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4dbd833_5f027312",
+        "filename": "images/dremio-oss/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2019-01-13T04:21:20Z",
+      "side": 1,
+      "message": "why don\u0027t we need the other options that are in the default value?",
+      "range": {
+        "startLine": 66,
+        "startChar": 2,
+        "endLine": 66,
+        "endChar": 39
+      },
+      "revId": "24c7652adb37b295ab53236c55c7878485e35ab2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
