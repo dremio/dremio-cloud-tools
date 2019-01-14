@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "2f009dc1_dcdf3cc6",
+        "filename": "images/dremio-oss/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-01-14T17:39:28Z",
+      "side": 1,
+      "message": "Are these instructions just for creating the containers with the correct ports exposed?\n\nShould we mention that you can overload DREMIO_JAVA_EXTRA_OPTS?",
+      "revId": "24c7652adb37b295ab53236c55c7878485e35ab2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c4dbd833_5f027312",
         "filename": "images/dremio-oss/README.md",
         "patchSetId": 1
