@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "5a40e443_fc2ca006",
+        "filename": "images/dremio-oss/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2019-01-14T18:45:11Z",
+      "side": 1,
+      "message": "The idea was that someone not familiar with Dremio can follow the instructions verbatim and can get a Dremio up and running. And any environment passed to a container needs to be specified explicitly. So, the user could have defined an environment variable DREMIO_JAVA_EXTRA_OPTS with all the values in their shell. But they still need to pass in a -e DREMIO_JAVA_EXTRA_OPTS to the docker command.",
+      "parentUuid": "0b2fc9d2_6e268f07",
+      "revId": "24c7652adb37b295ab53236c55c7878485e35ab2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c4dbd833_5f027312",
         "filename": "images/dremio-oss/README.md",
         "patchSetId": 1
