@@ -54,6 +54,16 @@ dremio-client   LoadBalancer   10.99.227.180   35.226.31.211     31010:32260/TCP
 
 For example, in the above output, the service is exposed on an external-ip. So, you can use 35.226.31.211:31010 in your ODBC or JDBC connections.
 
+### Viewing logs
+Logs are written to the container's console. All the logs - server.log, server.out, server.gc and access.log - are written into the console simultaneously. You can view the logs using kubectl.
+```
+kubectl logs <container-name>
+```
+You can also tail the logs using the -f parameter.
+```
+kubectl logs -f <container-name>
+```
+
 #### Scale by adding additional Coordinators or Executors (optional)
 Get the name of the helm release. In the example below, the release name is plundering-alpaca.
 ```bash
