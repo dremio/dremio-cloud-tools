@@ -86,7 +86,14 @@ spec:
         command: ["/opt/dremio/bin/dremio-admin"]
         args:
         - "upgrade"
-      volumes:
-      - name: dremio-master-volume
-        persistentVolumeClaim:
-          claimName: dremio-master-volume
+  volumeClaimTemplates:
+  - metadata:
+      name: dremio-master-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      {{- if .Values.coordinator.storageClass }}
+      storageClassName: {{ .Values.coordinator.storageClass }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{.Values.coordinator.volumeSize}}

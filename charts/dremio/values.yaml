@@ -7,12 +7,17 @@ path:
 coordinator:
   memory: 16384
   cpu: 8
-  count: 1
+  count: 0
+  # This value should NOT be set to more than 1.
   master_count: 1
   web:
     port: 9047
   client:
     port: 31010
+  volumeSize: 20Gi
+  # To use custom storage class, uncomment and provide the value here.
+  # Otherwise the default storage class configured for your K8S cluster is used.
+  #storageClass: managed-premium
 executor:
   memory: 16384
   cpu: 4
