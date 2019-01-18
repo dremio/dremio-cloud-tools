@@ -1,6 +1,4 @@
 image: dremio/dremio-oss
-path:
-  dist: "pdfs:///tmp/pdfs"
 # Check out Dremio documentation for memory and cpu requirements for
 # the coordinators and the executors.
 # The value of memory should be in MB. CPU is in no of cores.
@@ -23,5 +21,6 @@ executor:
   cpu: 4
   count: 1
 # If your Kubernetes cluster does not support LoadBalancer,
-# comment out the line below for the helm chart to succeed.
+# comment out the line below for the helm chart to succeed or add
+# the correct serviceType for your cluster.
 serviceType: LoadBalancer

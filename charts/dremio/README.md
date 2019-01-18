@@ -2,11 +2,18 @@
 
 ## Overview
 
-This is a Helm chart to deploy a Dremio cluster in kubernetes. It uses a persistent volume for the master node. An appropriate distributed file store (S3, ADLS, HDFS, etc) should be used for paths.dist as this deployment will lose locally persisted reflections and uploads.
+This is a Helm chart to deploy a Dremio cluster in kubernetes. It uses a persistent volume for the master node to store the metadata for the cluster. The default configuration uses the default persistent storage supported by the kubernetes platform. For example,
+| Kubernetes platform | Persistent store |
+|---------------------|------------------|
+| AWS EKS             | EBS              |
+| Azure AKS           | Azure disk (HDD) |
+| Google GKE          | Persistent Disk  |
+| Local K8S on Docker | Hostpath         |
+If you want to use a different storage class available in your kubernetes environment, add the storageClass in values.yaml.
 
-This assumes you already have kubernetes cluster setup, kubectl configured to talk to your kubernetes cluster and helm setup in your cluster.
+An appropriate distributed file store (S3, ADLS, HDFS, etc) should be used for paths.dist as this deployment will lose locally persisted reflections and uploads. You can update config/dremio.conf. Dremio [documentation](https://docs.dremio.com/deployment/distributed-storage.html) provides more information on this.
 
-Review and update values.yaml to reflect values for your environment before installing the helm chart. This is specially important for for the memory and cpu values - your kubernetes cluster should have sufficient resources to provision the pods with those values. If your kubernetes installation does not support serviceType LoadBalancer, it is recommended to comment the serviceType value in values.yaml file before deploying.
+This assumes you already have kubernetes cluster setup, kubectl configured to talk to your kubernetes cluster and helm setup in your cluster. Review and update values.yaml to reflect values for your environment before installing the helm chart. This is specially important for for the memory and cpu values - your kubernetes cluster should have sufficient resources to provision the pods with those values. If your kubernetes installation does not support serviceType LoadBalancer, it is recommended to comment the serviceType value in values.yaml file before deploying.
 
 #### Installing the helm chart
 Run this from the charts directory
@@ -54,7 +61,7 @@ dremio-client   LoadBalancer   10.99.227.180   35.226.31.211     31010:32260/TCP
 
 For example, in the above output, the service is exposed on an external-ip. So, you can use 35.226.31.211:31010 in your ODBC or JDBC connections.
 
-### Viewing logs
+#### Viewing logs
 Logs are written to the container's console. All the logs - server.log, server.out, server.gc and access.log - are written into the console simultaneously. You can view the logs using kubectl.
 ```
 kubectl logs <container-name>
@@ -110,3 +117,9 @@ kubectl get pods
 ```
 
 Once all the pods are restarted and running, your Dremio cluster is upgraded.
+
+#### Customizing Dremio configuration
+
+Dremio configuration files used by the deployment are in the config directory. These files are propagated to all the pods in the cluster. Updating the configuration and upgrading the helm release - just like doing an upgrade - would refresh all the pods with the new configuration. [Dremio documentation](https://docs.dremio.com/deployment/README-config.html) covers the configuration capabilities in Dremio.
+
+If you need to add a core-site.xml, you can add the file to the config directory and it will be propagated to all the pods on install or upgrade of the deployment.
