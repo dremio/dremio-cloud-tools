@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         app: dremio-coordinator
+      annotations:
+        dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}
     spec:
       affinity:
         podAntiAffinity:
@@ -36,9 +38,9 @@ spec:
         volumeMounts:
         - name: dremio-master-volume
           mountPath: /opt/dremio/data
+        - name: dremio-config
+          mountPath: /opt/dremio/conf
         env:
-        - name: DIST_PATH
-          value: {{.Values.path.dist}}
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "HeapMemory" .Values.coordinator.memory }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
@@ -53,7 +55,9 @@ spec:
             -Dregistration.publish-host=$(LOCAL_POD_IP)
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
-            -Dpaths.dist=$(DIST_PATH)
+            {{- if .Values.extraStartParams }}
+            {{ .Values.extraStartParams }}
+            {{- end }}
         command: ["/opt/dremio/bin/dremio"]
         args:
         - "start-fg"
@@ -86,6 +90,10 @@ spec:
         command: ["/opt/dremio/bin/dremio-admin"]
         args:
         - "upgrade"
+      volumes:
+      - name: dremio-config
+        configMap:
+          name: dremio-config
   volumeClaimTemplates:
   - metadata:
       name: dremio-master-volume

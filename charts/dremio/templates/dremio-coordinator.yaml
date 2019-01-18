@@ -5,6 +5,7 @@ metadata:
 spec:
   serviceName: "dremio-coordinator"
   replicas: {{.Values.coordinator.count}}
+  podManagementPolicy: "Parallel"
   revisionHistoryLimit: 1
   strategy:
       type: RollingUpdate
@@ -18,6 +19,8 @@ spec:
     metadata:
       labels:
         app: dremio-coordinator
+      annotations:
+        dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}
     spec:
       terminationGracePeriodSeconds: 5
       containers:
@@ -27,9 +30,10 @@ spec:
           requests:
             memory: {{.Values.coordinator.memory}}M
             cpu: {{.Values.coordinator.cpu}}
+        volumeMounts:
+        - name: dremio-config
+          mountPath: /opt/dremio/conf
         env:
-        - name: DIST_PATH
-          value: {{.Values.path.dist}}
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "HeapMemory" .Values.coordinator.memory }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
@@ -44,7 +48,9 @@ spec:
             -Dregistration.publish-host=$(LOCAL_POD_IP)
             -Dservices.coordinator.master.enabled=false
             -Dservices.executor.enabled=false
-            -Dpaths.dist=$(DIST_PATH)
+            {{- if .Values.extraStartParams }}
+            {{ .Values.extraStartParams }}
+            {{- end }}
         command: ["/opt/dremio/bin/dremio"]
         args:
         - "start-fg"
@@ -59,3 +65,7 @@ spec:
       - name: wait-for-zk
         image: busybox
         command:  ["sh", "-c", "until nc -z dremio-client {{ .Values.coordinator.web.port | default 9047 }} > /dev/null; do echo waiting for dremio master; sleep 2; done;"]
+      volumes:
+      - name: dremio-config
+        configMap:
+          name: dremio-config
