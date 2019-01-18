@@ -54,7 +54,7 @@ dremio-client   LoadBalancer   10.99.227.180   35.226.31.211     31010:32260/TCP
 
 For example, in the above output, the service is exposed on an external-ip. So, you can use 35.226.31.211:31010 in your ODBC or JDBC connections.
 
-### Viewing logs
+#### Viewing logs
 Logs are written to the container's console. All the logs - server.log, server.out, server.gc and access.log - are written into the console simultaneously. You can view the logs using kubectl.
 ```
 kubectl logs <container-name>
@@ -110,3 +110,9 @@ kubectl get pods
 ```
 
 Once all the pods are restarted and running, your Dremio cluster is upgraded.
+
+#### Customizing Dremio configuration
+
+Dremio configuration files used by the deployment are in the config directory. These files are propagated to all the pods in the cluster. Updating the configuration and upgrading the helm release - just like doing an upgrade - would refresh all the pods with the new configuration. [Dremio documentation](https://docs.dremio.com/deployment/README-config.html) covers the configuration capabilities in Dremio.
+
+If you need to add a core-site.xml, you can add the file to the config directory and it will be propagated to all the pods on install or upgrade of the deployment.

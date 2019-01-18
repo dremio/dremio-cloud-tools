@@ -5,6 +5,7 @@ metadata:
 spec:
   serviceName: "dremio-executor"
   replicas: {{.Values.executor.count}}
+  podManagementPolicy: "Parallel"
   revisionHistoryLimit: 1
   strategy:
       type: RollingUpdate
@@ -18,6 +19,8 @@ spec:
     metadata:
       labels:
         app: dremio-executor
+      annotations:
+        dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}
     spec:
       terminationGracePeriodSeconds: 5
       containers:
@@ -27,9 +30,10 @@ spec:
           requests:
             memory: {{.Values.executor.memory}}M
             cpu: {{.Values.executor.cpu}}
+        volumeMounts:
+        - name: dremio-config
+          mountPath: /opt/dremio/conf
         env:
-        - name: DIST_PATH
-          value: {{.Values.path.dist}}
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "HeapMemory" .Values.executor.memory }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
@@ -43,7 +47,9 @@ spec:
             -Dzookeeper=zk-hs:2181
             -Dregistration.publish-host=$(LOCAL_POD_IP)
             -Dservices.coordinator.enabled=false
-            -Dpaths.dist=$(DIST_PATH)
+            {{- if .Values.extraStartParams }}
+            {{ .Values.extraStartParams }}
+            {{- end }}
         command: ["/opt/dremio/bin/dremio"]
         args:
         - "start-fg"
@@ -54,3 +60,7 @@ spec:
       - name: wait-for-zk
         image: busybox
         command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
+      volumes:
+      - name: dremio-config
+        configMap:
+          name: dremio-config
