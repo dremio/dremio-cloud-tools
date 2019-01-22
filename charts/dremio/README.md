@@ -3,12 +3,14 @@
 ## Overview
 
 This is a Helm chart to deploy a Dremio cluster in kubernetes. It uses a persistent volume for the master node to store the metadata for the cluster. The default configuration uses the default persistent storage supported by the kubernetes platform. For example,
+
 | Kubernetes platform | Persistent store |
 |---------------------|------------------|
 | AWS EKS             | EBS              |
 | Azure AKS           | Azure disk (HDD) |
 | Google GKE          | Persistent Disk  |
 | Local K8S on Docker | Hostpath         |
+
 If you want to use a different storage class available in your kubernetes environment, add the storageClass in values.yaml.
 
 An appropriate distributed file store (S3, ADLS, HDFS, etc) should be used for paths.dist as this deployment will lose locally persisted reflections and uploads. You can update config/dremio.conf. Dremio [documentation](https://docs.dremio.com/deployment/distributed-storage.html) provides more information on this.
