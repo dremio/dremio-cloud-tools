@@ -16,3 +16,14 @@ spec:
     app: dremio-coordinator
   type: {{ .Values.serviceType | default "NodePort" }}
   sessionAffinity: ClientIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dremio-cluster-pod
+spec:
+  ports:
+  - port: 9999
+  clusterIP: None
+  selector:
+    role: dremio-cluster-pod

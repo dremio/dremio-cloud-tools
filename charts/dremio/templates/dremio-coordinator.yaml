@@ -1,9 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: dremio-coordinator
 spec:
-  serviceName: "dremio-coordinator"
+  serviceName: "dremio-cluster-pod"
   replicas: {{.Values.coordinator.count}}
   podManagementPolicy: "Parallel"
   revisionHistoryLimit: 1
@@ -19,6 +19,7 @@ spec:
     metadata:
       labels:
         app: dremio-coordinator
+        role: dremio-cluster-pod
       annotations:
         dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}
     spec:
@@ -38,14 +39,9 @@ spec:
           value: "{{ template "HeapMemory" .Values.coordinator.memory }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
           value: "{{ template "DirectMemory" .Values.coordinator.memory }}"
-        - name: LOCAL_POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
         - name: DREMIO_JAVA_EXTRA_OPTS
           value: >-
             -Dzookeeper=zk-hs:2181
-            -Dregistration.publish-host=$(LOCAL_POD_IP)
             -Dservices.coordinator.master.enabled=false
             -Dservices.executor.enabled=false
             {{- if .Values.extraStartParams }}

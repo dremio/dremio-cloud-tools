@@ -2,10 +2,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: dremio-master
-  labels:
-    app: dremio-master
 spec:
-  serviceName: "dremio-master"
+  serviceName: "dremio-cluster-pod"
   replicas: {{.Values.coordinator.master_count}}
   selector:
     matchLabels:
@@ -14,6 +12,7 @@ spec:
     metadata:
       labels:
         app: dremio-coordinator
+        role: dremio-cluster-pod
       annotations:
         dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}
     spec:
@@ -45,14 +44,9 @@ spec:
           value: "{{ template "HeapMemory" .Values.coordinator.memory }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
           value: "{{ template "DirectMemory" .Values.coordinator.memory }}"
-        - name: LOCAL_POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
         - name: DREMIO_JAVA_EXTRA_OPTS
           value: >-
             -Dzookeeper=zk-hs:2181
-            -Dregistration.publish-host=$(LOCAL_POD_IP)
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
             {{- if .Values.extraStartParams }}
@@ -72,15 +66,17 @@ spec:
       - name: wait-for-zk
         image: busybox
         command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
-      # since we're mounting a separate volume, reset permission to dremio uid/gid (999:999)
+      # since we're mounting a separate volume, reset permission to dremio uid/gid
       - name: chown-data-directory
-        image: busybox
+        image: {{.Values.image}}
+        securityContext:
+          runAsUser: 0
         volumeMounts:
         - name: dremio-master-volume
           mountPath: /opt/dremio/data
         command: ["chown"]
         args:
-        - "999:999"
+        - "dremio:dremio"
         - "/opt/dremio/data"
       - name: upgrade-task
         image: {{.Values.image}}
@@ -99,8 +95,8 @@ spec:
       name: dremio-master-volume
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      {{- if .Values.coordinator.storageClass }}
-      storageClassName: {{ .Values.coordinator.storageClass }}
+      {{- if .Values.storageClass }}
+      storageClassName: {{ .Values.storageClass }}
       {{- end }}
       resources:
         requests:

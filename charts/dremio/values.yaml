@@ -13,14 +13,15 @@ coordinator:
   client:
     port: 31010
   volumeSize: 20Gi
-  # To use custom storage class, uncomment and provide the value here.
-  # Otherwise the default storage class configured for your K8S cluster is used.
-  #storageClass: managed-premium
 executor:
   memory: 16384
   cpu: 4
   count: 1
+  volumeSize: 20Gi
 # If your Kubernetes cluster does not support LoadBalancer,
 # comment out the line below for the helm chart to succeed or add
 # the correct serviceType for your cluster.
 serviceType: LoadBalancer
+# To use custom storage class, uncomment and provide the value here.
+# Otherwise the default storage class configured for your K8S cluster is used.
+#storageClass: managed-premium
