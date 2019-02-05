@@ -15,7 +15,9 @@ spec:
   selector:
     app: dremio-coordinator
   type: {{ .Values.serviceType | default "NodePort" }}
-  sessionAffinity: ClientIP
+  {{- if .Values.sessionAffinity }}
+  sessionAffinity: {{ .Values.sessionAffinity }}
+  {{- end }}
 ---
 apiVersion: v1
 kind: Service

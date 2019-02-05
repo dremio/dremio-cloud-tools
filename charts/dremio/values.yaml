@@ -22,6 +22,11 @@ executor:
 # comment out the line below for the helm chart to succeed or add
 # the correct serviceType for your cluster.
 serviceType: LoadBalancer
+
+# If the loadBalancer supports sessionAffinity and
+# you have one or more coordinators, enable it
+#sessionAffinity: ClientIP
+
 # To use custom storage class, uncomment and provide the value here.
 # Otherwise the default storage class configured for your K8S cluster is used.
 #storageClass: managed-premium
