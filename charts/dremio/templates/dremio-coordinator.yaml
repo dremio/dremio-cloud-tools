@@ -65,3 +65,7 @@ spec:
       - name: dremio-config
         configMap:
           name: dremio-config
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      {{- end}}

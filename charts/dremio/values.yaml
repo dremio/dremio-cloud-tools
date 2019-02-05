@@ -30,3 +30,8 @@ serviceType: LoadBalancer
 # To use custom storage class, uncomment and provide the value here.
 # Otherwise the default storage class configured for your K8S cluster is used.
 #storageClass: managed-premium
+
+# For private and protected docker image repository, you should store
+# the credentials in a kubernetes secret and provide the secret name here.
+# For more information, see https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+#imagePullSecrets=secretname
