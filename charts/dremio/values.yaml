@@ -9,19 +9,20 @@ image: dremio/dremio-oss:latest
 coordinator:
   memory: 16384
   cpu: 8
+  # This count is for slave coordinators only.
+  # The chart will always create one master coordinator - you are
+  # not required to have more than one master coordinator.
   count: 0
-  # This value should NOT be set to more than 1.
-  master_count: 1
   web:
     port: 9047
   client:
     port: 31010
-  volumeSize: 20Gi
+  volumeSize: 100Gi
 executor:
   memory: 16384
   cpu: 4
-  count: 1
-  volumeSize: 20Gi
+  count: 3
+  volumeSize: 100Gi
 
 # If your Kubernetes cluster does not support LoadBalancer,
 # comment out the line below for the helm chart to succeed or add
