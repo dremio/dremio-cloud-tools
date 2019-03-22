@@ -1,4 +1,8 @@
-image: dremio/dremio-oss
+# The image used to build the Dremio cluster. It is recommended to update the
+# version tag to the version that you are using. This will ensure that all
+# the pods are using the same version of the software.
+image: dremio/dremio-oss:latest
+
 # Check out Dremio documentation for memory and cpu requirements for
 # the coordinators and the executors.
 # The value of memory should be in MB. CPU is in no of cores.
@@ -18,6 +22,7 @@ executor:
   cpu: 4
   count: 1
   volumeSize: 20Gi
+
 # If your Kubernetes cluster does not support LoadBalancer,
 # comment out the line below for the helm chart to succeed or add
 # the correct serviceType for your cluster.
