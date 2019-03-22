@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0a57aa77_d358771c",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-03-22T19:33:19Z",
+      "side": 1,
+      "message": "*one coordinator",
+      "revId": "0c14c22dc892de301ed1c111d2668e42ad954652",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
