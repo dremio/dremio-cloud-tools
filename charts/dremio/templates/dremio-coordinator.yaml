@@ -27,6 +27,7 @@ spec:
       containers:
       - name: dremio-coordinator
         image: {{.Values.image}}
+        imagePullPolicy: IfNotPresent
         resources:
           requests:
             memory: {{.Values.coordinator.memory}}M
