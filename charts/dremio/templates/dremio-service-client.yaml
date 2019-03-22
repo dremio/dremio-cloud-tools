@@ -4,6 +4,13 @@ metadata:
   name: dremio-client
   labels:
     app: dremio-client
+  {{- if and .Values.internalLoadBalancer (eq .Values.internalLoadBalancer true)}}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    cloud.google.com/load-balancer-type: "Internal"
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+    service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
+  {{- end }}
 spec:
   ports:
   - port: {{ .Values.coordinator.client.port | default 31010 }}
