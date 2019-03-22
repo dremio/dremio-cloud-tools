@@ -16,6 +16,24 @@
       "revId": "f09c6c9a8ec982ff8df921162034dfe9c0ed20cb",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "99d7b414_6a0862a0",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2019-03-22T16:24:00Z",
+      "side": 1,
+      "message": "Added additional comments in values.yaml to clarify further. \n\nRegarding upgrade - what would happen is that helm processes the templates and values.yaml and generates the final yaml files that are sent to the server. In new case and earlier case, the number of replicas in the master pod would be 1. I have verified it (not necessarily doing a Dremio upgrade with new image, but just starting with old style cluster and then \"upgrading\" to new style and then attempting to increase pod counts.",
+      "parentUuid": "0b02e929_4737bc82",
+      "revId": "f09c6c9a8ec982ff8df921162034dfe9c0ed20cb",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
