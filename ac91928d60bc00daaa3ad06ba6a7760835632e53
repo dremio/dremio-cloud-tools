@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b79af7a1_09af02d7",
+        "filename": "charts/dremio/templates/dremio-service-client.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-03-22T14:39:45Z",
+      "side": 1,
+      "message": "Is it safe to add all these flags?  Are the unknown flags ignored by whatever service the cluster is deployed to?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 71
+      },
+      "revId": "ac91928d60bc00daaa3ad06ba6a7760835632e53",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5f92b3ce_b244090a",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-03-22T14:39:45Z",
+      "side": 1,
+      "message": "This comment can be made a little more clearer.  Maybe \n\n\"Enable the following flag if you wish to route traffic through a shared VPC for the LoadBalancer\u0027s external IP.\"",
+      "revId": "ac91928d60bc00daaa3ad06ba6a7760835632e53",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a733516a_f8d64a89",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-03-22T14:39:45Z",
+      "side": 1,
+      "message": "trailing space",
+      "revId": "ac91928d60bc00daaa3ad06ba6a7760835632e53",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
