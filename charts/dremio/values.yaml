@@ -27,6 +27,12 @@ serviceType: LoadBalancer
 # you have one or more coordinators, enable it
 #sessionAffinity: ClientIP
 
+# If your Kubernetes cluster is in a VPC and want a VPC internal IP
+# for your LoadBalancer's external IP, enable this flag. 
+# The chart is enabled for internal LoadBalancer IP for AKS, EKS, GKE.
+# For more information, see https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+#internalLoadBalancer: true
+
 # To use custom storage class, uncomment and provide the value here.
 # Otherwise the default storage class configured for your K8S cluster is used.
 #storageClass: managed-premium
