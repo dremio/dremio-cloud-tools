@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b02e929_4737bc82",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-03-22T14:17:31Z",
+      "side": 1,
+      "message": "Having count at 0 by default is somewhat confusing now that you removed the master_count variable.  Initial glance at the default configuration makes me think only executors are going to be created.\n\nAnd if I set count to 1 but see an additional pod created for a master coordinator I would be even more confused.\n\nAlso, what is the upgrade workflow for someone who is deploying an older version of this helm chart?",
+      "revId": "f09c6c9a8ec982ff8df921162034dfe9c0ed20cb",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
