@@ -30,6 +30,7 @@ spec:
       containers:
       - name: dremio-master-coordinator
         image: {{.Values.image}}
+        imagePullPolicy: IfNotPresent
         resources:
           requests:
             memory: {{.Values.coordinator.memory}}M
@@ -69,6 +70,7 @@ spec:
       # since we're mounting a separate volume, reset permission to dremio uid/gid
       - name: chown-data-directory
         image: {{.Values.image}}
+        imagePullPolicy: IfNotPresent
         securityContext:
           runAsUser: 0
         volumeMounts:
@@ -80,6 +82,7 @@ spec:
         - "/opt/dremio/data"
       - name: upgrade-task
         image: {{.Values.image}}
+        imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: dremio-master-volume
           mountPath: /opt/dremio/data
