@@ -93,6 +93,26 @@ helm upgrade <release name> dremio --set executor.count=5
 
 You can also scale down the same way.
 
+### Running offline dremio-admin commands
+Administration commands restore, cleanup and set-password in dremio-admin needs to be run when
+the Dremio cluster is not running. So, before running these commands, you need to shutdown
+the Dremio cluster. Use the helm delete command to delete the helm release.
+(Kubernetes does not delete the persistent store volumes when you delete statefulset pods and
+when you install the cluster again using helm, the existing persistent store will be used and
+you will get your Dremio cluster running again.)
+
+After Dremio cluster is shutdown, start the dremio-admin pod using
+```bash
+helm install --wait dremio --set DremioAdmin=true
+```
+Once the pod is running, you can connect to the pod using
+```bash
+kubectl exec -it dremio-admin -- bash
+```
+Now, you have a bash shell from where you can run the dremio-admin commands.
+
+Once you are done, you can delete the helm release for the dremio-admin and start your Dremio cluster.
+
 #### Upgrading Dremio
 You should attempt upgrade when no queries are running on the cluster. Update the Dremio image tag in your values.yaml file. E.g.
 ```bash

@@ -1,3 +1,4 @@
+{{ if not .Values.DremioAdmin }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -91,3 +92,4 @@ spec:
       resources:
         requests:
           storage: {{.Values.executor.volumeSize}}
+{{ end }}

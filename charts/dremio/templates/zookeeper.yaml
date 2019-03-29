@@ -1,3 +1,4 @@
+{{ if not .Values.DremioAdmin }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -133,3 +134,4 @@ spec:
       resources:
         requests:
           storage: 10Gi
+{{ end }}
