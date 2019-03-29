@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "108d6096_2665848d",
+        "filename": "charts/dremio/templates/dremio-admin.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-03-29T23:02:53Z",
+      "side": 1,
+      "message": "can we append /opt/dremio/bin to PATH so the user doesn\u0027t need to cd to here?\n\nI think the default root is /opt/dremio on the dremio-oss images.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 68
+      },
+      "revId": "79cfc360223ed636d00ec5ced21e0a053a266d77",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
