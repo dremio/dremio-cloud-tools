@@ -34,6 +34,24 @@
       "revId": "2a4f28fd2f9bef7888b21d6ef8ead5e3615cc27c",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0d9f0a36_7594e7f6",
+        "filename": "charts/dremio/config/core-site.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2019-04-04T19:20:25Z",
+      "side": 1,
+      "message": "Sam, with core-site.xml configured to go send uploads to Azure ADLS, I was able to add a hdfs source and query it successfully (this was hdfs in automaster which does not require any core-site.xml changes)",
+      "parentUuid": "d166db12_9a41f3c3",
+      "revId": "2a4f28fd2f9bef7888b21d6ef8ead5e3615cc27c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
