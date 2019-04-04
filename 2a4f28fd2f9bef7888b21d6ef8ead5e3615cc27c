@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0ca30e7_65e9ceff",
+        "filename": "charts/dremio/config/core-site.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-04-04T00:15:21Z",
+      "side": 1,
+      "message": "this file could conflict with a user\u0027s own core-site.xml for hdfs\n\nis there any way to avoid including this file in the config subdir?  maybe make this a template?",
+      "revId": "2a4f28fd2f9bef7888b21d6ef8ead5e3615cc27c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
