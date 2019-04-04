@@ -49,7 +49,7 @@ spec:
     matchLabels:
       app: zk
   serviceName: zk-hs
-  replicas: 1
+  replicas: {{.Values.zookeeper.count}}
   updateStrategy:
     type: RollingUpdate
   podManagementPolicy: Parallel
@@ -74,8 +74,8 @@ spec:
         image: "k8s.gcr.io/kubernetes-zookeeper:1.0-3.4.10"
         resources:
           requests:
-            memory: "1Gi"
-            cpu: "0.5"
+            memory: "{{.Values.zookeeper.memory}}M"
+            cpu: "{{.Values.zookeeper.cpu}}"
         ports:
         - containerPort: 2181
           name: client
@@ -87,7 +87,7 @@ spec:
         - sh
         - -c
         - "start-zookeeper \
-          --servers=1 \
+          --servers={{.Values.zookeeper.count}} \
           --data_dir=/var/lib/zookeeper/data \
           --data_log_dir=/var/lib/zookeeper/data/log \
           --conf_dir=/opt/zookeeper/conf \
@@ -133,5 +133,5 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 10Gi
+          storage: {{.Values.zookeeper.volumeSize}}
 {{ end }}
