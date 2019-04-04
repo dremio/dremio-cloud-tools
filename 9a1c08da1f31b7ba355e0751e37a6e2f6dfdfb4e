@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8fc547eb_bf5b403d",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-04-04T00:34:06Z",
+      "side": 1,
+      "message": "Add a comment about having 1 zk node only for testing purposes (things will fail if the cluster decides to migrate a zk pod). Having 3+ is recommended (2 is not recommended because if one goes down then quorum will fail).\n\nMight be a good idea to change this value to 3 by default?",
+      "revId": "9a1c08da1f31b7ba355e0751e37a6e2f6dfdfb4e",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
