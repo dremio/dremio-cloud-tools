@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<configuration>
+  <!-- If you are editing any content in this file, please remove lines with double curly braces around them -->
+  <!-- S3 Configuration Section -->
+  {{- if and .Values.uploads.type (eq .Values.uploads.type "aws") }}
+   <property>
+       <name>fs.s3a.access.key</name>
+       <description>AWS access key ID.</description>
+       <value>{{ required "AWS access key required" .Values.uploads.aws.accessKey}}</value>
+   </property>
+   <property>
+       <name>fs.s3a.secret.key</name>
+       <description>AWS secret key.</description>
+       <value>{{ required "AWS secret required" .Values.uploads.aws.secret}}</value>
+   </property>
+   {{- end }}
+   <!-- ADLS Configuration Section -->
+   {{- if and .Values.uploads.type (eq .Values.uploads.type "azure") }}
+   <!-- Please read https://docs.dremio.com/data-sources/azure-data-lake-store.html
+   for information on setting up ADLS access -->
+    <property>
+        <name>fs.adl.impl</name>
+        <description>Must be set to org.apache.hadoop.fs.adl.AdlFileSystem</description>
+        <value>org.apache.hadoop.fs.adl.AdlFileSystem</value>
+    </property>
+    <property>
+        <name>dfs.adls.oauth2.client.id</name>
+        <description>Application ID of the registered application under Azure Active Directory</description>
+        <value>{{required "Azure application ID required" .Values.uploads.azure.applicationId}}</value>
+    </property>
+    <property>
+        <name>dfs.adls.oauth2.credential</name>
+        <description>Generated password value for the registered application</description>
+        <value>{{required "Azure secret value required" .Values.uploads.azure.secret}}</value>
+    </property>
+    <property>
+        <name>dfs.adls.oauth2.refresh.url</name>
+        <description>Azure Active Directory OAuth 2.0 Token Endpoint for registered applications.</description>
+        <value>{{required "Azure OAuth2 token endpoint required" .Values.uploads.azure.oauth2EndPoint}}</value>
+    </property>
+    <property>
+        <name>dfs.adls.oauth2.access.token.provider.type </name>
+        <description>Must be set to ClientCredential</description>
+        <value>ClientCredential</value>
+    </property>
+    <property>
+        <name>fs.adl.impl.disable.cache</name>
+        <description>Only include this property AFTER validating the ADLS connection.</description>
+        <value>false</value>
+    </property>
+    {{- end }}
+</configuration>

@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: dremio-config
 data:
-  {{- (.Files.Glob "config/*").AsConfig | nindent 2 }}
+  {{- tpl (.Files.Glob "config/*").AsConfig . | nindent 2 }}

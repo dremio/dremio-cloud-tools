@@ -47,3 +47,20 @@ serviceType: LoadBalancer
 # the credentials in a kubernetes secret and provide the secret name here.
 # For more information, see https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 #imagePullSecrets=secretname
+
+# Control where uploaded files are stored.
+# See https://docs.dremio.com/deployment/distributed-storage.html for more information
+uploads:
+  # Valid values are local, aws or azure. aws and azure choice requires additional configuration data.
+  type: "local"
+  aws:
+    bucketName: "Your_AWS_bucket_name"
+    path: "/"
+    accessKey: "Your_AWS_Access_Key"
+    secret: "Your_AWS_Secret"
+  azure:
+    datalakeStoreName: "Your_Azure_DataLake_Storage_name"
+    path: "/"
+    applicationId: "Your_Azure_Application_Id"
+    secret: "Your_Azure_Secret"
+    oauth2EndPoint: "Azure_OAuth2_Endpoint"
