@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bcea6dac_b188c33f",
+        "filename": "charts/dremio/templates/dremio-master.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-04-09T23:29:20Z",
+      "side": 1,
+      "message": "what does this do? ping the specified port on the pod until it responds before it marks it as ready?",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 26
+      },
+      "revId": "d35fedca3b40598f320dc18e0ec1075333eeae31",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
