@@ -39,6 +39,30 @@
       "revId": "e7ceae3f167a7851ca433e8105d9891efca17abb",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6808bd14_9ae250e6",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2019-04-09T23:14:06Z",
+      "side": 1,
+      "message": "While it is possible, for sake of simplicity, I have limited to keep all the pods to the same set of nodes.",
+      "parentUuid": "9713cf04_31194de9",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 13
+      },
+      "revId": "e7ceae3f167a7851ca433e8105d9891efca17abb",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
