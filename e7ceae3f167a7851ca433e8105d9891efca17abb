@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81e4e38b_a04336ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-04-09T23:05:59Z",
+      "side": 1,
+      "message": "what has changed here?",
+      "revId": "e7ceae3f167a7851ca433e8105d9891efca17abb",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9713cf04_31194de9",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-04-09T23:05:59Z",
+      "side": 1,
+      "message": "Can I control which pods get deployed to specific nodes here (as in, can I target different nodes for zookeeper pods and dremio pods)?",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 13
+      },
+      "revId": "e7ceae3f167a7851ca433e8105d9891efca17abb",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
