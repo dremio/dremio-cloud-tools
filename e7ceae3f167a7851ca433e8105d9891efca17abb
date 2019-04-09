@@ -105,6 +105,30 @@
       "revId": "e7ceae3f167a7851ca433e8105d9891efca17abb",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4eb84df0_212a4a3b",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2019-04-09T23:26:47Z",
+      "side": 1,
+      "message": "TBH, I do not see that as a production K8S scenario. K8S scenario is you have a pool of CPU/memory and you target your pods there. And you as a group, department is given pool. The K8S cluster admin may isolate different groups, deployments to different pools. But within a deployment trying to isolate IMV is a bad upfront choice. \n\nI can see where you are coming from (from optimized usage of K8S cluster for our tests) - but do you really see that as customer scenarios? Mapping a pod-to-a-node is really a very bad K8S design practice.",
+      "parentUuid": "d2dc0031_2e2ac851",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 13
+      },
+      "revId": "e7ceae3f167a7851ca433e8105d9891efca17abb",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
