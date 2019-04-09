@@ -53,6 +53,11 @@ serviceType: LoadBalancer
 # For more information, see https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 #imagePullSecrets=secretname
 
+# Target pods to nodes based on labels set on the nodes.
+# For more information, see https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+#nodeSelector:
+#  key: value
+
 # Control where uploaded files are stored.
 # See https://docs.dremio.com/deployment/distributed-storage.html for more information
 uploads:

@@ -68,6 +68,12 @@ spec:
                     values:
                     - zk
               topologyKey: "kubernetes.io/hostname"
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- range $key, $value := .Values.nodeSelector }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
       containers:
       - name: kubernetes-zookeeper
         imagePullPolicy: Always

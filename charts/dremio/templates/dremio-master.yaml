@@ -28,6 +28,12 @@ spec:
                     - dremio-master
               topologyKey: "kubernetes.io/hostname"
       terminationGracePeriodSeconds: 5
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- range $key, $value := .Values.nodeSelector }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
       containers:
       - name: dremio-master-coordinator
         image: {{.Values.image}}

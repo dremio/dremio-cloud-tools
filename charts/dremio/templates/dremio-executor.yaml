@@ -25,6 +25,12 @@ spec:
         dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}
     spec:
       terminationGracePeriodSeconds: 5
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- range $key, $value := .Values.nodeSelector }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
       containers:
       - name: dremio-executor
         image: {{.Values.image}}
