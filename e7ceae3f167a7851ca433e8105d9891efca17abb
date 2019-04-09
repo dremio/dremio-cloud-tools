@@ -81,6 +81,30 @@
       "revId": "e7ceae3f167a7851ca433e8105d9891efca17abb",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d2dc0031_2e2ac851",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000069
+      },
+      "writtenOn": "2019-04-09T23:21:23Z",
+      "side": 1,
+      "message": "It\u0027s not that useful if I can\u0027t target zookeeper pods and dremio pods separately.  Can we at least support that?",
+      "parentUuid": "6808bd14_9ae250e6",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 13
+      },
+      "revId": "e7ceae3f167a7851ca433e8105d9891efca17abb",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
