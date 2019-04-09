@@ -64,6 +64,11 @@ spec:
           name: client
         - containerPort: 45678
           name: server
+        readinessProbe:
+          tcpSocket:
+            port: 9047
+          initialDelaySeconds: 5
+          periodSeconds: 5
       initContainers:
       - name: start-only-one-master
         image: busybox
