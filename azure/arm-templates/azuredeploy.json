@@ -38,7 +38,7 @@
         "PasswordOrSSHPublicKey": {
           "type": "securestring",
           "metadata": {
-            "description": "Password or ssh public key for the virtual machines. If password, password must be minimum 12 characters with at least 1 upper case letter, 1 lower case letter and 1 number."
+            "description": "Password or ssh public key for the virtual machines. If password, password must be minimum 8 characters with at least 1 upper case letter, 1 lower case letter and 1 number."
           }
         },
         "useExistingSubnet": {
