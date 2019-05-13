@@ -7,8 +7,8 @@ image: dremio/dremio-oss:latest
 # the coordinators and the executors.
 # The value of memory should be in MB. CPU is in no of cores.
 coordinator:
-  memory: 16384
-  cpu: 8
+  memory: 122880
+  cpu: 15
   # This count is for slave coordinators only.
   # The chart will always create one master coordinator - you are
   # not required to have more than one master coordinator.
@@ -19,8 +19,8 @@ coordinator:
     port: 31010
   volumeSize: 100Gi
 executor:
-  memory: 16384
-  cpu: 4
+  memory: 122880
+  cpu: 15
   count: 3
   volumeSize: 100Gi
 zookeeper:
