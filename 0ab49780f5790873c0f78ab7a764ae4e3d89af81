@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aed514f4_5160d5a1",
+        "filename": "azure/arm-templates/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2019-05-16T04:07:14Z",
+      "side": 1,
+      "message": "put this at the top of the readme (with the button being the very first thing, not text)",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 259
+      },
+      "revId": "0ab49780f5790873c0f78ab7a764ae4e3d89af81",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cfcd76fa_a80e3223",
+        "filename": "azure/arm-templates/azuredeploy.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2019-05-16T04:07:14Z",
+      "side": 1,
+      "message": "Change it to:\n\n(Can be used to SSH into machines for changing configuration, reviewing logging, etc.)",
+      "range": {
+        "startLine": 24,
+        "startChar": 67,
+        "endLine": 24,
+        "endChar": 116
+      },
+      "revId": "0ab49780f5790873c0f78ab7a764ae4e3d89af81",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c2dfd87_37456d4e",
+        "filename": "azure/arm-templates/azuredeploy.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2019-05-16T04:07:14Z",
+      "side": 1,
+      "message": "change to \"for SSH\"",
+      "range": {
+        "startLine": 35,
+        "startChar": 58,
+        "endLine": 35,
+        "endChar": 81
+      },
+      "revId": "0ab49780f5790873c0f78ab7a764ae4e3d89af81",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93f44ad5_70023e7f",
+        "filename": "azure/arm-templates/azuredeploy.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2019-05-16T04:07:14Z",
+      "side": 1,
+      "message": "requirement is extreme. can it be reduced?",
+      "range": {
+        "startLine": 41,
+        "startChar": 119,
+        "endLine": 41,
+        "endChar": 200
+      },
+      "revId": "0ab49780f5790873c0f78ab7a764ae4e3d89af81",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "152804be_2dba9369",
+        "filename": "azure/arm-templates/azuredeploy.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2019-05-16T04:07:14Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this default to false? Did you discuss with others?",
+      "range": {
+        "startLine": 53,
+        "startChar": 26,
+        "endLine": 53,
+        "endChar": 30
+      },
+      "revId": "0ab49780f5790873c0f78ab7a764ae4e3d89af81",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b68110a_3c7887ba",
+        "filename": "azure/arm-templates/azuredeploy.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000001
+      },
+      "writtenOn": "2019-05-16T04:07:14Z",
+      "side": 1,
+      "message": "how about: \nWhether to expose your cluster to the public internet.",
+      "range": {
+        "startLine": 55,
+        "startChar": 28,
+        "endLine": 55,
+        "endChar": 147
+      },
+      "revId": "0ab49780f5790873c0f78ab7a764ae4e3d89af81",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
