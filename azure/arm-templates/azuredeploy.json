@@ -12,7 +12,7 @@
         },
         "clusterSize": {
           "type": "string",
-          "allowedValues": ["X-Small (1 executor)", "Small (5 executors)", "Medium (10 executors )", "Large (25 executors)", "X-Large (50 executors)"],
+          "allowedValues": ["X-Small (1 executor)", "Small (5 executors)", "Medium (10 executors)", "Large (25 executors)", "X-Large (50 executors)"],
           "metadata": {
             "description": "The type and number of machines are chosen based on the size selected."
           }
@@ -21,7 +21,7 @@
           "type": "string",
           "defaultValue": "azuser",
           "metadata": {
-            "description": "SSH username for the virtual machines. You need it if you want to login to the machines."
+            "description": "SSH username for the virtual machines. (Can be used to SSH into machines for changing configuration, reviewing logs, etc.)"
           }
         },
         "authenticationType": {
@@ -32,7 +32,7 @@
             "SSHPublicKey"
           ],
           "metadata": {
-            "description": "Type of authentication to use on the virtual machines."
+            "description": "Type of authentication to use for SSH."
           }
         },
         "PasswordOrSSHPublicKey": {
