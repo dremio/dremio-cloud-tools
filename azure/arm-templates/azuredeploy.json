@@ -12,7 +12,7 @@
         },
         "clusterSize": {
           "type": "string",
-          "allowedValues": ["X-Small (1 executor)", "Small (5 executors)", "Medium (10 executors )", "Large (25 executors)", "X-Large (50 executors)"],
+          "allowedValues": ["X-Small (1 executor)", "Small (5 executors)", "Medium (10 executors)", "Large (25 executors)", "X-Large (50 executors)"],
           "metadata": {
             "description": "The type and number of machines are chosen based on the size selected."
           }
