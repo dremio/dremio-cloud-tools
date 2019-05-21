@@ -1,0 +1,190 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler": "Microsoft.Compute.MultiVm",
+    "version": "0.1.2-preview",
+    "parameters": {
+        "basics": [
+          {
+            "name": "dremio",
+            "type": "Microsoft.Common.Section",
+            "label": "Dremio Configuration",
+            "elements": [
+                {
+                  "name": "clusterName",
+                  "type": "Microsoft.Common.TextBox",
+                  "label": "Dremio cluster name",
+                  "defaultValue": "mydremio",
+                  "constraints": {
+                    "required": true,
+                    "regex": "^[a-zA-Z][a-z0-9A-Z-]{1,30}$",
+                    "validationMessage": "Must start with a character and only alphanumeric characters and - are allowed, and must 1-30 characters long."
+                  },
+                  "visible": true
+                },
+                {
+                  "name": "clusterSize",
+                  "type": "Microsoft.Common.DropDown",
+                  "label": "Dremio cluster size",
+                  "defaultValue": "Small (5 executors)",
+                  "toolTip": "",
+                  "constraints": {
+                    "allowedValues": [
+                      {
+                        "label": "X-Small (1 executor)",
+                        "value": "x-small"
+                      },
+                      {
+                        "label": "Small (5 executors)",
+                        "value": "small"
+                      },
+                      {
+                        "label": "Medium (10 executors)",
+                        "value": "medium"
+                      },
+                      {
+                        "label": "Large (25 executors)",
+                        "value": "large"
+                      },
+                      {
+                        "label": "X-Large (50 executors)",
+                        "value": "x-large"
+                      }
+                    ],
+                    "required": true
+                  },
+                  "visible": true
+                }
+              ],
+              "visible": true
+            }
+        ],
+        "steps": [
+          {
+              "name": "infrastructure",
+              "label": "Infrastructure",
+              "subLabel": {
+                  "preValidation": "Configure the virtual machine's resources and settings",
+                  "postValidation": "Done"
+              },
+              "bladeTitle": "Infrastructure",
+              "elements": [
+              {
+                  "name": "vmconfig",
+                  "type": "Microsoft.Common.Section",
+                  "label": "VM Credentials",
+                  "elements": [
+                    {
+                        "name": "adminUsername",
+                        "type": "Microsoft.Compute.UserNameTextBox",
+                        "label": "Username",
+                        "toolTip": "Admin username for the machine",
+                        "osPlatform": "Linux",
+                        "defaultValue": "azuser",
+                        "constraints": {
+                            "required": true
+                        }
+                    },
+                    {
+                        "name": "SSHCredentials",
+                        "type": "Microsoft.Compute.CredentialsCombo",
+                        "label": {
+                            "authenticationType": "Authentication type",
+                            "password": "Password",
+                            "confirmPassword": "Confirm password",
+                            "sshPublicKey": "SSH public key"
+                        },
+                        "toolTip": {
+                            "authenticationType": "Authentication Type for the Virtual Machine",
+                            "password": "Password for the Virtual Machine",
+                            "sshPublicKey": "SSH Public Key for the Virtual Machine"
+                        },
+                        "constraints": {
+                            "required": true
+                        },
+                        "options": {
+                            "hideConfirmation": false
+                        },
+                        "osPlatform": "Linux"
+                      }
+                    ]
+                },
+                {
+                    "name": "vnetconfig",
+                    "type": "Microsoft.Common.Section",
+                    "label": "Network Configuration",
+                    "elements": [
+                      {
+                          "name": "virtualNetwork",
+                          "type": "Microsoft.Network.VirtualNetworkCombo",
+                          "label": {
+                              "virtualNetwork": "Virtual network",
+                              "subnets": "Subnets"
+                          },
+                          "toolTip": {
+                              "virtualNetwork": "Name of the virtual network",
+                              "subnets": "Subnets for the virtual network"
+                          },
+                          "defaultValue": {
+                              "name": "VirtualNetwork",
+                              "addressPrefixSize": "/16"
+                          },
+                          "constraints": {
+                              "minAddressPrefixSize": "/16"
+                          },
+                          "subnets": {
+                              "subnet1": {
+                                  "label": "Subnet",
+                                  "defaultValue": {
+                                      "name": "Subnet-1",
+                                      "addressPrefixSize": "/24"
+                                  },
+                                  "constraints": {
+                                      "minAddressPrefixSize": "/24",
+                                      "minAddressCount": 12,
+                                      "requireContiguousAddresses": false
+                                  }
+                              }
+                          }
+                      }
+                    ]
+                  },
+                  {
+                    "name": "privateIP",
+                    "type": "Microsoft.Common.OptionsGroup",
+                    "label": "Use subnet private IP for Dremio access",
+                    "defaultValue": "No",
+                    "constraints": {
+                      "allowedValues": [
+                        {
+                          "label": "Yes",
+                          "value": true
+                        },
+                        {
+                          "label": "No",
+                          "value": false
+                        }
+                      ],
+                      "required": true
+                    },
+                    "visible": true
+                  }
+                ]
+              }
+            ],
+        "outputs": {
+            "location": "[location()]",
+            "dremioClusterName": "[basics('dremio').clusterName]",
+            "dremioClusterSize": "[basics('dremio').clusterSize]",
+            "authenticationType": "[steps('infrastructure').vmconfig.SSHCredentials.authenticationType]",
+            "sshPasswordOrKey": "[coalesce(steps('infrastructure').vmconfig.SSHCredentials.password, steps('infrastructure').vmconfig.SSHCredentials.sshPublicKey)]",
+            "sshUsername": "[steps('infrastructure').vmconfig.adminUsername]",
+            "virtualNetworkNewOrExisting": "[steps('infrastructure').vnetconfig.virtualNetwork.newOrExisting]",
+            "virtualNetworkName": "[steps('infrastructure').vnetconfig.virtualNetwork.name]",
+            "addressPrefixes": "[steps('infrastructure').vnetconfig.virtualNetwork.addressPrefixes]",
+            "subnetName": "[steps('infrastructure').vnetconfig.virtualNetwork.subnets.subnet1.name]",
+            "subnetPrefix": "[steps('infrastructure').vnetconfig.virtualNetwork.subnets.subnet1.addressPrefix]",
+            "virtualNetworkResourceGroupName": "[steps('infrastructure').vnetconfig.virtualNetwork.resourceGroup]",
+            "usePrivateIP": "[steps('infrastructure').vnetconfig.privateIP]"
+        }
+    }
+}
