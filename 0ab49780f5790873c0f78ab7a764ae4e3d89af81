@@ -94,6 +94,30 @@
     },
     {
       "key": {
+        "uuid": "f4ffcb3c_9d99c990",
+        "filename": "azure/arm-templates/azuredeploy.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2019-05-21T17:39:00Z",
+      "side": 1,
+      "message": "Microsoft enforced :( It was even more extreme and seems that they have relaxed it a bit.",
+      "parentUuid": "93f44ad5_70023e7f",
+      "range": {
+        "startLine": 41,
+        "startChar": 119,
+        "endLine": 41,
+        "endChar": 200
+      },
+      "revId": "0ab49780f5790873c0f78ab7a764ae4e3d89af81",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "152804be_2dba9369",
         "filename": "azure/arm-templates/azuredeploy.json",
         "patchSetId": 2
@@ -128,6 +152,30 @@
       "writtenOn": "2019-05-16T04:07:14Z",
       "side": 1,
       "message": "how about: \nWhether to expose your cluster to the public internet.",
+      "range": {
+        "startLine": 55,
+        "startChar": 28,
+        "endLine": 55,
+        "endChar": 147
+      },
+      "revId": "0ab49780f5790873c0f78ab7a764ae4e3d89af81",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b702cd14_63e495b6",
+        "filename": "azure/arm-templates/azuredeploy.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2019-05-21T17:39:00Z",
+      "side": 1,
+      "message": "This whole load balancer was removed based on feedback from Tomer.",
+      "parentUuid": "8b68110a_3c7887ba",
       "range": {
         "startLine": 55,
         "startChar": 28,
