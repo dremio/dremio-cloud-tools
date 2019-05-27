@@ -76,6 +76,8 @@ function upgrade_master {
 function setup_master {
   sed -i "s/executor.enabled: true/executor.enabled: false/" $DREMIO_CONFIG_FILE
   upgrade_master
+
+  T=$(host $(curl -s -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2017-04-02&format=text")) && configure_ssl
 }
 
 function setup_coordinator {
@@ -96,6 +98,40 @@ function setup_executor {
   echo "zookeeper: \"$zookeeper:2181\"" >> $DREMIO_CONFIG_FILE
 }
 
+function install_certbot {
+  if ! command -v certbot-auto >/dev/null 2>&1; then
+    wget https://dl.eff.org/certbot-auto
+    mv certbot-auto /usr/local/bin/certbot-auto
+    chown root /usr/local/bin/certbot-auto
+    chmod 0755 /usr/local/bin/certbot-auto
+  fi
+}
+
+EMAIL=contact@dremio.com
+HTTP_TYPE="http"
+LETSENCRYPT_BASE=/etc/letsencrypt/live
+function configure_ssl {
+  T=$(echo $T | awk '{ print $NF }')
+  FQDN=${T::-1}
+  PASSWORD=$(openssl rand -base64 8)
+  install_certbot &&
+  certbot-auto certonly -d $FQDN --standalone -n --agree-tos --email $EMAIL &&
+  openssl pkcs12 -export \
+    -inkey $LETSENCRYPT_BASE/$FQDN/privkey.pem \
+    -in $LETSENCRYPT_BASE/$FQDN/cert.pem \
+    -out $DREMIO_DATA_DIR/store.pkcs12 \
+    -passout pass:$PASSWORD &&
+  chown dremio:dremio $DREMIO_DATA_DIR/store.pkcs12 &&
+  cat <<EOF >> $DREMIO_CONFIG_FILE &&
+services.coordinator.web.ssl.enabled: true
+services.coordinator.web.ssl.auto-certificate.enabled: false
+services.coordinator.web.ssl.keyStore: $DREMIO_DATA_DIR/store.pkcs12
+services.coordinator.web.ssl.keyStorePassword: "$PASSWORD"
+EOF
+  HTTP_TYPE="https"
+}
+
 setup_$service
-service dremio start
+service dremio restart
 chkconfig dremio on
+echo "##HTTP_TYPE##${HTTP_TYPE}://##HTTP_TYPE##"
