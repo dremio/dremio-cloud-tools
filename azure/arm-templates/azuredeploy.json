@@ -181,7 +181,7 @@
     "outputs": {
       "dremioUi": {
         "type": "string",
-        "value": "[concat('http://', reference(concat(variables('shortName'), '-compute-deployment')).outputs.dremioHost.value, ':9047')]"
+        "value": "[concat(split(first(reference('configScript').instanceView.statuses).message, '##HTTP_TYPE##')[1], reference(concat(variables('shortName'), '-compute-deployment')).outputs.dremioHost.value, ':9047')]"
       }
     }
 }
