@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5b266371_8e48092b",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-29T17:20:38Z",
+      "side": 1,
+      "message": "why 80? LE support?",
+      "revId": "81128779a22e56860a69ed5783726b758317bef2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3e9ade1f_1295b334",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-29T17:20:38Z",
+      "side": 1,
+      "message": "should use java-1.8.0-openjdk-devel to take advantage of the javac compiler for code generation",
+      "range": {
+        "startLine": 259,
+        "startChar": 34,
+        "endLine": 259,
+        "endChar": 52
+      },
+      "revId": "81128779a22e56860a69ed5783726b758317bef2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "245ff386_e0fa8d4c",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-29T17:20:38Z",
+      "side": 1,
+      "message": "curl is part of the base image if I\u0027m correct, so no need to install wget",
+      "range": {
+        "startLine": 259,
+        "startChar": 29,
+        "endLine": 259,
+        "endChar": 33
+      },
+      "revId": "81128779a22e56860a69ed5783726b758317bef2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b489a609_ab8aae90",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-29T17:20:38Z",
+      "side": 1,
+      "message": "should be install but note that you can install directly from an url without downloading it first...",
+      "range": {
+        "startLine": 261,
+        "startChar": 21,
+        "endLine": 261,
+        "endChar": 33
+      },
+      "revId": "81128779a22e56860a69ed5783726b758317bef2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab3b918e_9a924a20",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-29T17:20:38Z",
+      "side": 1,
+      "message": "hey, you used curl :)",
+      "revId": "81128779a22e56860a69ed5783726b758317bef2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4cad6dc4_25e03f74",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-29T17:20:38Z",
+      "side": 1,
+      "message": "isn\u0027t our base image centos 7? so we should use systemd as these two commands are deprecated/would print out warnings...",
+      "range": {
+        "startLine": 272,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 31
+      },
+      "revId": "81128779a22e56860a69ed5783726b758317bef2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "210c13cb_e486f975",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-29T17:20:38Z",
+      "side": 1,
+      "message": "see my comments above...",
+      "range": {
+        "startLine": 307,
+        "startChar": 12,
+        "endLine": 322,
+        "endChar": 31
+      },
+      "revId": "81128779a22e56860a69ed5783726b758317bef2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
