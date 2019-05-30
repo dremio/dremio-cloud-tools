@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "53643809_a83bf0d2",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-30T16:48:06Z",
+      "side": 1,
+      "message": "(style) extra space",
+      "range": {
+        "startLine": 52,
+        "startChar": 15,
+        "endLine": 52,
+        "endChar": 16
+      },
+      "revId": "4263800f6dd92eba27a9fab5efbcf87dd1fabfc8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a62be2a5_784fe0e7",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-30T16:48:06Z",
+      "side": 1,
+      "message": "only accepting connections from port 45678 (fabric) and 2181 (zk) would be enough",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 48
+      },
+      "revId": "4263800f6dd92eba27a9fab5efbcf87dd1fabfc8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b18c30a8_d5ca9bb6",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-30T16:48:06Z",
+      "side": 1,
+      "message": "may be better be explicit and always set master/coordinator/executor to true/false (vs relying on the default config)",
+      "revId": "4263800f6dd92eba27a9fab5efbcf87dd1fabfc8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd4020ba_3650613b",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-30T16:48:06Z",
+      "side": 1,
+      "message": "can just mount /var/ephemeral, no?",
+      "range": {
+        "startLine": 325,
+        "startChar": 12,
+        "endLine": 325,
+        "endChar": 20
+      },
+      "revId": "4263800f6dd92eba27a9fab5efbcf87dd1fabfc8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1e80140a_0b5be900",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-05-30T16:48:06Z",
+      "side": 1,
+      "message": "should it be 1777 (sticky bit) or owned by dremio user and 755 since this is kind of shared directory?",
+      "range": {
+        "startLine": 326,
+        "startChar": 18,
+        "endLine": 326,
+        "endChar": 21
+      },
+      "revId": "4263800f6dd92eba27a9fab5efbcf87dd1fabfc8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
