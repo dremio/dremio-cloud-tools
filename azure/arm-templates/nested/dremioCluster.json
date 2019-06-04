@@ -195,7 +195,8 @@
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIpAllocationMethod')]",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('publicIpDns')]"
+          "domainNameLabel": "[parameters('publicIpDns')]",
+          "reverseFqdn": "[parameters('publicIpDns')]"
         }
       }
     },
