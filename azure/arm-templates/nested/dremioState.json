@@ -23,27 +23,6 @@
         "description": "Size of the Dremio Master Data Disk"
       }
     },
-    "storageNewOrExisting": {
-      "type": "string",
-      "defaultValue": "new",
-      "metadata": {
-        "description": "Determines whether or not a new storage account should be provisioned."
-      }
-    },
-    "storageAccountName": {
-      "type": "string",
-      "defaultValue": "[concat('storage', uniqueString(resourceGroup().id))]",
-      "metadata": {
-        "description": "Name of the storage account"
-      }
-    },
-    "storageAccountType": {
-      "type": "string",
-      "defaultValue": "Standard_LRS",
-      "metadata": {
-        "description": "Storage account type"
-      }
-    },
     "virtualNetworkNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -141,7 +120,6 @@
   },
   "variables": {
     "computeApiVersion": "2018-06-01",
-    "storageApiVersion": "2018-07-01",
     "location": "[resourceGroup().location]",
     "virtualNetworkName": "[concat(parameters('dremioClusterName'), '-vnet')]",
     "publicIpAddressId": "[resourceId(parameters('publicIpResourceGroupName'), 'Microsoft.Network/publicIPAddresses', parameters('publicIpName'))]",
@@ -174,6 +152,8 @@
           "id": "[parameters('existingSubnet')]"
       }
     },
+    "networkAclsBypass": "AzureServices",
+    "networkAclsDefaultAction": "Deny",
     "install": false
   },
   "resources": [
@@ -403,7 +383,7 @@
     },
     "subnetId": {
       "type": "string",
-      "value": "[if(equals(parameters('virtualNetworkNewOrExisting'), 'new'), resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets/', variables('virtualNetworkName'), parameters('subnetName')), '')]"
+      "value": "[if(equals(parameters('virtualNetworkNewOrExisting'), 'new'), resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets/', variables('virtualNetworkName'), parameters('subnetName')), parameters('existingSubnet'))]"
     },
     "loadBalancerId": {
       "type": "string",

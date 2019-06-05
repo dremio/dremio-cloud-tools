@@ -144,10 +144,39 @@
       "metadata": {
         "description": "Select to use the private ip address of the subnet for Dremio access."
       }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "[concat('dremiometa',uniqueString(resourceGroup().id, deployment().name))]",
+      "metadata": {
+        "description": "Name of the storage account"
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "metadata": {
+        "description": "Storage account type"
+      }
+    },
+    "storageKind": {
+      "type": "string",
+      "defaultValue": "StorageV2",
+      "metadata": {
+        "description": "Storage account kind"
+      }
+    },
+    "storageAccessTier": {
+      "type": "string",
+      "defaultValue": "Hot",
+      "metadata": {
+        "description": "Storage access tier"
+      }
     }
   },
   "variables": {
     "computeApiVersion": "2018-06-01",
+    "storageApiVersion": "2018-07-01",
     "location": "[resourceGroup().location]",
     "nicName": "[concat(parameters('dremioClusterName'), '-nic')]",
     "dremioImage": {
@@ -183,6 +212,21 @@
     "install": false
   },
   "resources": [
+    {
+      "name": "[parameters('storageAccountName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "location": "[variables('location')]",
+      "properties": {
+          "accessTier": "[parameters('storageAccessTier')]",
+          "supportsHttpsTrafficOnly": true,
+          "isHnsEnabled": true
+      },
+      "sku": {
+          "name": "[parameters('storageAccountType')]"
+      },
+      "kind": "[parameters('storageKind')]"
+    },
     {
       "condition": "[and(not(parameters('usePrivateIP')), equals(parameters('publicIpNewOrExisting'), 'new'))]",
       "type": "Microsoft.Network/publicIPAddresses",
@@ -232,7 +276,8 @@
       "name": "[concat(parameters('dremioClusterName'), '-master')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[variables('nicName')]"
+        "[variables('nicName')]",
+        "[parameters('storageAccountName')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -289,7 +334,7 @@
               ]
             },
             "protectedSettings": {
-              "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' master ')]"
+              "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' master ', parameters('storageAccountName'), ' ', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
             }
           }
         }
@@ -366,7 +411,7 @@
                           "fileUris": [
                             "[variables('scriptURL')]"
                           ],
-                          "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' coordinator ', reference(concat(parameters('dremioClusterName'), '-nic'), variables('computeApiVersion')).ipConfigurations[0].properties.privateIPAddress)]"
+                          "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' coordinator ', parameters('storageAccountName'), ' ', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ' ', reference(concat(parameters('dremioClusterName'), '-nic'), variables('computeApiVersion')).ipConfigurations[0].properties.privateIPAddress)]"
                         }
                       }
                     }
@@ -441,7 +486,7 @@
                           "fileUris": [
                             "[variables('scriptURL')]"
                           ],
-                          "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' executor ', reference(concat(parameters('dremioClusterName'), '-nic'), variables('computeApiVersion')).ipConfigurations[0].properties.privateIPAddress)]"
+                          "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' executor ', parameters('storageAccountName'), ' ', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ' ', reference(concat(parameters('dremioClusterName'), '-nic'), variables('computeApiVersion')).ipConfigurations[0].properties.privateIPAddress)]"
                         }
                       }
                     }

@@ -170,7 +170,7 @@
                    "dataDiskId": {"value": "[reference(concat(variables('shortName'), '-state-deployment')).outputs.dataDiskId.value]"},
                    "sshUsername": {"value": "[parameters('SSHUsername')]"},
                    "sshPasswordOrKey": {"value": "[parameters('PasswordOrSSHPublicKey')]"},
-                   "subnetId": {"value": "[if(equals(trim(parameters('useExistingSubnet')), ''), reference(concat(variables('shortName'), '-state-deployment')).outputs.subnetId.value, parameters('useExistingSubnet'))]"},
+                   "subnetId": {"value": "[reference(concat(variables('shortName'), '-state-deployment')).outputs.subnetId.value]"},
                    "loadBalancerId": {"value": "[reference(concat(variables('shortName'), '-state-deployment')).outputs.loadBalancerId.value]"},
                    "nsgId": {"value": "[reference(concat(variables('shortName'), '-state-deployment')).outputs.nsgId.value]"},
                    "usePrivateIP": {"value": "[parameters('usePrivateIP')]"}
