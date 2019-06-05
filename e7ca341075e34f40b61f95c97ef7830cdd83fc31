@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6342eac_132351e9",
+        "filename": "azure/arm-templates/nested/dremioCluster.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-06-05T22:58:48Z",
+      "side": 1,
+      "message": "should be securestring",
+      "range": {
+        "startLine": 156,
+        "startChar": 15,
+        "endLine": 156,
+        "endChar": 21
+      },
+      "revId": "e7ca341075e34f40b61f95c97ef7830cdd83fc31",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "631806e0_cb6a8e19",
+        "filename": "azure/arm-templates/nested/dremioState.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-06-05T22:58:48Z",
+      "side": 1,
+      "message": "I don\u0027t think this should be part of the output...",
+      "range": {
+        "startLine": 458,
+        "startChar": 4,
+        "endLine": 461,
+        "endChar": 5
+      },
+      "revId": "e7ca341075e34f40b61f95c97ef7830cdd83fc31",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
