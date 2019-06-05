@@ -144,6 +144,20 @@
       "metadata": {
         "description": "Select to use the private ip address of the subnet for Dremio access."
       }
+    },
+    "storageAccount": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Storage account to use for storing acceleration and uploads"
+      }
+    },
+    "storageAccountAccessKey": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Access key to the storage account"
+      }
     }
   },
   "variables": {
@@ -289,7 +303,7 @@
               ]
             },
             "protectedSettings": {
-              "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' master ')]"
+              "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' master ', parameters('storageAccount'), ' ', parameters('storageAccountAccessKey'))]"
             }
           }
         }
@@ -366,7 +380,7 @@
                           "fileUris": [
                             "[variables('scriptURL')]"
                           ],
-                          "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' coordinator ', reference(concat(parameters('dremioClusterName'), '-nic'), variables('computeApiVersion')).ipConfigurations[0].properties.privateIPAddress)]"
+                          "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' coordinator ', parameters('storageAccount'), ' ', parameters('storageAccountAccessKey'), ' ', reference(concat(parameters('dremioClusterName'), '-nic'), variables('computeApiVersion')).ipConfigurations[0].properties.privateIPAddress)]"
                         }
                       }
                     }
@@ -441,7 +455,7 @@
                           "fileUris": [
                             "[variables('scriptURL')]"
                           ],
-                          "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' executor ', reference(concat(parameters('dremioClusterName'), '-nic'), variables('computeApiVersion')).ipConfigurations[0].properties.privateIPAddress)]"
+                          "commandToExecute": "[concat('DOWNLOAD_URL=\"', parameters('dremioDownloadURL'), '\" bash ', variables('scriptFileName'), ' executor ', parameters('storageAccount'), ' ', parameters('storageAccountAccessKey'), ' ', reference(concat(parameters('dremioClusterName'), '-nic'), variables('computeApiVersion')).ipConfigurations[0].properties.privateIPAddress)]"
                         }
                       }
                     }
