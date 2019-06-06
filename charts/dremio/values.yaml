@@ -2,7 +2,6 @@
 # version tag to the version that you are using. This will ensure that all
 # the pods are using the same version of the software.
 image: dremio/dremio-oss:latest
-
 # Check out Dremio documentation for memory and cpu requirements for
 # the coordinators and the executors.
 # The value of memory should be in MB. CPU is in no of cores.
@@ -60,17 +59,24 @@ serviceType: LoadBalancer
 
 # Control where uploaded files are stored.
 # See https://docs.dremio.com/deployment/distributed-storage.html for more information
-uploads:
-  # Valid values are local, aws or azure. aws and azure choice requires additional configuration data.
+dremioVersion: "3.2.0" # Dremio Version 3.2.0 or greater
+distStorage:
+  # Valid values are local, aws, azure or azureStorage. aws and azure choice requires additional configuration data.
   type: "local"
-  aws:
+  aws: #S3 - used for only uploads
     bucketName: "Your_AWS_bucket_name"
     path: "/"
     accessKey: "Your_AWS_Access_Key"
     secret: "Your_AWS_Secret"
-  azure:
+  azure: #ADLS v1 - used for only uploads
     datalakeStoreName: "Your_Azure_DataLake_Storage_name"
     path: "/"
     applicationId: "Your_Azure_Application_Id"
     secret: "Your_Azure_Secret"
     oauth2EndPoint: "Azure_OAuth2_Endpoint"
+  azureStorage: #AzureStorage v2 - supported in Dremio version 3.2.0+ - used for uploads and accelerator
+    accountName: "Azure_storage_v2_account_name"
+    accessKey: "Access_key_for_the_storage_account"
+    filesystem: "Filesystem_in_storage_account"
+    uploadsPath: "Path_for_uploads"
+    acceleratorPath: "Path_for_accelerator"
