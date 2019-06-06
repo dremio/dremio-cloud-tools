@@ -45,6 +45,30 @@
       "revId": "e7ca341075e34f40b61f95c97ef7830cdd83fc31",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e812bc7_57831df8",
+        "filename": "azure/arm-templates/nested/dremioState.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 1000068
+      },
+      "writtenOn": "2019-06-06T00:13:33Z",
+      "side": 1,
+      "message": "I can\u0027t think of how you can view this value other than in the Azure Portal. And in the Azure Portal you get to see the key too. \n\nIf you run it via command line and it outputs the result. And if you run a az cli command to get the key, it will also output the key on the command line. Only thing is we can warn the user of it. \n\nOr, I can move the creation of the storage account to the other nested template so that we do not need to pass it around. That\u0027s what I will do.",
+      "parentUuid": "631806e0_cb6a8e19",
+      "range": {
+        "startLine": 458,
+        "startChar": 4,
+        "endLine": 461,
+        "endChar": 5
+      },
+      "revId": "e7ca341075e34f40b61f95c97ef7830cdd83fc31",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
