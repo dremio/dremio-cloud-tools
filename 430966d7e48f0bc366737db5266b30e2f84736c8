@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "acef5de9_0cb5c471",
+        "filename": "charts/dremio/config/core-site.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-06-07T00:15:44Z",
+      "side": 1,
+      "message": "should use AWS metadata too...",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 14
+      },
+      "revId": "430966d7e48f0bc366737db5266b30e2f84736c8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1ea6e68_a02f963b",
+        "filename": "charts/dremio/config/core-site.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-06-07T00:15:44Z",
+      "side": 1,
+      "message": "should be able to use MSI here, isn\u0027t there?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 15
+      },
+      "revId": "430966d7e48f0bc366737db5266b30e2f84736c8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "86ea589f_fc246d74",
+        "filename": "charts/dremio/config/core-site.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-06-07T00:15:44Z",
+      "side": 1,
+      "message": "description says True/False, not ENABLE_SSL...",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 15
+      },
+      "revId": "430966d7e48f0bc366737db5266b30e2f84736c8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
