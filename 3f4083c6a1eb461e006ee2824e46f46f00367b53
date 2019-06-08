@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "42e85d0c_1df6d40a",
+        "filename": "azure/arm-templates/scripts/setupDremio.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-06-08T00:08:22Z",
+      "side": 1,
+      "message": "maybe there\u0027s az cli we can install and leverage, instead of custom REST API calls...\n\nCan you open a ticket to check/fix?",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 1
+      },
+      "revId": "3f4083c6a1eb461e006ee2824e46f46f00367b53",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
