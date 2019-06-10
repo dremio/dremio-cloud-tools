@@ -29,6 +29,21 @@ zookeeper:
   count: 3
   volumeSize: 10Gi
 
+# To create a TLS secret, use the following command:
+# kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
+tls:
+  ui:
+    # To enable TLS for the web UI, set the enabled flag to true and provide
+    # the appropriate Kubernetes TLS secret.
+    enabled: false
+    secret: dremio-tls-secret-ui
+  client:
+    # To enable TLS for the client endpoints, set the enabled flag to true and provide
+    # the appropriate Kubernetes TLS secret. Client endpoint encryption is available only on
+    # Dremio Enterprise Edition and should not be enabled otherwise.
+    enabled: false
+    secret: dremio-tls-secret-client
+
 # If your Kubernetes cluster does not support LoadBalancer,
 # comment out the line below for the helm chart to succeed or add
 # the correct serviceType for your cluster.
