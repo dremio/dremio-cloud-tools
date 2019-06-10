@@ -47,6 +47,10 @@ spec:
           mountPath: /opt/dremio/data
         - name: dremio-config
           mountPath: /opt/dremio/conf
+        {{- if .Values.tlsSecret }}
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        {{- end }}
         env:
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "HeapMemory" .Values.coordinator.memory }}"
@@ -71,7 +75,11 @@ spec:
         - containerPort: 45678
           name: server
         readinessProbe:
-          tcpSocket:
+          httpGet:
+            path: /
+            {{- if .Values.tlsSecret }}
+            scheme: HTTPS
+            {{- end }}
             port: 9047
           initialDelaySeconds: 5
           periodSeconds: 5
@@ -104,10 +112,44 @@ spec:
         command: ["/opt/dremio/bin/dremio-admin"]
         args:
         - "upgrade"
+      {{- if .Values.tlsSecret }}
+      - name: generate-keystore
+        image: {{.Values.image}}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args:
+        - "pkcs12"
+        - "-export"
+        - "-inkey"
+        - "/dremio-tls-secret/tls.key"
+        - "-in"
+        - "/dremio-tls-secret/tls.crt"
+        - "-out"
+        - "/opt/dremio/tls/store.pkcs12"
+        - "-passout"
+        - "pass:"
+      {{- end }}
       volumes:
       - name: dremio-config
         configMap:
           name: dremio-config
+      {{- if .Values.tlsSecret }}
+      - name: dremio-tls
+        emptyDir: {}
+      - name: dremio-tls-secret
+        secret:
+          secretName: {{ .Values.tlsSecret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets }}
