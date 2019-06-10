@@ -37,6 +37,10 @@ spec:
         volumeMounts:
         - name: dremio-config
           mountPath: /opt/dremio/conf
+        {{- if or .Values.tls.ui.enabled .Values.tls.client.enabled }}
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        {{- end }}
         env:
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "HeapMemory" .Values.coordinator.memory }}"
@@ -64,10 +68,78 @@ spec:
       - name: wait-for-zk
         image: busybox
         command:  ["sh", "-c", "until nc -z dremio-client {{ .Values.coordinator.web.port | default 9047 }} > /dev/null; do echo waiting for dremio master; sleep 2; done;"]
+      {{- if .Values.tls.ui.enabled }}
+      - name: generate-ui-keystore
+        image: {{.Values.image}}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-ui
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args:
+        - "pkcs12"
+        - "-export"
+        - "-inkey"
+        - "/dremio-tls-secret/tls.key"
+        - "-in"
+        - "/dremio-tls-secret/tls.crt"
+        - "-out"
+        - "/opt/dremio/tls/ui.pkcs12"
+        - "-passout"
+        - "pass:"
+      {{- end }}
+      {{- if .Values.tls.client.enabled }}
+      - name: generate-client-keystore
+        image: {{.Values.image}}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-client
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args:
+        - "pkcs12"
+        - "-export"
+        - "-inkey"
+        - "/dremio-tls-secret/tls.key"
+        - "-in"
+        - "/dremio-tls-secret/tls.crt"
+        - "-out"
+        - "/opt/dremio/tls/client.pkcs12"
+        - "-passout"
+        - "pass:"
+      {{- end }}
       volumes:
       - name: dremio-config
         configMap:
           name: dremio-config
+      {{- if or .Values.tls.ui.enabled .Values.tls.client.enabled }}
+      - name: dremio-tls
+        emptyDir: {}
+      {{- end }}
+      {{- if .Values.tls.ui.enabled }}
+      - name: dremio-tls-secret-ui
+        secret:
+          secretName: {{ .Values.tls.ui.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
+      {{- if .Values.tls.client.enabled }}
+      - name: dremio-tls-secret-client
+        secret:
+          secretName: {{ .Values.tls.client.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets }}
