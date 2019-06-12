@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2c0e97a_46bf9721",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-06-12T18:45:14Z",
+      "side": 1,
+      "message": "I would favor something more structured:\n  tls:\n    ui:\n      enabled: [true|false]\n      secret: dremio-tls-secret\n    client:\n       enabled: [true|false]\n       secret: dremio-tls-secret\n\n(Dremio supports different keystores for ui and client)",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 25
+      },
+      "revId": "9b310529e9e692e63614ae1b30a4ede6cd9cd6d6",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
