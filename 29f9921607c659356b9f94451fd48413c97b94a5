@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7ea41c7_f64bbe8d",
+        "filename": "charts/dremio/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-06-12T17:41:50Z",
+      "side": 1,
+      "message": "Just to confirm, same format as for ingress? https://kubernetes.io/docs/concepts/services-networking/ingress/#tls",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 25
+      },
+      "revId": "29f9921607c659356b9f94451fd48413c97b94a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "589be1bd_8eedff5a",
+        "filename": "charts/dremio/values.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-06-12T17:41:50Z",
+      "side": 1,
+      "message": "aren\u0027t more details needed? like 2 files with a specific name and format?\n\nBTW, I wish we would follow Helm documentation template -\u003e https://github.com/helm/charts/blob/master/stable/sonatype-nexus/README.md",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "29f9921607c659356b9f94451fd48413c97b94a5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
