@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f74c3032_839ec375",
+        "filename": "utils/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2019-07-15T17:30:08Z",
+      "side": 1,
+      "message": "This installs Helm but then helm-init also attempts to install Helm? Is there a reason for it to be in both places?",
+      "range": {
+        "startLine": 32,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 51
+      },
+      "revId": "6519a4f368556b67cbf3d3eeeafa94063540ee61",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
