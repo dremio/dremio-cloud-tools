@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e3ed2749_3b20129e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-08-19T23:28:58Z",
+      "side": 1,
+      "message": "This goes to the public website, should be changed.",
+      "revId": "7e74e8bea8dd63a8dccddf2ada78c86052f88559",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
