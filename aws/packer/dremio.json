@@ -1,0 +1,35 @@
+{
+  "variables": {
+    "url":"http://download.dremio.com/community-server/dremio-community-LATEST.noarch.rpm",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_KEY`}}"
+  },
+  "builders": [
+    {
+      "access_key": "{{user `aws_access_key`}}",
+      "ami_name": "dremio-ee-{{timestamp}}",
+      "instance_type": "m5.xlarge",
+      "region": "us-west-2",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "source_ami": "ami-078d1d7dc3c8e4829",
+      "ssh_username": "ec2-user",
+        "type": "amazon-ebs",
+        "ssh_interface": "private_ip"
+       }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["mkdir /tmp/uploads"]
+    },
+    {
+      "type": "file",
+      "source": "uploads",        
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "./setup.sh"
+    }
+  ]
+}
