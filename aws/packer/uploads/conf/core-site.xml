@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<configuration>
+  <property>
+    <name>fs.dremioS3.impl</name>
+    <value>com.dremio.plugins.s3.store.S3FileSystem</value>
+  </property>
+  <property>
+    <name>fs.s3a.aws.credentials.provider</name>
+    <value>com.amazonaws.auth.InstanceProfileCredentialsProvider</value>
+  </property>
+  <property>
+    <name>dremio.s3.async</name>
+    <value>true</value>
+  </property>
+ </configuration>
