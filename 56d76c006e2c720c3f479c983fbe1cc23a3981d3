@@ -1,0 +1,158 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "57afb986_2b377e93",
+        "filename": "aws/packer/dremio.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-09-17T21:23:48Z",
+      "side": 1,
+      "message": "do we need that kind of instance to create the AMI?",
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5dbcba69_62f84f43",
+        "filename": "aws/packer/dremio.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-09-17T21:23:48Z",
+      "side": 1,
+      "message": "might worth be mentioning the name of the image (or is there a way to get the image name based on the ami?)",
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c9fe0406_0bcce613",
+        "filename": "aws/packer/dremio.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-09-17T21:23:48Z",
+      "side": 1,
+      "message": "(style) trailing spaces...",
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e8ea0515_496569ab",
+        "filename": "aws/packer/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-09-17T21:23:48Z",
+      "side": 1,
+      "message": "not quite necessary as systemd should use the service over the init.d file (and rpm might complain that package is corrupted since one file is missing)",
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b761a001_3e260c12",
+        "filename": "aws/packer/uploads/cloud-init/50-dremio-nvme.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-09-17T21:23:48Z",
+      "side": 1,
+      "message": "(style) trailing spaces...",
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46ba1435_74d5ddb9",
+        "filename": "aws/packer/uploads/cloud-init/50-dremio-nvme.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-09-17T21:23:48Z",
+      "side": 1,
+      "message": "this assumes that the AMI is installed only with instance types with local/ephemeral ssds, but it\u0027s not the case of most instances",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 87
+      },
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a8a9b24a_eaf52742",
+        "filename": "aws/packer/uploads/cloud-init/50-dremio-nvme.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-09-17T21:23:48Z",
+      "side": 1,
+      "message": "should probably done when creating the directories and not after the directories are mounted...",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 34
+      },
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7962f906_d4892f6d",
+        "filename": "aws/packer/uploads/conf/dremio-env",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2019-09-17T21:23:48Z",
+      "side": 1,
+      "message": "highly dependent on the instance type...",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 39
+      },
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
