@@ -66,33 +66,43 @@ Mappings:
     X-Small--1-executor:
       coordinatorInstanceType: m5.2xlarge
       coordinatorDiskSize: 10
+      coordinatorMaxMemory: 28672
       executorInstanceType: r5d.4xlarge
       executorCount: 1
       executorDiskSize: 10
+      executorMaxMemory: 122880
     Small--5-executors:
       coordinatorInstanceType: m5.2xlarge
       coordinatorDiskSize: 50
+      coordinatorMaxMemory: 28672
       executorInstanceType: r5d.4xlarge
       executorCount: 5
       executorDiskSize: 50
+      executorMaxMemory: 122880
     Medium--10-executors:
       coordinatorInstanceType: m5.4xlarge
       coordinatorDiskSize: 100
+      coordinatorMaxMemory: 61440
       executorInstanceType: r5d.4xlarge
       executorCount: 10
       executorDiskSize: 100
+      executorMaxMemory: 122880
     Large--25-executors:
       coordinatorInstanceType: m5.4xlarge
       coordinatorDiskSize: 100
+      coordinatorMaxMemory: 61440
       executorInstanceType: r5d.4xlarge
       executorCount: 25
       executorDiskSize: 100
+      executorMaxMemory: 122880
     X-Large--50-executors:
       coordinatorInstanceType: m5.4xlarge
       coordinatorDiskSize: 100
+      coordinatorMaxMemory: 61440
       executorInstanceType: r5d.4xlarge
       executorCount: 50
       executorDiskSize: 100
+      executorMaxMemory: 122880
   RegionMap:
     # Centos 7 Images
     us-east-1: # N Virginia
@@ -274,7 +284,9 @@ Resources:
             DREMIO_HOME=/opt/dremio
             DREMIO_CONFIG_FILE=/etc/dremio/dremio.conf
 
-            sed -i "s/executor.enabled: true/executor.enabled: false/" $DREMIO_CONFIG_FILE
+            sed -i -e "s/executor.enabled: true/executor.enabled: false/" \
+                -e "s/#DREMIO_MAX_MEMORY_SIZE_MB=/DREMIO_MAX_MEMORY_SIZE_MB=${MEMORY_SIZE}/" \
+                $DREMIO_CONFIG_FILE
 
             cp $DREMIO_HOME/share/dremio/dremio.service /etc/systemd/system
             systemctl daemon-reload
@@ -288,6 +300,7 @@ Resources:
             echo "{ \"Status\" : \"SUCCESS\", \"UniqueId\" : \"${AWS::StackName}\", \"Data\" : \"Ready\", \"Reason\" : \"Website Available\" }" > $statusFile
             curl -T $statusFile '${AvailabilityWaitHandle}'
           - DOWNLOAD_URL: !FindInMap [ Custom, Variables, "URL"]
+            MEMORY_SIZE: !FindInMap [ClusterSizes, !Ref clusterSize, coordinatorMaxMemory]
 
   DremioExecutorLC:
     Type: AWS::AutoScaling::LaunchConfiguration
@@ -333,18 +346,19 @@ Resources:
             SPILL_DIR=/var/ephemeral/dremio_spill
             DREMIO_CONFIG_FILE=/etc/dremio/dremio.conf
 
-            sed -i "s/coordinator.master.enabled: true/coordinator.master.enabled: false/; \
-              s/coordinator.enabled: true/coordinator.enabled: false/; \
-              /local:/a \ \ spilling: [\"$SPILL_DIR\"]" \
-              $DREMIO_CONFIG_FILE
+            sed -i -e "s/coordinator.master.enabled: true/coordinator.master.enabled: false/" \
+                -e "s/coordinator.enabled: true/coordinator.enabled: false/" \
+                -e "/local:/a \ \ spilling: [\"$SPILL_DIR\"]" \
+                -e "s/#DREMIO_MAX_MEMORY_SIZE_MB=/DREMIO_MAX_MEMORY_SIZE_MB=${MEMORY_SIZE}/" \
+                $DREMIO_CONFIG_FILE
             echo "zookeeper: \"${ZK}:2181\"" >> $DREMIO_CONFIG_FILE
             cp $DREMIO_HOME/share/dremio/dremio.service /etc/systemd/system
             systemctl daemon-reload
             systemctl start dremio
             systemctl enable dremio
-
           - ZK: !GetAtt DremioMaster.PrivateIp
             DOWNLOAD_URL: !FindInMap [ Custom, Variables, "URL"]
+            MEMORY_SIZE: !FindInMap [ClusterSizes, !Ref clusterSize, executorMaxMemory]
 
   DremioExecutorASG:
     Type: AWS::AutoScaling::AutoScalingGroup
