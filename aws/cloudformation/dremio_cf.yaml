@@ -242,6 +242,47 @@ Resources:
       IpProtocol: -1
       SourceSecurityGroupId: !Ref DremioSecurityGroup
 
+  DremioDistStore:
+    Type: AWS::S3::Bucket
+
+  DremioIAMRootRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: Allowed
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+
+  DremioIAMRolePolicies:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: Allow
+          Action:
+          - "s3:PutObject"
+          - "s3:GetObject"
+          - "s3:ListBucket"
+          - "s3:DeleteObject"
+          Resource:
+          - !GetAtt DremioDistStore.Arn
+          - !Join ["", [!GetAtt DremioDistStore.Arn, "/*"]]
+      Roles:
+      - !Ref DremioIAMRootRole
+
+  DremioIAMInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+      - !Ref DremioIAMRootRole
+
   DremioMaster:
     Type: AWS::EC2::Instance
     Properties:
@@ -249,6 +290,7 @@ Resources:
         - Key: Name
           Value: !Join ["-", [!Ref "AWS::StackName", "DremioMaster"]]
       ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      IamInstanceProfile: !Ref DremioIAMInstanceProfile
       KeyName: !Ref keyName
       InstanceType: !FindInMap [ClusterSizes, !Ref clusterSize, coordinatorInstanceType]
       NetworkInterfaces:
@@ -283,11 +325,40 @@ Resources:
             DREMIO_HOME=/opt/dremio
             DREMIO_CONFIG_FILE=/etc/dremio/dremio.conf
             DREMIO_ENV_FILE=/etc/dremio/dremio-env
+            DREMIO_CORE_SITE_FILE=/etc/dremio/core-site.xml
 
             sed -i -e "s/executor.enabled: true/executor.enabled: false/" \
                 $DREMIO_CONFIG_FILE
             sed -i -e "s/#DREMIO_MAX_MEMORY_SIZE_MB=/DREMIO_MAX_MEMORY_SIZE_MB=${MEMORY_SIZE}/" \
                 $DREMIO_ENV_FILE
+
+            echo "paths.dist: \"dremioS3:///${DIST_BUCKET_NAME}\"" >> $DREMIO_CONFIG_FILE
+
+            cat <<EOF > $DREMIO_CORE_SITE_FILE
+            <?xml version="1.0"?>
+            <configuration>
+                <property>
+                    <name>fs.dremioS3.impl</name>
+                    <description>The FileSystem implementation. Must be set to com.dremio.plugins.s3.store.S3FileSystem</description>
+                    <value>com.dremio.plugins.s3.store.S3FileSystem</value>
+                </property>
+                <property>
+                    <name>fs.s3a.access.key</name>
+                    <description>AWS access key ID.</description>
+                    <value></value>
+                </property>
+                <property>
+                    <name>fs.s3a.secret.key</name>
+                    <description>AWS secret key.</description>
+                    <value></value>
+                </property>
+                <property>>
+                    <name>fs.s3a.aws.credentials.provider</name>
+                    <description>The credential provider type.</description>
+                    <value></value>
+                </property>
+            </configuration>
+            EOF
 
             cp $DREMIO_HOME/share/dremio/dremio.service /etc/systemd/system
             systemctl daemon-reload
@@ -302,6 +373,7 @@ Resources:
             curl -T $statusFile '${AvailabilityWaitHandle}'
           - DOWNLOAD_URL: !FindInMap [ Custom, Variables, "URL"]
             MEMORY_SIZE: !FindInMap [ClusterSizes, !Ref clusterSize, coordinatorMaxMemory]
+            DIST_BUCKET_NAME: !Ref DremioDistStore
 
   DremioExecutorLC:
     Type: AWS::AutoScaling::LaunchConfiguration
@@ -316,6 +388,7 @@ Resources:
         - AMI
       InstanceMonitoring: true
       InstanceType: !FindInMap [ClusterSizes, !Ref clusterSize, executorInstanceType]
+      IamInstanceProfile: !Ref DremioIAMInstanceProfile
       KeyName: !Ref keyName
       SecurityGroups: [!Ref DremioSecurityGroup]
       BlockDeviceMappings:
@@ -359,6 +432,7 @@ Resources:
 
             DREMIO_CONFIG_FILE=/etc/dremio/dremio.conf
             DREMIO_ENV_FILE=/etc/dremio/dremio-env
+            DREMIO_CORE_SITE_FILE=/etc/dremio/core-site.xml
 
             sed -i -e "s/coordinator.master.enabled: true/coordinator.master.enabled: false/" \
                 -e "s/coordinator.enabled: true/coordinator.enabled: false/" \
@@ -367,11 +441,38 @@ Resources:
             sed -i -e "s/#DREMIO_MAX_MEMORY_SIZE_MB=/DREMIO_MAX_MEMORY_SIZE_MB=${MEMORY_SIZE}/" \
                 $DREMIO_ENV_FILE
             cat <<EOF >> $DREMIO_CONFIG_FILE
+            paths.dist: "dremioS3:///${DIST_BUCKET_NAME}"
             zookeeper: "${ZK}:2181"
             services.executor.cache.path.db: "$CLOUDCACHE_DIR"
             services.executor.cache.path.fs: ["$CLOUDCACHE_DIR"]
             services.executor.cache.pctquota.db: 10
             services.executor.cache.pctquota.fs: [100]
+            EOF
+
+            cat <<EOF > $DREMIO_CORE_SITE_FILE
+            <?xml version="1.0"?>
+            <configuration>
+                <property>
+                    <name>fs.dremioS3.impl</name>
+                    <description>The FileSystem implementation. Must be set to com.dremio.plugins.s3.store.S3FileSystem</description>
+                    <value>com.dremio.plugins.s3.store.S3FileSystem</value>
+                </property>
+                <property>
+                    <name>fs.s3a.access.key</name>
+                    <description>AWS access key ID.</description>
+                    <value></value>
+                </property>
+                <property>
+                    <name>fs.s3a.secret.key</name>
+                    <description>AWS secret key.</description>
+                    <value></value>
+                </property>
+                <property>>
+                    <name>fs.s3a.aws.credentials.provider</name>
+                    <description>The credential provider type.</description>
+                    <value></value>
+                </property>
+            </configuration>
             EOF
 
             cp $DREMIO_HOME/share/dremio/dremio.service /etc/systemd/system
@@ -381,6 +482,7 @@ Resources:
           - ZK: !GetAtt DremioMaster.PrivateIp
             DOWNLOAD_URL: !FindInMap [ Custom, Variables, "URL"]
             MEMORY_SIZE: !FindInMap [ClusterSizes, !Ref clusterSize, executorMaxMemory]
+            DIST_BUCKET_NAME: !Ref DremioDistStore
 
   DremioExecutorASG:
     Type: AWS::AutoScaling::AutoScalingGroup
