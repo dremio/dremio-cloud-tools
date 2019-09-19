@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ad05bc9_7d4d7c78",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2019-09-19T00:44:18Z",
+      "side": 1,
+      "message": "Don\u0027t need this?",
+      "range": {
+        "startLine": 355,
+        "startChar": 16,
+        "endLine": 355,
+        "endChar": 94
+      },
+      "revId": "0425072a61a6fc467398c348a365c6e62b6d26df",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
