@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6c39366_b10c4c5a",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2019-09-19T00:39:59Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be in dremio-env?",
+      "range": {
+        "startLine": 288,
+        "startChar": 15,
+        "endLine": 288,
+        "endChar": 94
+      },
+      "revId": "99df4e37e2f5566adb8c8e1bf685195219cb5b85",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "863885c5_ede9f3d2",
+        "filename": "aws/cloudformation/dremio_cf.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2019-09-19T00:39:59Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be in dremio-env?",
+      "range": {
+        "startLine": 352,
+        "startChar": 16,
+        "endLine": 352,
+        "endChar": 94
+      },
+      "revId": "99df4e37e2f5566adb8c8e1bf685195219cb5b85",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
