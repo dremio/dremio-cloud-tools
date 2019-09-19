@@ -207,7 +207,6 @@ Resources:
   DremioSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: "Dremio Access"
       GroupDescription: "Dremio Access"
       VpcId: !If [CreateVPC, !Ref VPC, !Ref useVPC]
       SecurityGroupIngress:
@@ -336,16 +335,28 @@ Resources:
               yum -y install java-1.8.0-openjdk-devel $url
             fi
 
-            mkdir /var/ephemeral
-            # Setup ephemeral disk - this is based on executors are r5d class machines
-            NVME=nvme1n1
-            file -s /dev/$NVME | grep "/dev/$NVME: data" && mkfs -t xfs /dev/$NVME && \
-            UUID=$(blkid | grep $NVME | awk -F'"' '{ print $2 }') && \
-            echo "UUID=$UUID /var/ephemeral xfs defaults,nofail  0  2" >> /etc/fstab  && \
-            mount -a
-            chmod 777 /var/ephemeral
+            # Setup ephemeral disk for spill - this is based on executors are r5d class machines
+            SPILL_DIR=/var/ephemeral/spill
+            NVME_SPILL=nvme1n1
 
-            SPILL_DIR=/var/ephemeral/dremio_spill
+            mkdir -p $SPILL_DIR
+            file -s /dev/$NVME_SPILL | grep "/dev/$NVME_SPILL: data" && mkfs -t xfs /dev/$NVME_SPILL && \
+            UUID=$(blkid | grep $NVME_SPILL | awk -F'"' '{ print $2 }') && \
+            echo "UUID=$UUID $SPILL_DIR xfs defaults,nofail  0  2" >> /etc/fstab  && \
+            mount -a
+            chown dremio:dremio $SPILL_DIR
+
+            # Setup ephemeral disk for C3 - this is based on executors are r5d class machines
+            CLOUDCACHE_DIR=/var/ephemeral/cloudcache
+            NVME_CLOUDCACHE=nvme2n1
+
+            mkdir -p $CLOUDCACHE_DIR
+            file -s /dev/$NVME_CLOUDCACHE | grep "/dev/$NVME_CLOUDCACHE: data" && mkfs -t xfs /dev/$NVME_CLOUDCACHE && \
+            UUID=$(blkid | grep $NVME_CLOUDCACHE | awk -F'"' '{ print $2 }') && \
+            echo "UUID=$UUID $CLOUDCACHE_DIR xfs defaults,nofail  0  2" >> /etc/fstab  && \
+            mount -a
+            chown dremio:dremio $CLOUDCACHE_DIR
+
             DREMIO_CONFIG_FILE=/etc/dremio/dremio.conf
             DREMIO_ENV_FILE=/etc/dremio/dremio-env
 
@@ -355,7 +366,11 @@ Resources:
                 $DREMIO_CONFIG_FILE
             sed -i -e "s/#DREMIO_MAX_MEMORY_SIZE_MB=/DREMIO_MAX_MEMORY_SIZE_MB=${MEMORY_SIZE}/" \
                 $DREMIO_ENV_FILE
-            echo "zookeeper: \"${ZK}:2181\"" >> $DREMIO_CONFIG_FILE
+            cat <<EOF >> $DREMIO_CONFIG_FILE
+            zookeeper: "${ZK}:2181"
+            services.executor.cache.path.db: "$CLOUDCACHE_DIR"
+            services.executor.cache.path.fs: ["$CLOUDCACHE_DIR"]
+            EOF
 
             cp $DREMIO_HOME/share/dremio/dremio.service /etc/systemd/system
             systemctl daemon-reload
