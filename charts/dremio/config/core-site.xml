@@ -50,7 +50,7 @@
     </property>
     {{- end }}
     <!-- Azure Storage v2 Configuration Section -->
-    {{- if and .Values.dremioVersion (ge .Values.dremioVersion "3.2.0") .Values.distStorage.type (eq .Values.distStorage.type "azureStorage") }}
+    {{- if and (or (ge .Values.imageTag "3.2.0") (eq .Values.imageTag "latest")) (eq .Values.distStorage.type "azureStorage") }}
     <property>
        <name>fs.dremioAzureStorage.impl</name>
        <description>FileSystem implementation. Must always be com.dremio.plugins.azure.AzureStorageFileSystem</description>
