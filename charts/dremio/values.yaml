@@ -1,7 +1,9 @@
 # The image used to build the Dremio cluster. It is recommended to update the
 # version tag to the version that you are using. This will ensure that all
 # the pods are using the same version of the software.
-image: dremio/dremio-oss:latest
+image: dremio/dremio-oss
+imageTag: latest
+
 # Check out Dremio documentation for memory and cpu requirements for
 # the coordinators and the executors.
 # The value of memory should be in MB. CPU is in no of cores.
@@ -22,6 +24,15 @@ executor:
   cpu: 15
   count: 3
   volumeSize: 100Gi
+  cloudCache:
+    # Requires Dremio version 4.0.0 or later
+    # Requires Kubernetes version 1.14 or later as the Cloud Cache
+    # needs to be on a local disk for good performance.
+    enabled: false
+    localPath: /var/lib/dremio
+    quota:
+      db: 70
+      fs: 70
 zookeeper:
   memory: 1024
   cpu: 0.5
@@ -74,7 +85,6 @@ serviceType: LoadBalancer
 
 # Control where uploaded files are stored.
 # See https://docs.dremio.com/deployment/distributed-storage.html for more information
-dremioVersion: "3.2.0" # Dremio Version 3.2.0 or greater
 distStorage:
   # Valid values are local, aws, azure or azureStorage. aws and azure choice requires additional configuration data.
   type: "local"
