@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "acf747af_4d607c3f",
+        "filename": "charts/dremio/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2019-09-24T21:16:50Z",
+      "side": 1,
+      "message": "v0.1.0?",
+      "range": {
+        "startLine": 214,
+        "startChar": 11,
+        "endLine": 214,
+        "endChar": 19
+      },
+      "revId": "39d61d99332ccc975f784f280f1ee19808d117cd",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2cdd010d_cfe97abb",
+        "filename": "charts/dremio/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2019-09-24T21:16:50Z",
+      "side": 1,
+      "message": "Is there a reason we removed the check for versions here? I think our chart should ideally still be compatible with \u003c3.2.0.",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "39d61d99332ccc975f784f280f1ee19808d117cd",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
