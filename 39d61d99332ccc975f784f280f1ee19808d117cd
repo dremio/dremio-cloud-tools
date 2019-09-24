@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "859861d3_22c430d7",
+        "filename": "charts/dremio/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000046
+      },
+      "writtenOn": "2019-09-24T21:39:30Z",
+      "side": 1,
+      "message": "Whoopsie.",
+      "parentUuid": "acf747af_4d607c3f",
+      "range": {
+        "startLine": 214,
+        "startChar": 11,
+        "endLine": 214,
+        "endChar": 19
+      },
+      "revId": "39d61d99332ccc975f784f280f1ee19808d117cd",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2cdd010d_cfe97abb",
         "filename": "charts/dremio/config/dremio.conf",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2019-09-24T21:16:50Z",
       "side": 1,
       "message": "Is there a reason we removed the check for versions here? I think our chart should ideally still be compatible with \u003c3.2.0.",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "39d61d99332ccc975f784f280f1ee19808d117cd",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "20901d87_2249f7a6",
+        "filename": "charts/dremio/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000046
+      },
+      "writtenOn": "2019-09-24T21:39:30Z",
+      "side": 1,
+      "message": "Yeah, given the variously versioned changes in dremios3, s3a, etc protocol, plus the head up into actually using local storage, the decision was to make a breaking change and cut at 4.0.0.",
+      "parentUuid": "2cdd010d_cfe97abb",
       "range": {
         "startLine": 22,
         "startChar": 2,
