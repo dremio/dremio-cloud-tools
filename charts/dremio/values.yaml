@@ -1,9 +1,7 @@
 # The image used to build the Dremio cluster. It is recommended to update the
 # version tag to the version that you are using. This will ensure that all
 # the pods are using the same version of the software.
-image: dremio/dremio-oss
-imageTag: latest
-
+image: dremio/dremio-oss:latest
 # Check out Dremio documentation for memory and cpu requirements for
 # the coordinators and the executors.
 # The value of memory should be in MB. CPU is in no of cores.
@@ -24,20 +22,6 @@ executor:
   cpu: 15
   count: 3
   volumeSize: 100Gi
-  cloudCache:
-    # Requires Dremio version 4.0.0 or later
-    enabled: false
-    quota:
-      # Percentage of the diskspace for the running Kubernetes node
-      # that can be used for Cloud Cache files.
-      fs_pct: 70
-      # Percentage of that space that can be used for the internal
-      # Cloud Cache database.
-      db_pct: 70
-      # Percentage of that space that can be used for cacheing
-      # materialised reflections.  This is an upper-bound, not a
-      # reservation.
-      cache_pct: 100
 zookeeper:
   memory: 1024
   cpu: 0.5
@@ -53,10 +37,9 @@ tls:
     enabled: false
     secret: dremio-tls-secret-ui
   client:
-    # To enable TLS for the client endpoints, set the enabled flag to
-    # true and provide the appropriate Kubernetes TLS secret. Client
-    # endpoint encryption is available only on Dremio Enterprise
-    # Edition and should not be enabled otherwise.
+    # To enable TLS for the client endpoints, set the enabled flag to true and provide
+    # the appropriate Kubernetes TLS secret. Client endpoint encryption is available only on
+    # Dremio Enterprise Edition and should not be enabled otherwise.
     enabled: false
     secret: dremio-tls-secret-client
 
@@ -80,39 +63,35 @@ serviceType: LoadBalancer
 #storageClass: managed-premium
 
 # For private and protected docker image repository, you should store
-# the credentials in a kubernetes secret and provide the secret name
-# here.  For more information, see
-# https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+# the credentials in a kubernetes secret and provide the secret name here.
+# For more information, see https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 #imagePullSecrets: secretname
 
-# Target pods to nodes based on labels set on the nodes.  For more
-# information, see
-# https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+# Target pods to nodes based on labels set on the nodes.
+# For more information, see https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
 #nodeSelector:
 #  key: value
 
-# Control where uploaded files are stored.  See
-# https://docs.dremio.com/deployment/distributed-storage.html for more
-# information
+# Control where uploaded files are stored.
+# See https://docs.dremio.com/deployment/distributed-storage.html for more information
+dremioVersion: "3.2.0" # Dremio Version 3.2.0 or greater
 distStorage:
-  # Valid values are local, aws, azure or azureStorage. aws and azure
-  # choice requires additional configuration data.
+  # Valid values are local, aws, azure or azureStorage. aws and azure choice requires additional configuration data.
   type: "local"
-  aws: # S3
+  aws: #S3 - used for only uploads
     bucketName: "Your_AWS_bucket_name"
     path: "/"
     accessKey: "Your_AWS_Access_Key"
     secret: "Your_AWS_Secret"
-  azure: # ADLS gen1
+  azure: #ADLS v1 - used for only uploads
     datalakeStoreName: "Your_Azure_DataLake_Storage_name"
     path: "/"
     applicationId: "Your_Azure_Application_Id"
     secret: "Your_Azure_Secret"
     oauth2EndPoint: "Azure_OAuth2_Endpoint"
-  azureStorage: # AzureStorage gen2v2
+  azureStorage: #AzureStorage v2 - supported in Dremio version 3.2.0+ - used for uploads and accelerator
     accountName: "Azure_storage_v2_account_name"
     accessKey: "Access_key_for_the_storage_account"
-
     filesystem: "Filesystem_in_storage_account"
     uploadsPath: "Path_for_uploads"
     acceleratorPath: "Path_for_accelerator"

@@ -12,7 +12,7 @@ metadata:
 spec:
   containers:
   - name: dremio-admin
-    image: {{.Values.image}}:{{.Values.imageTag}}
+    image: {{.Values.image}}
     imagePullPolicy: IfNotPresent
     stdin: true
     tty: true
