@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "05428a1c_70574baa",
+        "filename": "aws/packer/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000080
+      },
+      "writtenOn": "2019-10-11T05:57:42Z",
+      "side": 1,
+      "message": "since Jenkins URL is not visible within the instance - the rpm wouldn\u0027t get downloaded.",
+      "revId": "9ab339ed7a317a0367e990214e2c3b5fb3c2282f",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
