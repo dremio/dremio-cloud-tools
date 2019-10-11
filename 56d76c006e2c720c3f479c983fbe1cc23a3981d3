@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e2c69bf4_37543766",
+        "filename": "aws/packer/dremio.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000080
+      },
+      "writtenOn": "2019-10-11T05:57:42Z",
+      "side": 1,
+      "message": "it can be of any type that aws supports.",
+      "parentUuid": "57afb986_2b377e93",
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5dbcba69_62f84f43",
         "filename": "aws/packer/dremio.json",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2019-09-17T21:23:48Z",
       "side": 1,
       "message": "might worth be mentioning the name of the image (or is there a way to get the image name based on the ami?)",
+      "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46e67fa3_fb80c7fb",
+        "filename": "aws/packer/dremio.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000080
+      },
+      "writtenOn": "2019-10-11T05:57:42Z",
+      "side": 1,
+      "message": "only ami id is allowed by packer.",
+      "parentUuid": "5dbcba69_62f84f43",
       "revId": "56d76c006e2c720c3f479c983fbe1cc23a3981d3",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
