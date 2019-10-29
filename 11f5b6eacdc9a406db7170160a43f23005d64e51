@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3a078bc_903b0ee4",
+        "filename": "aws/packer/dremio.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000080
+      },
+      "writtenOn": "2019-10-29T06:06:27Z",
+      "side": 1,
+      "message": "url variable is unused.",
+      "revId": "11f5b6eacdc9a406db7170160a43f23005d64e51",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f64b2b32_8bbd0ddb",
+        "filename": "aws/packer/setup.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000080
+      },
+      "writtenOn": "2019-10-29T06:06:27Z",
+      "side": 1,
+      "message": "this URL won\u0027t be visible on the ec2 instance. I think we may need to point to the gclould source where our builds are kept. (to access it we may need to install gutils \u0026 then uninstall it as part of image setup).",
+      "revId": "11f5b6eacdc9a406db7170160a43f23005d64e51",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    }
+  ]
+}
