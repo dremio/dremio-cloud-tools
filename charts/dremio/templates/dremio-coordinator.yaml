@@ -65,7 +65,7 @@ spec:
         - containerPort: 45678
           name: server
       initContainers:
-      - name: wait-for-zk
+      - name: wait-for-dremio-client
         image: busybox
         command:  ["sh", "-c", "until nc -z dremio-client {{ .Values.coordinator.web.port | default 9047 }} > /dev/null; do echo waiting for dremio master; sleep 2; done;"]
       {{- if .Values.tls.ui.enabled }}
