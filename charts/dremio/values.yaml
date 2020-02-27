@@ -27,6 +27,11 @@ executor:
   cloudCache:
     # Requires Dremio version 4.0.0 or later
     enabled: true
+    # Paths to Cloud Cache DB and file system. Should be a subfolder of
+    # /opt/dremio/data because the executor's volume is mounted there
+    path:
+      db: /opt/dremio/data/cache
+      fs: /opt/dremio/data/cache
     quota:
       # Percentage of the diskspace for the running Kubernetes node
       # that can be used for Cloud Cache files.
