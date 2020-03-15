@@ -30,10 +30,10 @@
   <!-- Please read
        https://docs.dremio.com/data-sources/azure-data-lake-store.html
        for information on setting up ADLS access -->
-  <property>
-    <name>fs.adl.impl</name>
-    <description>Must be set to org.apache.hadoop.fs.adl.AdlFileSystem</description>
-    <value>org.apache.hadoop.fs.adl.AdlFileSystem</value>
+   <property>
+    <name>fs.dremioAdl.impl</name>
+    <description>Must be set to com.dremio.plugins.adl.store.DremioAdlFileSystem</description>
+    <value>com.dremio.plugins.adl.store.DremioAdlFileSystem</value>
   </property>
   <property>
     <name>dfs.adls.oauth2.client.id</name>
