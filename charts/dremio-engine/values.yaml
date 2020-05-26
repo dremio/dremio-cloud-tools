@@ -1,0 +1,55 @@
+# The image used to build the Dremio cluster. It is recommended to update the
+# version tag to the version that you are using. This will ensure that all
+# the pods are using the same version of the software.
+image: jonnydixon/dremio-prometheus
+imageTag: 4.2.7
+
+# Check out Dremio documentation for memory and cpu requirements for
+# the coordinators and the executors.
+# The value of memory should be in MB. CPU is in no of cores.
+
+executor:
+  engineName: reflections
+  memory: 11264
+  cpu: 3.5
+  minCount: 2
+  maxCount: 6
+  scaleUpTime: 10
+  scaleDownTime: 600
+  volumeSize: 100Gi
+  cloudCache:
+    # Requires Dremio version 4.0.0 or later
+    enabled: true
+    quota:
+      # Percentage of the diskspace for the running Kubernetes node
+      # that can be used for Cloud Cache files.
+      fs_pct: 70
+      # Percentage of that space that can be used for the internal
+      # Cloud Cache database.
+      db_pct: 70
+      # Percentage of that space that can be used for cacheing
+      # materialised reflections.  This is an upper-bound, not a
+      # reservation.
+      cache_pct: 100
+      
+# information
+distStorage:
+  # Valid values are local, aws, azure or azureStorage. aws and azure
+  # choice requires additional configuration data.
+  type: "azureStorage"
+  aws: # S3
+    bucketName: "Your_AWS_bucket_name"
+    path: "/"
+    accessKey: "Your_AWS_Access_Key"
+    secret: "Your_AWS_Secret"
+  azure: # ADLS gen1
+    datalakeStoreName: "Your_Azure_DataLake_Storage_name"
+    path: "/"
+    applicationId: "Your_Azure_Application_Id"
+    secret: "Your_Azure_Secret"
+    oauth2EndPoint: "Azure_OAuth2_Endpoint"
+  azureStorage: # AzureStorage gen2v2
+    accountName: "jonnydixon"
+    accessKey: "GgdX/QI06+5KHq6bS7GFNF0UIisrX/G8Yy8m5cRWZo8iGmZgApX3I1mgzKO+e1VPslucbfAQshtxZ/NZBaOLlA=="
+    filesystem: "dremiodist"
+    path: "/dist/"

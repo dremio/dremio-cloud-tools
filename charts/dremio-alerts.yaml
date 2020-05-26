@@ -1,0 +1,36 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: prometheus
+    app: prometheus-operator
+  name: dremio-alerts
+  namespace: monitoring
+spec:
+  groups:
+  - name: general.rules
+    rules:
+    - alert: dremio-down
+      annotations:
+        description: '{{ $value }}% of {{ $labels.job }} targets are down.'
+        summary: Targets are down
+      expr: 100 * (count(up == 0) BY (job) / count(up) BY (job)) > 10
+      for: 10m
+      labels:
+        severity: warning
+    - alert: dremio-test
+      annotations:
+        description: '{{ $value }}% of {{ $labels.job }} targets are down.'
+        summary: Targets are down
+      expr: 100 * (count(up{job='dremio-prometheus'} == 0) BY (job) / count(up{job='dremio-prometheus'}) BY (job)) > 10
+      for: 10m
+      labels:
+        severity: major
+    - alert: DeadMansSwitch
+      annotations:
+        description: This is a DeadMansSwitch meant to ensure that the entire Alerting
+          pipeline is functional.
+        summary: Alerting DeadMansSwitch
+      expr: vector(1)
+      labels:
+        severity: none

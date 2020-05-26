@@ -1,0 +1,48 @@
+{{ if not .Values.DremioAdmin }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: dremio-executor
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: dremio-executor
+  minReplicas: {{ .Values.executor.minCount | default 1 }}
+  maxReplicas: {{ .Values.executor.maxCount | default 10 }}
+  #targetCPUUtilizationPercentage: 50
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 60
+behavior:
+  scaleDown:
+    stabilizationWindowSeconds: {{ .Values.executor.scaleDownTime }}
+    policies:
+    - type: Pods
+      value: 2
+      periodSeconds: {{ .Values.executor.scaleDownTime }}
+    - type: Percent
+      value: 20
+      periodSeconds: {{ .Values.executor.scaleDownTime }}
+    selectPolicy: Max
+  scaleUp:
+    stabilizationWindowSeconds: {{ .Values.executor.scaleUpTime }}
+    policies:
+    - type: Percent
+      value: 5
+      periodSeconds: {{ .Values.executor.scaleUpTime }}
+    - type: Pods
+      value: 4
+      periodSeconds: {{ .Values.executor.scaleUpTime }}
+    selectPolicy: Min
+{{ end }}

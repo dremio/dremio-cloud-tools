@@ -1,0 +1,7 @@
+apiVersion: "v1"
+name: "dremio"
+version: "0.1.0"
+keywords:
+  - dremio
+  - data
+home: https://www.dremio.com/

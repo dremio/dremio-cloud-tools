@@ -1,0 +1,11 @@
+con1troller:
+  replicaCount: 2
+  config:
+    use-proxy-protocol: "true"
+  service:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
+  metrics:
+    enabled: true
+rbac:
+  create: true

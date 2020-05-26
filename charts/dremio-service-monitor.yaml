@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: dremio-servicemonitor
+  labels:
+    release: prometheus
+  namespace: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+    - dremio
+  selector:
+    matchLabels:
+      app: dremio-prometheus
+  endpoints:
+  - port: prometheus
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    interval: 15s

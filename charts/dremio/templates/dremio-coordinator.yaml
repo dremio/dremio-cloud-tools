@@ -64,6 +64,8 @@ spec:
           name: client
         - containerPort: 45678
           name: server
+        - containerPort: 12543
+          name: prometheus
       initContainers:
       - name: wait-for-zk
         image: busybox
