@@ -113,7 +113,7 @@ distStorage:
     secret: "Your_Azure_Secret"
     oauth2EndPoint: "Azure_OAuth2_Endpoint"
   azureStorage: # AzureStorage gen2v2
-    accountName: "jonnydixon"
-    accessKey: "GgdX/QI06+5KHq6bS7GFNF0UIisrX/G8Yy8m5cRWZo8iGmZgApX3I1mgzKO+e1VPslucbfAQshtxZ/NZBaOLlA=="
+    accountName: "xxx"
+    accessKey: "Xxx"
     filesystem: "dremiodist"
     path: "/dist/"
