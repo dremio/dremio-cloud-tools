@@ -19,12 +19,12 @@ sudo yum install git -y
 git clone https://github.com/certbot/certbot.git
 
 # Generate certificate
-./certbot-auto certonly --manual --preferred-challenges=dns --agree-tos -d dremio.org -d *.dremio.org
+./certbot-auto certonly --manual --preferred-challenges=dns --agree-tos -d <DNS_NAME> -d *.<DNS_NAME>
 
 # Create Java Keystore
-openssl pkcs12 -export -in /etc/letsencrypt/live/dremio.org/fullchain.pem -inkey /etc/letsencrypt/live/dremio.org/privkey.pem -out pkcs.p12 -name dremio.org
+openssl pkcs12 -export -in /etc/letsencrypt/live/<DNS_NAME>/fullchain.pem -inkey /etc/letsencrypt/live/<DNS_NAME>/privkey.pem -out pkcs.p12 -name <DNS_NAME>
 
-keytool -importkeystore -deststorepass password -destkeypass password -destkeystore keystore.jks -srckeystore pkcs.p12 -srcstoretype PKCS12 -srcstorepass password -alias dremio.org
+keytool -importkeystore -deststorepass password -destkeypass password -destkeystore keystore.jks -srckeystore pkcs.p12 -srcstoretype PKCS12 -srcstorepass password -alias <DNS_NAME>
 
 
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
