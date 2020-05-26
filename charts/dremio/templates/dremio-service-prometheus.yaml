@@ -9,10 +9,7 @@ spec:
   ports:
     - port: 12543
       name: prometheus
+  clusterIP: None
   selector:
     role: dremio-cluster-pod
-  type: {{ .Values.serviceType | default "NodePort" }}
-  {{- if .Values.sessionAffinity }}
-  sessionAffinity: {{ .Values.sessionAffinity }}
-  {{- end }}
 {{ end }}
