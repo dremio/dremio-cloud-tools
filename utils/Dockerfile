@@ -1,36 +1,38 @@
-FROM openjdk:8-jdk as run
+################################################################
+# Image with useful cloud tools installed:
+#   - aws cli
+#   - eksctl
+#   - azure cli
+#   - gcloud
+#   - kubectl
+#   - helm
+#   - git
+#
+# An image built with this is published in Dockerhub as
+# dremio/cloud-tools
+#
+################################################################
+FROM centos
 
-ARG DOWNLOAD_URL=http://download.dremio.com/community-server/4.2.2-202004211133290458-b550b6fa/dremio-community-4.2.2-202004211133290458-b550b6fa.tar.gz
+ADD helm-init.sh /usr/local/bin
 
 RUN \
-  mkdir -p /opt/dremio \
-  && mkdir -p /var/lib/dremio \
-  && mkdir -p /var/run/dremio \
-  && mkdir -p /var/log/dremio \
-  && mkdir -p /opt/dremio/data \
-  && groupadd --system dremio \
-  && useradd --base-dir /var/lib/dremio --system --gid dremio dremio \
-  && chown -R dremio:dremio /opt/dremio/data \
-  && chown -R dremio:dremio /var/run/dremio \
-  && chown -R dremio:dremio /var/log/dremio \
-  && chown -R dremio:dremio /var/lib/dremio \
-  && wget -q "${DOWNLOAD_URL}" -O dremio.tar.gz \
-  && tar vxfz dremio.tar.gz -C /opt/dremio --strip-components=1 \
-  && wget http://apache.osuosl.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip  \
-  && unzip apache-maven-3.6.3-bin.zip -d /opt/dremio \
-  && git clone https://github.com/dremiojonny/dremio-prometheus-exporter.git && cd dremio-prometheus-exporter \
-  && export PATH=$PATH:/opt/dremio/apache-maven-3.6.3/bin \
-  && mvn clean install && chown dremio target/dremio-telemetry-prometheus-*-shaded.jar \
-  && mv target/dremio-telemetry-prometheus-*-shaded.jar /opt/dremio/jars \
-  && rm -rf ~/.m2 && rm -rf /opt/dremio/apache-maven-3.6.3 \
-  && rm -rf apache-maven-3.6.3-bin.zip \
-  && rm -rf dremio.tar.gz
+  yum install -y epel-release && \
+  yum install -y which openssl git python-pip && \
+  pip install --upgrade pip && \
+  pip install awscli && \
+  curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp && \
+  mv /tmp/eksctl /usr/local/bin && \
+  curl -s -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator && \
+  chmod +x ./aws-iam-authenticator && \
+  mv aws-iam-authenticator /usr/local/bin && \
+  curl -s -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+  chmod +x kubectl && \
+  mv kubectl /usr/local/bin && \
+  curl -s -L https://git.io/get_helm.sh | bash && \
+  rpm --import https://packages.microsoft.com/keys/microsoft.asc && \
+  sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo' && \
+  yum install -y azure-cli && \
+  curl https://sdk.cloud.google.com | bash
 
-USER dremio
-WORKDIR /opt/dremio
-ENV DREMIO_HOME /opt/dremio
-ENV DREMIO_PID_DIR /var/run/dremio
-ENV DREMIO_GC_LOGS_ENABLED="no"
-ENV DREMIO_LOG_DIR="/var/log/dremio"
-ENV SERVER_GC_OPTS="-XX:+PrintGCDetails -XX:+PrintGCDateStamps"
-ENTRYPOINT ["bin/dremio", "start-fg"]
+WORKDIR /root
