@@ -1,0 +1,40 @@
+docker login
+docker build utils/DockerFile -t <USERNAME>.dremio-prometheus:v1.0
+docker push <USERNAME>.dremio-prometheus:v1.0
+
+kubectl apply -f helm-rbac.yaml
+helm init --history-max 200 --service-account tiller --node-selectors "beta.kubernetes.io/os=linux"
+kubectl create namespace dremio
+kubectl create namespace monitoring
+helm install --name dremio --namespace dremio dremio
+helm install --name prometheus --namespace monitoring prometheus-operator
+kubectl apply -f dremio-service-monitor.yaml -n monitoring
+kubectl apply -f dremio-alerts.yaml -n monitoring
+
+--- Linux machine
+sudo yum install java-1.8.0-openjdk -y
+sudo yum install git -y
+
+# Get Certbot
+git clone https://github.com/certbot/certbot.git
+
+# Generate certificate
+./certbot-auto certonly --manual --preferred-challenges=dns --agree-tos -d dremio.org -d *.dremio.org
+
+# Create Java Keystore
+openssl pkcs12 -export -in /etc/letsencrypt/live/dremio.org/fullchain.pem -inkey /etc/letsencrypt/live/dremio.org/privkey.pem -out pkcs.p12 -name dremio.org
+
+keytool -importkeystore -deststorepass password -destkeypass password -destkeystore keystore.jks -srckeystore pkcs.p12 -srcstoretype PKCS12 -srcstorepass password -alias dremio.org
+
+
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm install nginx stable/nginx-ingress --namespace monitoring --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
+
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+helm install cert-manager --namespace monitoring --version v0.13.0 jetstack/cert-manager
+kubectl apply -f certmanager.yaml -n monitoring
+kubectl apply -f ingress.yaml -n monitoring
+
+helm install --name weave --namespace monitoring weave-scope
+helm install --name kubewatch --namespace monitoring stable/kubewatch --set='rbac.create=true,slack.channel=#<SLACK_CHANNEL>,slack.token=<TOKEN>,resourcesToWatch.pod=true'
