@@ -9,12 +9,12 @@
   <property>
     <name>dremio.azure.account</name>
     <description>The name of the storage account.</description>
-    <value>xxx</value>
+    <value>jonnydixon</value>
   </property>
   <property>
     <name>dremio.azure.key</name>
     <description>The shared access key for the storage account.</description>
-    <value>Xxx</value>
+    <value>GgdX/QI06+5KHq6bS7GFNF0UIisrX/G8Yy8m5cRWZo8iGmZgApX3I1mgzKO+e1VPslucbfAQshtxZ/NZBaOLlA==</value>
   </property>
   <property>
     <name>dremio.azure.mode</name>
