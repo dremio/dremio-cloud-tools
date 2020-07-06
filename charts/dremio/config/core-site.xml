@@ -30,11 +30,19 @@
   <!-- Please read
        https://docs.dremio.com/data-sources/azure-data-lake-store.html
        for information on setting up ADLS access -->
+    {{- if or (ge .Values.imageTag "3.2.0") (eq .Values.imageTag "latest") }}
+  <property>
+    <name>fs.dremioAdl.impl</name>
+    <description>Must be set to com.dremio.plugins.adl.store.DremioAdlFileSystem</description>
+    <value>com.dremio.plugins.adl.store.DremioAdlFileSystem</value>
+  </property>
+    {{- else }}
   <property>
     <name>fs.adl.impl</name>
     <description>Must be set to org.apache.hadoop.fs.adl.AdlFileSystem</description>
     <value>org.apache.hadoop.fs.adl.AdlFileSystem</value>
   </property>
+    {{- end }}
   <property>
     <name>dfs.adls.oauth2.client.id</name>
     <description>Application ID of the registered application under Azure Active Directory</description>
