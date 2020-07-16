@@ -91,7 +91,7 @@
 
 # Extra Java options - shared between dremio and dremio-admin commands
 #
-#DREMIO_JAVA_EXTRA_OPTS=
+DREMIO_JAVA_EXTRA_OPTS="-Ddremio.log.path=/var/log/dremio"
 
 # Extra Java options - client only (dremio-admin command)
 #
