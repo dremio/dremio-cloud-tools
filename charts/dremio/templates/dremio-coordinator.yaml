@@ -58,8 +58,6 @@ spec:
         args:
         - "start-fg"
         ports:
-        - containerPort: 9047
-          name: web
         - containerPort: 31010
           name: client
         - containerPort: 45678
