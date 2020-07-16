@@ -1,4 +1,3 @@
-{{ if .Values.DremioAdmin }}
 # dremio-admin pod is used to run offline commands like
 # clean, restore or set-password against the Dremio cluster.
 # The Dremio cluster should be shutdown before attempting to
@@ -37,4 +36,3 @@ spec:
   - name: dremio-config
     configMap:
       name: dremio-config
-{{ end }}
