@@ -1,0 +1,95 @@
+{{ if not .Values.DremioAdmin }}  
+apiVersion: apps/v1 
+kind: StatefulSet 
+metadata: 
+  name: dremio-reflection-executor  
+spec: 
+  serviceName: "dremio-cluster-pod" 
+  podManagementPolicy: "Parallel" 
+  replicas: {{.Values.reflectionExecutor.count}}  
+  revisionHistoryLimit: 1 
+  selector: 
+    matchLabels:  
+      app: dremio-reflection-executor 
+  template: 
+    metadata: 
+      labels: 
+        app: dremio-reflection-executor 
+        role: dremio-cluster-pod  
+      annotations:  
+        dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}  
+    spec: 
+      terminationGracePeriodSeconds: 5  
+      {{- if .Values.nodeSelector }}  
+      nodeSelector: 
+        {{- range $key, $value := .Values.nodeSelector }} 
+        {{ $key }}: {{ $value }}  
+        {{- end }}  
+      {{- end }}  
+      containers: 
+      - name: dremio-reflection-executor  
+        image: {{.Values.image}}:{{.Values.imageTag}} 
+        imagePullPolicy: IfNotPresent 
+        resources:  
+          requests: 
+            memory: {{.Values.reflectionExecutor.memory}}M  
+            cpu: {{.Values.reflectionExecutor.cpu}} 
+        volumeMounts: 
+        - name: dremio-config 
+          mountPath: /opt/dremio/conf 
+        - name: dremio-ephemeral  
+          mountPath: /mnt/ephemeral 
+        env:  
+        - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB  
+          value: "{{ template "HeapMemory" .Values.reflectionExecutor.memory }}"  
+        - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB  
+          value: "{{ template "DirectMemory" .Values.reflectionExecutor.memory }}"  
+        - name: DREMIO_JAVA_EXTRA_OPTS  
+          value: >-
+            -Dzookeeper=zk-hs:2181  
+            -Dservices.coordinator.enabled=false  
+            {{- if .Values.extraStartParams }}  
+            {{ .Values.extraStartParams }}  
+            {{- end }}  
+        command: ["/bin/sh", "-c", 'export "DREMIO_JAVA_EXTRA_OPTS=$DREMIO_JAVA_EXTRA_OPTS -Dservices.node-tag={{.Values.reflectionExecutor.dremioEngine}}" ;/opt/dremio/bin/dremio start-fg; ']
+        ports:
+        - containerPort: 45678
+          name: server
+      initContainers:
+      - name: wait-for-zk
+        image: busybox
+        command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
+      # since we're mounting a separate volume, reset permission to
+      # dremio uid/gid
+      - name: chown-data-directory
+        image: {{.Values.image}}:{{.Values.imageTag}}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: dremio-executor-volume
+          mountPath: /opt/dremio/data
+        command: ["chown"]
+        args:
+        - "dremio:dremio"
+        - "/opt/dremio/data"
+      volumes:
+      - name: dremio-config
+        configMap:
+          name: dremio-config
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      {{- end}}
+  volumeClaimTemplates:
+  - metadata:
+      name: dremio-executor-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      {{- if .Values.storageClass }}
+      storageClassName: {{ .Values.storageClass }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{.Values.executor.volumeSize}}
+{{ end }}

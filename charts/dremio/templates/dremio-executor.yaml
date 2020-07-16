@@ -51,9 +51,7 @@ spec:
             {{- if .Values.extraStartParams }}
             {{ .Values.extraStartParams }}
             {{- end }}
-        command: ["/opt/dremio/bin/dremio"]
-        args:
-        - "start-fg"
+        command: ["/bin/sh", "-c", 'export "DREMIO_JAVA_EXTRA_OPTS=$DREMIO_JAVA_EXTRA_OPTS -Dservices.node-tag={{.Values.reflectionExecutor.dremioEngine}}" ;/opt/dremio/bin/dremio start-fg; ']
         ports:
         - containerPort: 45678
           name: server
