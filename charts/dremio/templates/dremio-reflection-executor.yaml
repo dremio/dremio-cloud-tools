@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: dremio-executor
+  name: dremio-reflection-executor
 spec:
   serviceName: "dremio-cluster-pod"
-  replicas: {{.Values.executor.count}}
+  replicas: {{.Values.reflectionExecutor.count}}
   podManagementPolicy: "Parallel"
   revisionHistoryLimit: 1
   selector:
     matchLabels:
-      app: dremio-executor
+      app: dremio-reflection-executor
   template:
     metadata:
       labels:
-        app: dremio-executor
+        app: dremio-reflection-executor
         role: dremio-cluster-pod
       annotations:
         dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}
@@ -27,13 +27,13 @@ spec:
         {{- end }}
       {{- end }}
       containers:
-      - name: dremio-executor
+      - name: dremio-reflection-executor
         image: {{.Values.image}}:{{.Values.imageTag}}
         imagePullPolicy: IfNotPresent
         resources:
           requests:
-            memory: {{.Values.executor.memory}}M
-            cpu: {{.Values.executor.cpu}}
+            memory: {{.Values.reflectionExecutor.memory}}M
+            cpu: {{.Values.reflectionExecutor.cpu}}
         volumeMounts:
         - name: dremio-executor-volume
           mountPath: /opt/dremio/data
@@ -41,9 +41,9 @@ spec:
           mountPath: /opt/dremio/conf
         env:
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
-          value: "{{ template "HeapMemory" .Values.executor.memory }}"
+          value: "{{ template "HeapMemory" .Values.reflectionExecutor.memory }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
-          value: "{{ template "DirectMemory" .Values.executor.memory }}"
+          value: "{{ template "DirectMemory" .Values.reflectionExecutor.memory }}"
         - name: DREMIO_JAVA_EXTRA_OPTS
           value: >-
             -Dzookeeper=zk-hs:2181
@@ -51,7 +51,7 @@ spec:
             {{- if .Values.extraStartParams }}
             {{ .Values.extraStartParams }}
             {{- end }}
-        command: ["/bin/sh", "-c", 'export "DREMIO_JAVA_EXTRA_OPTS=$DREMIO_JAVA_EXTRA_OPTS -Dservices.node-tag={{.Values.executor.dremioEngine}}" ;/opt/dremio/bin/dremio start-fg; ']
+        command: ["/bin/sh", "-c", 'export "DREMIO_JAVA_EXTRA_OPTS=$DREMIO_JAVA_EXTRA_OPTS -Dservices.node-tag={{.Values.reflectionExecutor.dremioEngine}}" ; /opt/dremio/bin/dremio start-fg; ']
         ports:
         - containerPort: 45678
           name: server
