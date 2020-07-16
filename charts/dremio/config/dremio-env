@@ -22,7 +22,7 @@
 # Directory where Dremio logs are written
 # Default to $DREMIO_HOME/log
 #
-#DREMIO_LOG_DIR=${DREMIO_HOME}/log
+DREMIO_LOG_DIR=/var/log/dremio
 
 #
 # Send logs to console and not to log files. The DREMIO_LOG_DIR is ignored if set.
@@ -91,7 +91,7 @@
 
 # Extra Java options - shared between dremio and dremio-admin commands
 #
-#DREMIO_JAVA_EXTRA_OPTS=
+#DREMIO_JAVA_EXTRA_OPTS="-Ddremio.log.path=/opt/dremio/data -Ddremio.log.level=DEBUG"
 
 # Extra Java options - client only (dremio-admin command)
 #
@@ -99,4 +99,4 @@
 
 # Extra Java options - server only (dremio command)
 #
-#DREMIO_JAVA_SERVER_EXTRA_OPTS=
+DREMIO_JAVA_SERVER_EXTRA_OPTS="-Ddremio.log.level=DEBUG"
