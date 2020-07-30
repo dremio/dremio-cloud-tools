@@ -183,7 +183,7 @@
       "publisher": "OpenLogic",
       "offer": "CentOS",
       "sku": "7.5",
-      "version": "7.5.20180815"
+      "version": "latest"
     },
     "linuxConfiguration": {
       "disablePasswordAuthentication": true,
