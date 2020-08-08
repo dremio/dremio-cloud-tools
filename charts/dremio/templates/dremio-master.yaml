@@ -58,9 +58,13 @@ spec:
           value: "{{ template "DirectMemory" .Values.coordinator.memory }}"
         - name: DREMIO_JAVA_EXTRA_OPTS
           value: >-
+            {{- if not (eq .Values.executor.count 0.0) }}
             -Dzookeeper=zk-hs:2181
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
+            {{- else }}
+            -Dservices.executor.enabled=true
+            {{- end }}
             {{- if .Values.extraStartParams }}
             {{ .Values.extraStartParams }}
             {{- end }}
@@ -87,9 +91,11 @@ spec:
       - name: start-only-one-master
         image: busybox
         command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
+      {{- if not (eq .Values.executor.count 0.0) }}
       - name: wait-for-zk
         image: busybox
         command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
+      {{- end }}
       # since we're mounting a separate volume, reset permission to dremio uid/gid
       - name: chown-data-directory
         image: {{.Values.image}}:{{.Values.imageTag}}

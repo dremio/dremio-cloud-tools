@@ -1,4 +1,4 @@
-{{ if not .Values.DremioAdmin }}
+{{ if and (not .Values.DremioAdmin) (not (eq .Values.executor.count 0.0)) }}
 apiVersion: v1
 kind: Service
 metadata:
