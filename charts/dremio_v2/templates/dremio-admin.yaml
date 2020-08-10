@@ -1,0 +1,41 @@
+{{- if $.Values.DremioAdmin -}}
+# dremio-admin pod is used to run offline commands like
+# clean, restore or set-password against the Dremio cluster.
+# The Dremio cluster should be shutdown before attempting to
+# create the dremio-admin pod.
+# You connect to the pod (kubectl exec -it dremio-admin -- bash),
+# go to /opt/dremio/bin and run dremio-admin commands as documented.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dremio-admin
+  {{- include "dremio.admin.podAnnotations" $ | nindent 2}}
+  {{- include "dremio.admin.podLabels" $ | nindent 2}}
+spec:
+  containers:
+  - name: dremio-admin
+    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+    imagePullPolicy: IfNotPresent
+    stdin: true
+    tty: true
+    resources:
+      requests:
+        cpu: {{ $.Values.coordinator.cpu }}
+        memory: {{ $.Values.coordinator.memory }}M
+    volumeMounts:
+    - name: dremio-master-volume
+      mountPath: /opt/dremio/data
+    - name: dremio-config
+      mountPath: /opt/dremio/conf
+    command: ["sleep", "infinity"]
+  {{- include "dremio.imagePullSecrets" $ | nindent 2 }}
+  {{- include "dremio.admin.nodeSelector" $ | nindent 2 }}
+  {{- include "dremio.admin.tolerations" $ | nindent 2 }}
+  volumes:
+  - name: dremio-master-volume
+    persistentVolumeClaim:
+      claimName: dremio-master-volume-dremio-master-0
+  - name: dremio-config
+    configMap:
+      name: dremio-config
+{{- end -}}
