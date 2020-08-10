@@ -1,0 +1,396 @@
+# The Dremio image used in the cluster.
+#
+# It is *highly* recommended to update the version tag to
+# the version that you are using. This will ensure that all
+# the pods are using the same version of the software.
+#
+# Using latest will cause Dremio to potentially upgrade versions
+# automatically during redeployments and may negatively impact
+# the cluster.
+image: dremio/dremio-oss
+imageTag: latest
+
+# Annotations, labels, node selectors, and tolerations
+#
+# annotations: Annotations are applied to the StatefulSets that are deployed.
+# podAnnotations: Pod annotations are applied to the pods that are deployed.
+# labels: Labels operate much like annotations.
+# podLabels: Labels that are applied to the pods that are deployed.
+# nodeSelector: Target pods to nodes based on labels set on the nodes. For more
+#   information, see https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+# tolerations: Tolerations allow the negation of taints that have been applied to some set of nodes
+#   in the Kubernetes cluster so that pods can be scheduled on those tainted nodes.
+annotations: {}
+podAnnotations: {}
+labels: {}
+podLabels: {}
+nodeSelector: {}
+tolerations: []
+
+# Dremio Coordinator
+coordinator:
+  # CPU & Memory
+  # Memory allocated to each coordinator, expressed in MB.
+  # CPU allocated to each coordinator, expressed in CPU cores.
+  cpu: 15
+  memory: 122800
+
+  # This count is used for slave coordinators only.
+  # The total number of coordinators will always be count + 1.
+  count: 0
+
+  # Coordinator data volume size (applies to the master coordinator only).
+  # In most managed Kubernetes environments (AKS, GKE, etc.), the size of the disk has a direct impact on
+  # the provisioned and maximum performance of the disk.
+  volumeSize: 128Gi
+
+  # Uncomment the lines below to use a custom set of extra startup parameters for the coordinator.
+  #extraStartParams: >-
+  #  -DsomeKey=someValue
+
+  # Extra Init Containers
+  # Uncomment the below lines to use a custom set of extra init containers for the coordinator.
+  #extraInitContainers: |
+  #  - name: extra-init-container
+  #    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+  #    command: ["echo", "Hello World"]
+
+  # Extra Volumes
+  # Uncomment below to use a custom set of extra volumes for the coordinator.
+  #extraVolumes: []
+
+  # Extra Volume Mounts
+  # Uncomment below to use a custom set of extra volume mounts for the coordinator.
+  #extraVolumeMounts: []
+
+  # Uncomment this value to use a different storage class for the coordinator.
+  #storageClass:
+
+  # These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
+  # Uncomment only if you are trying to override the chart's shared values.
+  #annotations: {}
+  #podAnnotations: {}
+  #labels: {}
+  #podLabels: {}
+  #nodeSelector: {}
+  #tolerations: []
+
+  # Web UI
+  web:
+    port: 9047
+    tls:
+      # To enable TLS for the web UI, set the enabled flag to true and provide
+      # the appropriate Kubernetes TLS secret.
+      enabled: false
+
+      # To create a TLS secret, use the following command:
+      # kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
+      secret: dremio-tls-secret-ui
+
+  # ODBC/JDBC Client
+  client:
+    port: 31010
+    tls:
+      # To enable TLS for the client endpoints, set the enabled flag to
+      # true and provide the appropriate Kubernetes TLS secret. Client
+      # endpoint encryption is available only on Dremio Enterprise
+      # Edition and should not be enabled otherwise.
+      enabled: false
+
+      # To create a TLS secret, use the following command:
+      # kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
+      secret: dremio-tls-secret-client
+
+# Dremio Executor
+executor:
+  # CPU & Memory
+  # Memory allocated to each executor, expressed in MB.
+  # CPU allocated to each executor, expressed in CPU cores.
+  cpu: 15
+  memory: 122800
+
+  # Engines
+  # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
+  # Note: The number of executor pods will be the length of the array below * count.
+  engines: ["default"]
+  count: 3
+
+  # Executor volume size.
+  volumeSize: 128Gi
+
+  # Uncomment the lines below to use a custom set of extra startup parameters for executors.
+  #extraStartParams: >-
+  #  -DsomeKey=someValue
+
+  # Extra Init Containers
+  # Uncomment the below lines to use a custom set of extra init containers for executors.
+  #extraInitContainers: |
+  #  - name: extra-init-container
+  #    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+  #    command: ["echo", "Hello World"]
+
+  # Extra Volumes
+  # Uncomment below to use a custom set of extra volumes for executors.
+  #extraVolumes: []
+
+  # Extra Volume Mounts
+  # Uncomment below to use a custom set of extra volume mounts for executors.
+  #extraVolumeMounts: []
+
+  # Uncomment this value to use a different storage class for executors.
+  #storageClass:
+
+  # Dremio C3
+  # Designed for use with NVMe storage devices, performance may be impacted when using
+  # persistent volume storage that resides far from the physical node.
+  cloudCache:
+    enabled: true
+
+    # Uncomment this value to use a different storage class for C3.
+    #storageClass:
+
+    # Volumes to use for C3, specify multiple volumes if there are more than one local
+    # NVMe disk that you would like to use for C3.
+    #
+    # The below example shows all valid options that can be provided for a volume.
+    # volumes:
+    # - name: "dremio-default-c3"
+    #   size: 100Gi
+    #   storageClass: "local-nvme"
+    volumes:
+    - size: 100Gi
+
+  # These values, when defined and not empty, override the provided shared annotations, labels, node selectors, or tolerations.
+  # Uncomment only if you are trying to override the chart's shared values.
+  #annotations: {}
+  #podAnnotations: {}
+  #labels: {}
+  #podLabels: {}
+  #nodeSelector: {}
+  #tolerations: []
+
+  # Engine Overrides
+  #
+  # The settings above are overridable on a per-engine basis. These
+  # values here will take precedence and *override* the configured values
+  # on a per-engine basis. Engine ovrrides are matched with the name in the above
+  # list of engines.
+  #
+  # Special per-engine parameters:
+  # volumeClaimName: For each engine, you can optionally specify a value for the volume claim name,
+  #   this value must be unique to each engine or may cause unintended consequences. This value is
+  #   primarily intended for transitioning an existing single engine to a multi-engine configuration
+  #   where there may already have been existing persistent volumes.
+  #
+  # The below example shows all valid options that can be overridden on a per-engine basis.
+  # engineOverride:
+  #   engineNameHere:
+  #     cpu: 1
+  #     memory: 122800
+  #
+  #     count: 1
+  #
+  #     annotations: {}
+  #     podAnnotations: {}
+  #     labels: {}
+  #     podLabels: {}
+  #     nodeSelector: {}
+  #     tolerations: []
+  #
+  #     extraStartParams: >-
+  #       -DsomeCustomKey=someCustomValue
+  #
+  #     extraInitContainers: |
+  #       - name: extra-init-container
+  #         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+  #         command: ["echo", "Hello World"]
+  #
+  #     extraVolumes: []
+  #     extraVolumeMounts: []
+  #
+  #     volumeSize: 50Gi
+  #     storageClass: managed-premium
+  #     volumeClaimName: dremio-default-executor-volume
+  #
+  #     cloudCache:
+  #       enabled: true
+  #       
+  #       storageClass: ""
+  #
+  #       volumes:
+  #       - name: "default-c3"
+  #         size: 100Gi
+  #         storageClass: ""
+
+# Zookeeper
+zookeeper:
+  # The Zookeeper image used in the cluster.
+  image: k8s.gcr.io/kubernetes-zookeeper
+  imageTag: 1.0-3.4.10
+
+  # CPU & Memory
+  # Memory allocated to each zookeeper, expressed in MB.
+  # CPU allocated to each zookeeper, expressed in CPU cores.
+  cpu: 0.5
+  memory: 1024
+  count: 3
+
+  volumeSize: 10Gi
+
+  # Uncomment this value to use a different storage class for Zookeeper.
+  #storageClass:
+
+  # These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
+  # Uncomment only if you are trying to override the chart's shared values.
+  #annotations: {}
+  #podAnnotations: {}
+  #labels: {}
+  #podLabels: {}
+  #nodeSelector: {}
+  #tolerations: []
+
+# Control where uploaded files are stored for Dremio.
+# For more information, see https://docs.dremio.com/deployment/distributed-storage.html
+distStorage:
+  # The supported distributed storage types are: local, aws, azure, or azureStorage.
+  #
+  # local: Not recommended for production use. When using local, dist-caching is disabled.
+  # aws: AWS S3, additional parameters required, see "aws" section.
+  # azure: ADLS Gen 1, additional parameters required, see "azure" section.
+  # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
+  type: "local"
+
+  # AWS S3
+  # For more details of S3 configuration, see https://docs.dremio.com/deployment/dist-store-config.html#amazon-s3
+  #
+  # bucketName: The name of the S3 bucket for distributed storage.
+  # path: The path, relative to the bucket, to create Dremio's directories.
+  # authentication: Valid types are: accessKeySecret or instanceMetadata.
+  #   - Note: Instance metadata is only supported in AWS EKS and requires that the
+  #       EKS worker node IAM role is configured with sufficient access rights. At this time,
+  #       Dremio does not support using an K8s service account based IAM role.
+  # credentials: If using accessKeySecret authentication, uncomment the credentials section below.
+  aws:
+    bucketName: "AWS Bucket Name"
+    path: "/"
+    authentication: "metadata"
+    # If using accessKeySecret for authentication against S3, uncomment the lines below and use the values
+    # to configure the appropriate credentials.
+    #
+    #credentials:
+    #  accessKey: "AWS Access Key"
+    #  secret: "AWS Secret"
+
+    # Extra Properties
+    # Use the extra properties block to provide additional parameters to configure the distributed
+    # storage in the generated core-site.xml file.
+    #
+    #extraProperties: |
+    #  <property>
+    #    <name></name>
+    #    <value></value>
+    #  </property>
+
+  # Azure ADLS Gen 1
+  # For more details of Azure ADLS Gen 1 storage configuration, see
+  # https://docs.dremio.com/deployment/dist-store-config.html#azure-data-lake-storage-gen1
+  #
+  # datalakeStoreName: The ADLS Gen 1
+  azure:
+    datalakeStoreName: "Azure DataLake Store Name"
+    path: "/"
+    credentials:
+      applicationId: "Azure Application ID"
+      secret: "Azure Application Secret"
+      oauth2EndPoint: "Azure OAuth2 Endpoint"
+
+    # Extra Properties
+    # Use the extra properties block to provide additional parameters to configure the distributed
+    # storage in the generated core-site.xml file.
+    #
+    #extraProperties: |
+    #  <property>
+    #    <name></name>
+    #    <value></value>
+    #  </property>
+
+  # Azure Storage Gen2
+  # For more details of Azure Storage Gen2 storage configuration, see
+  # https://docs.dremio.com/deployment/dist-store-config.html#azure-storage
+  #
+  # accountName: The name of the storage account.
+  # filesystem: The name of the blob container to use within the storage account.
+  # path: The path, relative to the filesystem, to create Dremio's directories.
+  # credentials:
+  azureStorage:
+    accountName: "Azure Storage Account Name"
+    filesystem: "Azure Storage Account Blob Container"
+    path: "/"
+    credentials:
+      accessKey: "Azure Storage Account Access Key"
+
+    # Extra Properties
+    # Use the extra properties block to provide additional parameters to configure the distributed
+    # storage in the generated core-site.xml file.
+    #
+    #extraProperties: |
+    #  <property>
+    #    <name></name>
+    #    <value></value>
+    #  </property>
+
+# Dremio Start Parameters
+# Uncomment the below lines to provide extra start paramaters to be passed directly to Dremio during startup.
+#extraStartParams: >-
+#  -DsomeKey=someValue
+
+# Extra Init Containers
+# Uncomment the below lines to provide extra init containers to be run first.
+#extraInitContainers: |
+#  - name: extra-init-container
+#    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+#    command: ["echo", "Hello World"]
+
+# Extra Volumes
+# Array to add extra volumes to all Dremio resources.
+extraVolumes: []
+
+# Extra Volume Mounts
+# Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
+extraVolumeMounts: []
+
+# Dremio Service
+# The dremio-client service exposes the service for access outside of the Kubernetes cluster.
+service:
+  type: LoadBalancer
+
+  # These values, when defined and not empty, override the provided shared annotations and labels.
+  # Uncomment only if you are trying to override the chart's shared values.
+  #annotations: {}
+  #labels: {}
+
+  # If the loadBalancer supports sessionAffinity and you have more than one coordinator,
+  # uncomment the below line to enable session affinity.
+  #sessionAffinity: ClientIP
+
+  # Enable the following flag if you wish to route traffic through a shared VPC
+  # for the LoadBalancer's external IP.
+  # The chart is setup for internal IP support for AKS, EKS, GKE.
+  # For more information, see https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  #internalLoadBalancer: true
+
+  # If you have a static IP allocated for your load balancer, uncomment the following
+  # line and set the IP to provide the static IP used for the load balancer.
+  # Note: The service type must be set to LoadBalancer for this value to be used.
+  #loadBalancerIP: 0.0.0.0
+
+# To use custom storage class, uncomment below.
+# Otherwise the default storage class configured for your K8s cluster is used.
+#storageClass: managed-premium
+
+# For private and protected docker image repository, you should store
+# the credentials in a kubernetes secret and provide the secret name
+# here.  For more information, see
+# https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+#imagePullSecrets:
+#  - secretname
