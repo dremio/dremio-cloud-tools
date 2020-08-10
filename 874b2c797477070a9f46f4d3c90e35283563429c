@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6bd2426d_e4eae089",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2020-08-10T17:08:05Z",
+      "side": 1,
+      "message": "no readiness probe?",
+      "revId": "874b2c797477070a9f46f4d3c90e35283563429c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a49de7ea_d0c7eb09",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2020-08-10T17:08:05Z",
+      "side": 1,
+      "message": "isn\u0027t the original certificate in pkcs12 already?",
+      "revId": "874b2c797477070a9f46f4d3c90e35283563429c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "770e5e72_5d4aa78e",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2020-08-10T17:08:05Z",
+      "side": 1,
+      "message": "fabric",
+      "range": {
+        "startLine": 87,
+        "startChar": 23,
+        "endLine": 87,
+        "endChar": 29
+      },
+      "revId": "874b2c797477070a9f46f4d3c90e35283563429c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    }
+  ]
+}
