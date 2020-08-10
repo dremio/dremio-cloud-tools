@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "815df531_04f1a9ce",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2020-08-10T22:42:18Z",
+      "side": 1,
+      "message": "My bad!",
+      "parentUuid": "e732fa49_61599121",
+      "revId": "874b2c797477070a9f46f4d3c90e35283563429c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "770e5e72_5d4aa78e",
         "filename": "charts/dremio_v2/templates/dremio-master.yaml",
         "patchSetId": 2
