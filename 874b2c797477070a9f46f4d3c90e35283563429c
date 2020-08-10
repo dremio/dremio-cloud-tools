@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "18fe3686_fb91955a",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2020-08-10T17:27:29Z",
+      "side": 1,
+      "message": "Added. However, I just checked with Kal and he suggested that we shouldn\u0027t be serving the UI to users from the secondary coordinators as it is not fully working yet. In the next patch, I will update it to remove the UI port as part of the advertised ports on these pods.",
+      "parentUuid": "6bd2426d_e4eae089",
+      "revId": "874b2c797477070a9f46f4d3c90e35283563429c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a49de7ea_d0c7eb09",
         "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "e732fa49_61599121",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2020-08-10T17:27:29Z",
+      "side": 1,
+      "message": "The original certificate is in a Kubernetes TLS secret format which is two separate values, one certificate and one key.",
+      "parentUuid": "a49de7ea_d0c7eb09",
+      "revId": "874b2c797477070a9f46f4d3c90e35283563429c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "770e5e72_5d4aa78e",
         "filename": "charts/dremio_v2/templates/dremio-master.yaml",
         "patchSetId": 2
@@ -47,6 +83,30 @@
       "writtenOn": "2020-08-10T17:08:05Z",
       "side": 1,
       "message": "fabric",
+      "range": {
+        "startLine": 87,
+        "startChar": 23,
+        "endLine": 87,
+        "endChar": 29
+      },
+      "revId": "874b2c797477070a9f46f4d3c90e35283563429c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e72aecbe_bed311ec",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2020-08-10T17:27:29Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "770e5e72_5d4aa78e",
       "range": {
         "startLine": 87,
         "startChar": 23,
