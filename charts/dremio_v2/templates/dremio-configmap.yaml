@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dremio-config
+data:
+  {{- tpl ($.Files.Glob "config/*").AsConfig . | nindent 2 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dremio-hive2-config
+data:
+  {{- tpl ($.Files.Glob "config/hive2/*").AsConfig . | nindent 2 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dremio-hive3-config
+data:
+  {{- tpl ($.Files.Glob "config/hive3/*").AsConfig . | nindent 2 }}
+---
+{{- $originalValues := mustDeepCopy $.Values -}}
+{{- range $engine := keys (default (dict) $.Values.executor.engineOverride) -}}
+{{- if has $engine $.Values.executor.engines -}}
+{{- $_ := mustMergeOverwrite $.Values $originalValues -}}
+{{- $engineAwareConfig := mustDeepCopy $.Values -}}
+{{- $_ := set $engineAwareConfig "currentEngine" $engine }}
+{{- $_ := mustMergeOverwrite $engineAwareConfig.executor (get $.Values.executor.engineOverride $engine) -}}
+{{- $_ := mustMergeOverwrite $.Values $engineAwareConfig -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dremio-config-{{ $engine }}
+data:
+  {{- tpl ($.Files.Glob "config/*").AsConfig $ | nindent 2 }}
+---
+{{- end -}}
+{{- end -}}
