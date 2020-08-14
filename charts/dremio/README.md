@@ -1,5 +1,11 @@
 # Dremio + Kubernetes Cluster Setup
 
+# ⚠️ Deprecation Notice ⚠️
+
+***This version of the Dremio Helm chart is deprecated.*** We recommend users transition to the new [Dremio v2 Helm Chart](../dremio_v2).
+
+Dremio no longer maintains this Helm chart and will not perform additional improvements and bug fixes. The repository is kept for historical reference.
+
 ## Overview
 
 This is a Helm chart to deploy a Dremio cluster in kubernetes. It uses
