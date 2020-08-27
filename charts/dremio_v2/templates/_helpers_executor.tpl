@@ -146,7 +146,7 @@ Executor - Persistent Volume Storage Class
 {{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
 {{- $engineStorageClass := coalesce $engineConfiguration.storageClass $context.Values.executor.storageClass $context.Values.storageClass -}}
 {{- if $engineStorageClass -}}
-storageClass: {{ $engineStorageClass }}
+storageClassName: {{ $engineStorageClass }}
 {{- end -}}
 {{- end -}}
 
@@ -168,7 +168,7 @@ Executor - Cloud Cache Peristent Volume Claims
   spec:
     accessModes: ["ReadWriteOnce"]
     {{- if $volumeStorageClass }}
-    storageClass: {{ $volumeStorageClass }}
+    storageClassName: {{ $volumeStorageClass }}
     {{- end }}
     resources:
       requests:

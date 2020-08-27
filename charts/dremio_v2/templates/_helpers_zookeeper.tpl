@@ -12,7 +12,7 @@ Zookeeper - Storage Class
 {{- define "dremio.zookeeper.storageClass" -}}
 {{- $zookeeperStorageClass := coalesce $.Values.zookeeper.storageClass $.Values.storageClass -}}
 {{- if $zookeeperStorageClass -}}
-storageClass: {{ $zookeeperStorageClass }}
+storageClassName: {{ $zookeeperStorageClass }}
 {{- end -}}
 {{- end -}}
 

@@ -74,7 +74,7 @@ Coordinator - Storage Class
 {{- define "dremio.coordinator.storageClass" -}}
 {{- $coordinatorStorageClass := coalesce $.Values.coordinator.storageClass $.Values.storageClass -}}
 {{- if $coordinatorStorageClass -}}
-storageClass: {{ $coordinatorStorageClass }}
+storageClassName: {{ $coordinatorStorageClass }}
 {{- end -}}
 {{- end -}}
 
