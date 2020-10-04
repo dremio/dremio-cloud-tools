@@ -277,9 +277,9 @@ distStorage:
     # If using accessKeySecret for authentication against S3, uncomment the lines below and use the values
     # to configure the appropriate credentials.
     #
-    #credentials:
-    #  accessKey: "AWS Access Key"
-    #  secret: "AWS Secret"
+    credentials:
+      accessKey: "AWS Access Key"
+      secret: "AWS Secret"
 
     # Extra Properties
     # Use the extra properties block to provide additional parameters to configure the distributed
