@@ -44,7 +44,7 @@ Coordinator - Pod Extra Init Containers
 {{- define "dremio.coordinator.extraInitContainers" -}}
 {{- $coordinatorExtraInitContainers := coalesce $.Values.coordinator.extraInitContainers $.Values.extraInitContainers -}}
 {{- if $coordinatorExtraInitContainers -}}
-{{ tpl $coordinatorExtraInitContainers $ }}
+{{ tpl $coordinatorExtraInitContainers $context }}
 {{- end -}}
 {{- end -}}
 
