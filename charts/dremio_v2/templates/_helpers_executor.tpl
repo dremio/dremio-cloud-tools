@@ -107,7 +107,7 @@ Executor - Pod Extra Init Containers
 {{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
 {{- $engineExtraInitContainers := coalesce $engineConfiguration.extraInitContainers $context.Values.executor.extraInitContainers $context.Values.extraInitContainers -}}
 {{- if $engineExtraInitContainers -}}
-{{ tpl $engineExtraInitContainers $ }}
+{{ tpl $engineExtraInitContainers $context }}
 {{- end -}}
 {{- end -}}
 
