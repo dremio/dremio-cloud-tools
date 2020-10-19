@@ -107,3 +107,33 @@ $ kubectl get services dremio-client
 NAME            TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)                          AGE
 dremio-client   NodePort       10.110.65.97    <none>            31010:32390/TCP,9047:30670/TCP   1h
 ```
+
+### Connect to Dremio via Flight
+
+You can look up the service `dremio-client` in Kubernetes to find the host for Flight connections using the following command:
+
+```bash
+$ kubectl get services dremio-client
+```
+
+#### Load Balancer Supported
+If your Kubernetes cluster supports a `service.type` of `LoadBalancer`, you can access Dremio using Flight via port 32010 on the load balancer's external IP. You can optionally change the exposed port for Flight connections via `values.local.yaml` by setting `coordinator.flight.port`.
+
+For example, in the output below, the value under the `EXTERNAL-IP` column is `8.8.8.8`. Therefore, you can connect to Dremio using Flight using: `8.8.8.8:32010`
+
+```bash
+$ kubectl get services dremio-client
+NAME            TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)                          AGE
+dremio-client   LoadBalancer   10.99.227.180   8.8.8.8           31010:32260/TCP,9047:30620/TCP,32010:31357/TCP   2d
+```
+
+#### Load Balancer Unsupported
+If your Kubernetes cluster does not have support for a `service.type` of `LoadBalancer`, you can access Dremio using Flight on the port exposed on the node.
+
+For example, in the output below, there is no value on the `EXTERNAL-IP` column and the Dremio master is running on node "localhost". Therefore, you can connect to Dremio via Flight using: `localhost:31357`
+
+```bash
+$ kubectl get services dremio-client
+NAME            TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)                          AGE
+dremio-client   NodePort       10.110.65.97    <none>            31010:32390/TCP,9047:30670/TCP,32010:31357/TCP   1h
+```
