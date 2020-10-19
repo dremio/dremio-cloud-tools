@@ -101,6 +101,18 @@ coordinator:
       # kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
       secret: dremio-tls-secret-client
 
+  # Flight Client
+  flight:
+    port: 32010
+    tls:
+      # To enable TLS for the flight endpoints, set the enabled flag to
+      # true and provide the appropriate Kubernetes TLS secret.
+      enabled: false
+
+      # To create a TLS secret, use the following command:
+      # kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
+      secret: dremio-tls-secret-flight
+
 # Dremio Executor
 executor:
   # CPU & Memory

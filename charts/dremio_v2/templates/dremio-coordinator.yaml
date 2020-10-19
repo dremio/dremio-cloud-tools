@@ -45,7 +45,7 @@ spec:
           mountPath: /opt/dremio/plugins/connectors/hive3.d
         - name: dremio-hive3-config
           mountPath: /opt/dremio/plugins/connectors/hive3-ee.d
-        {{- if or $.Values.coordinator.web.tls.enabled $.Values.coordinator.client.tls.enabled }}
+        {{- if or $.Values.coordinator.web.tls.enabled (or $.Values.coordinator.client.tls.enabled $.Values.coordinator.flight.tls.enabled) }}
         - name: dremio-tls
           mountPath: /opt/dremio/tls
         {{- end }}
@@ -69,6 +69,8 @@ spec:
         ports:
         - containerPort: 31010
           name: client
+        - containerPort: 32010
+          name: flight
         - containerPort: 45678
           name: server-fabric
         - containerPort: 45679
@@ -111,6 +113,18 @@ spec:
         command: ["/usr/bin/openssl"]
         args: ["pkcs12", "-export", "-inkey", "/dremio-tls-secret/tls.key", "-in", "/dremio-tls-secret/tls.crt", "-out", "/opt/dremio/tls/client.pkcs12", "-passout", "pass:"]
       {{- end }}
+      {{- if $.Values.coordinator.flight.tls.enabled }}
+      - name: generate-flight-keystore
+        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-flight
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args: ["pkcs12", "-export", "-inkey", "/dremio-tls-secret/tls.key", "-in", "/dremio-tls-secret/tls.crt", "-out", "/opt/dremio/tls/flight.pkcs12", "-passout", "pass:"]
+      {{- end }}
       volumes:
       - name: dremio-config
         configMap:
@@ -121,7 +135,7 @@ spec:
       - name: dremio-hive3-config
         configMap:
           name: dremio-hive3-config
-      {{- if or $.Values.coordinator.web.tls.enabled $.Values.coordinator.client.tls.enabled }}
+      {{- if or $.Values.coordinator.web.tls.enabled (or $.Values.coordinator.client.tls.enabled $.Values.coordinator.flight.tls.enabled) }}
       - name: dremio-tls
         emptyDir: {}
       {{- end }}
@@ -139,6 +153,16 @@ spec:
       - name: dremio-tls-secret-client
         secret:
           secretName: {{ $.Values.coordinator.client.tls.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
+      {{- if $.Values.coordinator.flight.tls.enabled }}
+      - name: dremio-tls-secret-flight
+        secret:
+          secretName: {{ $.Values.coordinator.flight.tls.secret }}
           items:
           - key: tls.key
             path: tls.key
