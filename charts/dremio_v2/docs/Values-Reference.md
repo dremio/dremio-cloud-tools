@@ -345,7 +345,7 @@ Type: String
 
 By default, the value is set to `dremio-tls-secret-client`.
 
-This value is ignored if `coordinator.web.tls.enabled` is not set to `true`. This value should reference the TLS secret object in Kubernetes that contains the certificate for the client JDBC/ODBC connections.
+This value is ignored if `coordinator.client.tls.enabled` is not set to `true`. This value should reference the TLS secret object in Kubernetes that contains the certificate for the client JDBC/ODBC connections.
 
 For example, to have TLS enabled for the client JDBC/ODBC connections using a certificate created called `dremio-tls-secret-client`, you can set the configuration as follows:
 
@@ -356,6 +356,42 @@ coordinator:
     tls:
       enabled: true
       secret: dremio-tls-secret-client
+[...]
+```
+
+To create a secret, use the following command: `kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}` providing appropriate values for `TLS_SECRET_NAME`, `KEY_FILE`, `CERT_FILE`.
+
+***Note***: Dremio does not support auto-rotation of secrets. To update the secret used by Dremio, restart the coordinator pods to have the new TLS secret take effect.
+
+More Info: See the [Creating your own Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#creating-your-own-secrets) section of the Secrets documentation for Kubernetes.
+
+### Flight
+
+#### `coordinator.flight.tls.enabled`
+
+Type: Boolean
+
+By default, the value is set to `false`.
+
+To enable TLS on the Flight port, set this value to `true`. Also, provide a value for `coordinator.flight.tls.secret` that corresponds with the TLS secret that should be used.
+
+#### `coordinator.flight.tls.secret`
+
+Type: String
+
+By default, the value is set to `dremio-tls-secret-flight`.
+
+This value is ignored if `coordinator.flight.tls.enabled` is not set to `true`. This value should reference the TLS secret object in Kubernetes that contains the certificate for the Flight connections.
+
+For example, to have TLS enabled for the Flight connections using a certificate created called `dremio-tls-secret-flight`, you can set the configuration as follows:
+
+```yaml
+coordinator:
+  [...]
+  flight:
+    tls:
+      enabled: true
+      secret: dremio-tls-secret-flight
 [...]
 ```
 
@@ -1188,7 +1224,9 @@ Type: Boolean
 
 By default, this value is not set, which defaults to `false`.
 
-To enable session affinity, set this value to `true`. Session affinity is critical for the web UI when there `coordinator.count` is greater than 0.
+To enable session affinity, set this value to `ClientIP`. Session affinity is critical for the web UI when there `coordinator.count` is greater than 0.
+
+If utilizing Flight, please see [Important Setup Considerations](https://github.com/dremio/dremio-cloud-tools/blob/master/charts/dremio_v2/docs/setup/Important-Setup-Considerations.md) for more information about enabling session affinity.
 
 ### Annotations and Labels
 
