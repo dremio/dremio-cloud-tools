@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ed21508a_3ebe43a0",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2020-10-20T17:58:03Z",
+      "side": 1,
+      "message": "This is correct as-is, since coordinator, executor, fabric and flight are all the same level in the conf file.\nhttps://github.com/dremio/dremio/blob/master/oss/common/src/main/resources/dremio-reference.conf",
+      "parentUuid": "8be35a13_0a11af54",
+      "revId": "dac0c00885314446261f85d5f1e9398bd0477cb8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8c8c75bd_129ca286",
         "filename": "charts/dremio_v2/values.yaml",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "dac0c00885314446261f85d5f1e9398bd0477cb8",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b70d073_95059fdd",
+        "filename": "charts/dremio_v2/values.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2020-10-20T17:58:03Z",
+      "side": 1,
+      "message": "Good, catch, I will update this.",
+      "parentUuid": "8c8c75bd_129ca286",
+      "revId": "dac0c00885314446261f85d5f1e9398bd0477cb8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
