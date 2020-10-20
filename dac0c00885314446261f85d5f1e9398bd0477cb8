@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "41743f31_926adf27",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2020-10-20T21:39:24Z",
+      "side": 1,
+      "message": "I am curious, why is it not in the coordinator namespace considering that this is a coordinator setting? (Are we planning that in the future we expect executors to also have a configurable flight setting?)",
+      "parentUuid": "f55d46f5_da4505e1",
+      "revId": "dac0c00885314446261f85d5f1e9398bd0477cb8",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8c8c75bd_129ca286",
         "filename": "charts/dremio_v2/values.yaml",
         "patchSetId": 2
