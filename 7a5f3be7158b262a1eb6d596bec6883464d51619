@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab7418e_834566e6",
+        "filename": "charts/dremio_v2/docs/setup/Important-Setup-Considerations.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000170
+      },
+      "writtenOn": "2020-10-21T20:34:29Z",
+      "side": 1,
+      "message": "It says the benefits of setting the value to true, but it doesn\u0027t give any information on why it should be false. I know Ryan Tse was mentioning that Dremio works better sometimes with it set to false.",
+      "range": {
+        "startLine": 9,
+        "startChar": 72,
+        "endLine": 9,
+        "endChar": 89
+      },
+      "revId": "7a5f3be7158b262a1eb6d596bec6883464d51619",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    }
+  ]
+}
