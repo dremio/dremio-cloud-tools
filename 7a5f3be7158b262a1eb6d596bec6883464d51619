@@ -91,6 +91,29 @@
       "revId": "7a5f3be7158b262a1eb6d596bec6883464d51619",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98dd5a78_7da2049a",
+        "filename": "charts/dremio_v2/docs/setup/Important-Setup-Considerations.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2020-10-21T22:24:16Z",
+      "side": 1,
+      "message": "This sentence doesn\u0027t read cleanly to me. Maybe: \"When this value is `true`, all TCP connections from a particular client IP will be routed to a specific Dremio coordinator.\"?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 136
+      },
+      "revId": "7a5f3be7158b262a1eb6d596bec6883464d51619",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
     }
   ]
 }
