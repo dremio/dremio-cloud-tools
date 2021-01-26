@@ -44,6 +44,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: zk
+  {{- include "dremio.zookeeper.annotations" $ | nindent 2 }}
+  {{- include "dremio.zookeeper.labels" $ | nindent 2 }}
 spec:
   selector:
     matchLabels:
@@ -53,8 +55,6 @@ spec:
   updateStrategy:
     type: RollingUpdate
   podManagementPolicy: Parallel
-  {{- include "dremio.zookeeper.annotations" $ | nindent 2 }}
-  {{- include "dremio.zookeeper.labels" $ | nindent 2 }}
   template:
     metadata:
       labels:

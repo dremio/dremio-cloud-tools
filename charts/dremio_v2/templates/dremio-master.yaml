@@ -3,6 +3,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: dremio-master
+  {{- include "dremio.coordinator.annotations" $ | nindent 2}}
+  {{- include "dremio.coordinator.labels" $ | nindent 2}}
 spec:
   serviceName: "dremio-cluster-pod"
   podManagementPolicy: "Parallel"
@@ -10,8 +12,6 @@ spec:
   selector:
     matchLabels:
       app: dremio-coordinator
-  {{- include "dremio.coordinator.annotations" $ | nindent 2}}
-  {{- include "dremio.coordinator.labels" $ | nindent 2}}
   template:
     metadata:
       labels:

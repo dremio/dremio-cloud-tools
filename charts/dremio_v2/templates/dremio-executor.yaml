@@ -6,6 +6,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ $executorName }}
+  {{- include "dremio.executor.annotations" (list $ $engineName) | nindent 2}}
+  {{- include "dremio.executor.labels" (list $ $engineName) | nindent 2}}
 spec:
   serviceName: "dremio-cluster-pod"
   replicas: {{ template "dremio.executor.count" (list $ $engineName) }}
@@ -14,8 +16,6 @@ spec:
   selector:
     matchLabels:
       app: {{ $executorName }}
-  {{- include "dremio.executor.annotations" (list $ $engineName) | nindent 2}}
-  {{- include "dremio.executor.labels" (list $ $engineName) | nindent 2}}
   template:
     metadata:
       labels:
