@@ -60,7 +60,7 @@ spec:
       labels:
         app: zk
         {{- include "dremio.zookeeper.podLabels" $ | nindent 8 }}
-      {{- include "dremio.zookeeper.podAnnotations" $ | nindent 8 }}
+      {{- include "dremio.zookeeper.podAnnotations" $ | nindent 6 }}
     spec:
       affinity:
         podAntiAffinity:
