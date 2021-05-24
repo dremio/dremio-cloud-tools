@@ -968,11 +968,12 @@ Type: String
 
 By default, this value is set to `local`.
 
-The valid values for `distStorage.type` are `local` (not recommended), `aws`, `azure`, or `azureStorage`. For specific configuration values for each, see the associated sections:
+The valid values for `distStorage.type` are `local` (not recommended), `aws`, `azure`, `azureStorage` or `gcp`. For specific configuration values for each, see the associated sections:
 
 * `aws` (S3): [AWS S3](#aws-s3)
 * `azure` (Azure ADLS Gen 1): [Azure ADLS Gen 1](#azure-adls-gen-1)
 * `azureStorage` (Azure Storage Gen2): [Azure Storage Gen2](#azure-storage-gen2)
+* `gcp` (Google Cloud Storage): [Google Cloud Storage](#google-cloud-storage)
 
 For example, to use AWS S3 as the distributed storage location, you can specify the following:
 
@@ -1196,6 +1197,78 @@ distStorage:
       </property>
 [...]
 ```
+### Google Cloud Storage
+
+Dremio recommends to use a service account with proper access to GCS bucket. In addition, it is recommended to download the service account credentials in JSON format. 
+
+#### `distStorage.gcp.bucketName`
+
+Type: String
+
+By default, this value is set to `GCS Bucket Name` and must be changed to a valid bucket name.
+
+Specify a valid bucket name that Dremio has write access to.
+
+#### `distStorage.gcp.path`
+
+Type: String
+
+By default, this value is set to `/`.
+
+Dremio will write to the root path of the provided bucket. Set this value to an alternative path if you would like Dremio to write its contents to a subdirectory.
+
+#### Credentials for GCP GCS
+
+When providing credentials, values for `distStorage.gcp.credentials.projectId`,  `distStorage.gcp.credentials.clientId` and `distStorage.gcp.credentials.privateKey` should be provided. 
+
+For example, the following `distStorage` configuration may be used:
+
+```yaml
+distStorage:
+  [...]
+  gcp:
+    bucketName: "demo.dremio.com"
+    path: "/"
+    credentials:
+      projectId: "SOME_VALID_PROJECT_ID"
+      clientId: "SOME_VALID_CLIENT_ID"
+      privateKey: "SOME_VALID_PRIVATE_KEY"
+[...]
+```
+
+##### `distStorage.gcp.credentials.projectId`
+
+Type: String
+
+By default, this value is not set.
+
+Provide value for GCP project ID that the Google Cloud Storage bucket belongs to.
+
+##### `distStorage.gcp.credentials.clientId`
+
+Type: String
+
+By default, this value is not set.
+
+Provide value for GCP client ID for the service account that has access to Google Cloud Storage bucket.
+
+##### `distStorage.gcp.credentials.privateKey`
+
+Type: String
+
+By default, this value has a partial snippet of a private key.
+
+Provide value for private Key for the service account that has access to Google Cloud Storage bucket. Ensure this is provided in one line. You may paste the value as is from the json file that contains private key for the service account, including special characters. 
+
+#### Advanced Configuration for GCP GCS
+
+##### `distStorage.gcp.extraProperties`
+
+Type: String
+
+By default, this value is not set.
+
+This value can be used to specify additional properties to `core-site.xml` which is used to configure properties for the distributed storage source.
 
 ## Storage Values
 

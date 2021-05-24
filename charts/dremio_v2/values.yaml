@@ -270,7 +270,25 @@ distStorage:
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
+  # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
   type: "local"
+
+  # Google Cloud Storage
+  #
+  # bucketName: The name of the GCS bucket for distributed storage.
+  # path: The path, relative to the bucket, to create Dremio's directories.
+  # credentials:
+  #   projectId: GCP project Id that the Google Cloud Storage bucket belongs to.
+  #   clientId: GCP client Id for the service account that has access to Google Cloud Storage bucket.
+  #   privateKey: Private Key for the service account that has access to Google Cloud Storage bucket.
+  gcp:
+    bucketName: "GCS Bucket Name"
+    path: "/"
+    credentials:
+      projectId: ""
+      clientId: ""
+      privateKey: |-
+        "-----BEGIN PRIVATE KEY-----\nMII\n-----END PRIVATE KEY-----\n"
 
   # AWS S3
   # For more details of S3 configuration, see https://docs.dremio.com/deployment/dist-store-config.html#amazon-s3
