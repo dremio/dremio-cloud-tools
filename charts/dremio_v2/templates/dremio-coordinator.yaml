@@ -58,7 +58,7 @@ spec:
         - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
           value: >-
             {{- include "dremio.coordinator.extraStartParams" $ | nindent 12 -}}
-            -Dzookeeper=zk-hs:2181
+            -Dzookeeper={{ $.Values.zookeeper.remoteHost | default "zk-hs" }}:2181
             -Dservices.coordinator.enabled=true
             -Dservices.coordinator.master.enabled=false
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false

@@ -236,6 +236,9 @@ executor:
 
 # Zookeeper
 zookeeper:
+  # Uncomment to use existing zookeeper instead of creating statefulset.
+  #remoteHost: my-zk-host
+  
   # The Zookeeper image used in the cluster.
   image: k8s.gcr.io/kubernetes-zookeeper
   imageTag: 1.0-3.4.10

@@ -60,7 +60,7 @@ spec:
         - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
           value: >-
             {{- include "dremio.executor.extraStartParams" (list $ $engineName) | nindent 12 -}}
-            -Dzookeeper=zk-hs:2181
+            -Dzookeeper={{ $.Values.zookeeper.remoteHost | default "zk-hs" }}:2181
             -Dservices.coordinator.enabled=false
             -Dservices.coordinator.master.enabled=false
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
@@ -89,7 +89,7 @@ spec:
       {{- include "dremio.executor.cloudCache.initContainers" (list $ $engineName) | nindent 6 }}
       - name: wait-for-zookeeper
         image: busybox
-        command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;"]
+        command:  ["sh", "-c", "until ping -c 1 -W 1 {{ $.Values.zookeeper.remoteHost | default "zk-hs" }} > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;"]
       volumes:
       - name: dremio-config
         configMap:
