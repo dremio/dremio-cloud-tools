@@ -968,11 +968,12 @@ Type: String
 
 By default, this value is set to `local`.
 
-The valid values for `distStorage.type` are `local` (not recommended), `aws`, `azure`, or `azureStorage`. For specific configuration values for each, see the associated sections:
+The valid values for `distStorage.type` are `local` (not recommended), `aws`, `azure`, `azureStorage` or `gcp`. For specific configuration values for each, see the associated sections:
 
 * `aws` (S3): [AWS S3](#aws-s3)
 * `azure` (Azure ADLS Gen 1): [Azure ADLS Gen 1](#azure-adls-gen-1)
 * `azureStorage` (Azure Storage Gen2): [Azure Storage Gen2](#azure-storage-gen2)
+* `gcp` (Google Cloud Storage): [Google Cloud Storage](#google-cloud-storage)
 
 For example, to use AWS S3 as the distributed storage location, you can specify the following:
 
@@ -1196,6 +1197,111 @@ distStorage:
       </property>
 [...]
 ```
+### Google Cloud Storage
+
+Dremio recommends to use a service account with proper access to GCS bucket. In addition, it is recommended to download the service account credentials in JSON format. 
+
+##### `distStorage.gcp.projectId`
+
+Type: String
+
+By default, this value is not set.
+
+Provide value for GCP project ID that the Google Cloud Storage bucket belongs to.
+
+#### `distStorage.gcp.bucketName`
+
+Type: String
+
+By default, this value is set to `GCS Bucket Name` and must be changed to a valid bucket name.
+
+Specify a valid bucket name that Dremio has write access to.
+
+#### `distStorage.gcp.path`
+
+Type: String
+
+By default, this value is set to `/`.
+
+Dremio will write to the root path of the provided bucket. Set this value to an alternative path if you would like Dremio to write its contents to a subdirectory.
+
+#### `distStorage.gcp.authentication`
+
+Type: String
+
+By default, this value is set to `auto`.
+
+The valid values for `distStorage.gcp.authentication` are `auto` or `serviceAccountKeys`. 
+
+#### Credentials for GCP GCS
+
+When set to `auto`, Dremio will attempt to use Kubernetes service account specified via `serviceAccountName` parameter to authenticate to the GCS bucket. Pods running as the Kubernetes service account will automatically authenticate as a Google service account (that is linked beforehand) when accessing Google Cloud APIs. In order to use this authentication method, GKE cluster must be created with workload identity enabled.
+
+When set to `serviceAccountKeys`, the values `distStorage.gcp.credentials.clientId`, `distStorage.gcp.credentials.clientEmail`, `distStorage.gcp.credentials.privateKeyId` and `distStorage.gcp.credentials.privateKey` are used to authenticate to the GCS bucket. 
+
+For example, the following `distStorage` configuration may be used:
+
+```yaml
+distStorage:
+  [...]
+  gcp:
+    bucketName: "demo.dremio.com"
+    path: "/"
+    projectId: "SOME_VALID_PROJECT_ID"
+    authentication: "auto"
+    credentials:
+      serviceAccountName: "SOME_VALID_K8S_SERVICE_ACCOUNT"
+[...]
+```
+##### `distStorage.gcp.credentials.serviceAccountName`
+
+Type: String
+
+By default, this value is not set.
+
+Provide value for Kubernetes service account that is linked to IAM service account. 
+
+##### `distStorage.gcp.credentials.clientId`
+
+Type: String
+
+By default, this value is not set.
+
+Provide value for client ID for the service account that has access to Google Cloud Storage bucket.
+
+##### `distStorage.gcp.credentials.Email`
+
+Type: String
+
+By default, this value is not set.
+
+Provide value for client email for the service account that has access to Google Cloud Storage bucket.
+
+##### `distStorage.gcp.credentials.privateKeyId`
+
+Type: String
+
+By default, this value has a partial snippet of a private key.
+
+Provide value for private key ID for the GCP service account that has access to Google Cloud Storage bucket.
+
+##### `distStorage.gcp.credentials.privateKey`
+
+Type: String
+
+By default, this value has a partial snippet of a private key.
+
+Provide value for private Key for the service account that has access to Google Cloud Storage bucket. Ensure this is provided in one line. One may paste the value as is from the json file that contains private key for the service account, including special characters, but without surrounding quotes. 
+
+#### Advanced Configuration for GCP GCS
+
+##### `distStorage.gcp.extraProperties`
+
+Type: String
+
+By default, this value is not set.
+
+This value can be used to specify additional properties to `core-site.xml` which is used to configure properties for the distributed storage source.
 
 ## Storage Values
 

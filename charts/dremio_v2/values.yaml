@@ -270,7 +270,44 @@ distStorage:
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
+  # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
   type: "local"
+
+  # Google Cloud Storage
+  #
+  # projectId: GCP Project Id used by Dremio
+  # bucketName: The name of the GCS bucket for distributed storage.
+  # path: The path, relative to the bucket, to create Dremio's directories.
+  # authentication: Valid types are: serviceAccountKeys or auto.
+  gcp:
+    projectId: ""
+    bucketName: ""
+    path: "/"
+    authentication: "auto"
+
+    credentials:
+    # If using serviceAccountKeys, please provide following values
+    # projectId: GCP project Id that the Google Cloud Storage bucket belongs to.
+    # clientId: Client Id for the service account that has access to Google Cloud Storage bucket.
+    # clientEmail: Email for the service account that has access to Google Cloud Storage bucket.
+    # privateKey: Private Key for the service account that has access to Google Cloud Storage bucket. 
+    # privateKeyId: Private Key Id for the service account that has access to Google Cloud Storage bucket. 
+    # Paste the key as is in a single line without surrounding quotes (see example below).
+    #   privateKey: |-
+    #     -----BEGIN PRIVATE KEY-----\nPRIVATE KEY\n-----END PRIVATE KEY-----\n
+
+    # If using auto, please provide following values
+    # serviceAccountName: Service account that has enough permissions on the GCS bucket
+
+    # Extra Properties
+    # Use the extra properties block to provide additional parameters to configure the distributed
+    # storage in the generated core-site.xml file.
+    #
+    #extraProperties: |
+    #  <property>
+    #    <name></name>
+    #    <value></value>
+    #  </property>
 
   # AWS S3
   # For more details of S3 configuration, see https://docs.dremio.com/deployment/dist-store-config.html#amazon-s3
@@ -404,5 +441,5 @@ service:
 # the credentials in a kubernetes secret and provide the secret name
 # here.  For more information, see
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-#imagePullSecrets:
+# imagePullSecrets:
 #  - secretname

@@ -26,6 +26,9 @@ spec:
         dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
         {{- include "dremio.executor.podAnnotations" (list $ $engineName) | nindent 8}}
     spec:
+      {{- if and (eq $.Values.distStorage.type "gcp")  (eq $.Values.distStorage.gcp.authentication "auto") }}
+      serviceAccountName: {{ $.Values.distStorage.gcp.credentials.serviceAccountName }}
+      {{- end }}
       terminationGracePeriodSeconds: 120
       {{- include "dremio.executor.nodeSelector" (list $ $engineName) | nindent 6}}
       {{- include "dremio.executor.tolerations" (list $ $engineName) | nindent 6}}

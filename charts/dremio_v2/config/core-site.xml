@@ -1,7 +1,68 @@
 <?xml version="1.0"?>
 <configuration>
   <!-- If you are editing any content in this file, please remove lines with double curly braces around them -->
-{{- if and $.Values.distStorage.type (ne $.Values.distStorage.type "local") }}
+{{- if and $.Values.distStorage.type (ne $.Values.distStorage.type "local") -}}
+  <!-- GCS Configuration Section -->
+  {{- if eq $.Values.distStorage.type "gcp" -}}
+  <property>
+    <name>dremio.gcs.projectId</name>
+    <description>GCP Project Id</description>
+    <value>{{ required "GCP Project Id required" $.Values.distStorage.gcp.projectId }}</value>
+  </property>
+  <property>
+    <name>dremio.gcs.whitelisted.buckets</name>
+    <description>GCS bucket to use for distributed storage</description>
+    <value>{{ required "GCS Bucket name required" $.Values.distStorage.gcp.bucketName }}</value>
+  </property>
+  {{- if eq $.Values.distStorage.gcp.authentication "serviceAccountKeys" -}}
+  <property>
+    <name>fs.dremiogcs.impl</name>
+    <description>The FileSystem implementation. Must be set to com.dremio.plugins.gcs.GoogleBucketFileSystem</description>
+    <value>com.dremio.plugins.gcs.GoogleBucketFileSystem</value>
+  </property>
+  <property>
+    <name>dremio.gcs.use_keyfile</name>
+    <description>Use the key file</description>
+    <value>true</value>
+  </property>
+  <property>
+    <name>dremio.gcs.clientId</name>
+    <description>GCS Service Account Client Id</description>
+    <value>{{ required "GCS Service Account Client Id required" $.Values.distStorage.gcp.credentials.clientId }}</value>
+  </property>
+  <property>
+    <name>dremio.gcs.clientEmail</name>
+    <description>GCS Service Account Client Email</description>
+    <value>{{ required "GCS Service Account Client Email" $.Values.distStorage.gcp.credentials.clientEmail }}</value>
+  </property>
+  <property>
+    <name>dremio.gcs.privateKeyId</name>
+    <description>GCS Service Account Private Key Id</description>
+    <value>{{ required "GCS Service Account Private Key Id" $.Values.distStorage.gcp.credentials.privateKeyId }}</value>
+  </property>
+  <property>
+    <name>dremio.gcs.privateKey</name>
+    <description>GCS Service Account Private Key</description>
+    <value>{{ required "GCS Service Account Private Key" $.Values.distStorage.gcp.credentials.privateKey }}</value>
+  </property>
+  {{- else if eq $.Values.distStorage.gcp.authentication "auto" -}}
+  <property>
+    <name>fs.dremiogcs.impl</name>
+    <description>The FileSystem implementation. Must be set to com.dremio.plugins.gcs.GoogleBucketFileSystem</description>
+    <value>com.dremio.plugins.gcs.GoogleBucketFileSystem</value>
+  </property>
+  <property>
+    <name>dremio.gcs.use_keyfile</name>
+    <description>Do not use the key file</description>
+    <value>false</value>
+  </property>
+  {{- else -}}
+    {{ fail "Unrecognized GCP authentication mode." }}
+  {{- end -}}
+  {{- if $.Values.distStorage.gcp.extraProperties -}}
+  {{- $.Values.distStorage.gcp.extraProperties | nindent 4 }}
+  {{- end -}}
+  {{- end -}}
   {{- if eq $.Values.distStorage.type "aws" }}
   <!-- S3 Configuration Section -->
   <property>

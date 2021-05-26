@@ -22,6 +22,9 @@ spec:
         dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
         {{- include "dremio.coordinator.podAnnotations" $ | nindent 8}}
     spec:
+      {{- if eq $.Values.distStorage.gcp.authentication "auto" }}
+      serviceAccountName: {{ $.Values.distStorage.gcp.credentials.serviceAccountName }}
+      {{- end }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -124,6 +127,8 @@ spec:
         volumeMounts:
         - name: dremio-master-volume
           mountPath: /opt/dremio/data
+        - name: dremio-config
+          mountPath: /opt/dremio/conf
         command: ["/opt/dremio/bin/dremio-admin"]
         args:
         - "upgrade"
