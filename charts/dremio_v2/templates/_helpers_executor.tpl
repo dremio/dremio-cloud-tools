@@ -86,6 +86,19 @@ dremio-config
 {{- end -}}
 
 {{/*
+Executor - Service Account
+*/}}
+{{- define "dremio.executor.serviceAccount" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $engineServiceAccount := coalesce $engineConfiguration.serviceAccount $context.Values.executor.serviceAccount $context.Values.serviceAccount -}}
+{{- if $engineServiceAccount -}}
+serviceAccountName: {{ $engineServiceAccount }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Executor - Dremio Start Parameters
 */}}
 {{- define "dremio.executor.extraStartParams" -}}

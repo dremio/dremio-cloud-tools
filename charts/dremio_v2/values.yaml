@@ -44,6 +44,10 @@ coordinator:
   # the provisioned and maximum performance of the disk.
   volumeSize: 128Gi
 
+  # Kubernetes Service Account
+  # Uncomment below to use a custom Kubernetes service account for the coordinator.
+  #serviceAccount: ""
+
   # Uncomment the lines below to use a custom set of extra startup parameters for the coordinator.
   #extraStartParams: >-
   #  -DsomeKey=someValue
@@ -130,6 +134,10 @@ executor:
   # Executor volume size.
   volumeSize: 128Gi
 
+  # Kubernetes Service Account
+  # Uncomment below to use a custom Kubernetes service account for executors.
+  #serviceAccount: ""
+
   # Uncomment the lines below to use a custom set of extra startup parameters for executors.
   #extraStartParams: >-
   #  -DsomeKey=someValue
@@ -209,6 +217,8 @@ executor:
   #     nodeSelector: {}
   #     tolerations: []
   #
+  #     serviceAccount: ""
+  #
   #     extraStartParams: >-
   #       -DsomeCustomKey=someCustomValue
   #
@@ -216,6 +226,7 @@ executor:
   #       - name: extra-init-container
   #         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
   #         command: ["echo", "Hello World"]
+  #
   #
   #     extraVolumes: []
   #     extraVolumeMounts: []
@@ -249,6 +260,10 @@ zookeeper:
 
   volumeSize: 10Gi
 
+  # Kubernetes Service Account
+  # Uncomment below to use a custom Kubernetes service account for Zookeeper.
+  #serviceAccount: ""
+
   # Uncomment this value to use a different storage class for Zookeeper.
   #storageClass:
 
@@ -270,7 +285,45 @@ distStorage:
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
+  # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
   type: "local"
+
+  # Google Cloud Storage
+  #
+  # bucketName: The name of the GCS bucket for distributed storage.
+  # path: The path, relative to the bucket, to create Dremio's directories.
+  # authentication: Valid types are: serviceAccountKeys or auto.
+  #   - When using "auto" authentication, Dremio uses Google Application Default Credentials to
+  #     authenticate. This is platform dependent and may not be available in all Kubernetes clusters.
+  #   - Note: When using a GCS bucket on GKE, we recommend enabling Workload Identity and configuring
+  #       a Kubernetes Service Accountfor Dremio with an associated workload identity that
+  #       has access to the GCS bucket.
+  # credentials: If using serviceAccountKeys authentication, uncomment the credentials section below.
+  gcp:
+    bucketName: "GCS Bucket Name"
+    path: "/"
+    authentication: "auto"
+
+    # If using serviceAccountKeys, uncomment the section below, referencing the values from
+    # the service account credentials JSON file that you generated:
+    #
+    #credentials:
+    #  projectId: GCP Project ID that the Google Cloud Storage bucket belongs to.
+    #  clientId: Client ID for the service account that has access to Google Cloud Storage bucket.
+    #  clientEmail: Email for the service account that has access to Google Cloud Storage bucket.
+    #  privateKeyId: Private key ID for the service account that has access to Google Cloud Storage bucket.
+    #  privateKey: |-
+    #    -----BEGIN PRIVATE KEY-----\n Replace me with full private key value. \n-----END PRIVATE KEY-----\n
+
+    # Extra Properties
+    # Use the extra properties block to provide additional parameters to configure the distributed
+    # storage in the generated core-site.xml file.
+    #
+    #extraProperties: |
+    #  <property>
+    #    <name></name>
+    #    <value></value>
+    #  </property>
 
   # AWS S3
   # For more details of S3 configuration, see https://docs.dremio.com/deployment/dist-store-config.html#amazon-s3
@@ -363,6 +416,10 @@ distStorage:
 #    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
 #    command: ["echo", "Hello World"]
 
+# Kubernetes Service Account
+# Uncomment the below line to provide a Kubernetes service account that Dremio should run with.
+#serviceAccount: ""
+
 # Extra Volumes
 # Array to add extra volumes to all Dremio resources.
 extraVolumes: []
@@ -404,5 +461,5 @@ service:
 # the credentials in a kubernetes secret and provide the secret name
 # here.  For more information, see
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-#imagePullSecrets:
+# imagePullSecrets:
 #  - secretname
