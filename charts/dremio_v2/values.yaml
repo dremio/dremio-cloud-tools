@@ -7,8 +7,8 @@
 # Using latest will cause Dremio to potentially upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
-image: dremio/dremio-oss
-imageTag: latest
+image: gcr.io/dremio-poc/dremio-ee-staging
+imageTag: 16.1.0
 
 # Annotations, labels, node selectors, and tolerations
 #
@@ -32,8 +32,8 @@ coordinator:
   # CPU & Memory
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 1
+  memory: 4096
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
@@ -118,14 +118,14 @@ executor:
   # CPU & Memory
   # Memory allocated to each executor, expressed in MB.
   # CPU allocated to each executor, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 1
+  memory: 4096
 
   # Engines
   # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
   # Note: The number of executor pods will be the length of the array below * count.
   engines: ["default"]
-  count: 3
+  count: 1
 
   # Executor volume size.
   volumeSize: 128Gi
@@ -270,7 +270,51 @@ distStorage:
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
-  type: "local"
+  # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
+  type: "gcp"
+
+  # Google Cloud Storage
+  #
+  # projectId: GCP Project Id used by Dremio
+  # bucketName: The name of the GCS bucket for distributed storage.
+  # path: The path, relative to the bucket, to create Dremio's directories.
+  # authentication: Valid types are: serviceAccountKeys or auto.
+  gcp:
+    projectId: "dremio-poc"
+    bucketName: "dremio-bucket"
+    path: "/dremio-auto"
+    # authentication: "serviceAccountKeys"
+    authentication: "auto"
+
+    credentials:
+    # If using serviceAccountKeys, please provide following values
+    # projectId: GCP project Id that the Google Cloud Storage bucket belongs to.
+    # clientId: Client Id for the service account that has access to Google Cloud Storage bucket.
+    # clientEmail: Email for the service account that has access to Google Cloud Storage bucket.
+    # privateKey: Private Key for the service account that has access to Google Cloud Storage bucket. 
+    # privateKeyId: Private Key Id for the service account that has access to Google Cloud Storage bucket. 
+    # Paste the key as is in a single line without surrounding quotes (see example below).
+    #   privateKey: |-
+    #     -----BEGIN PRIVATE KEY-----\nPRIVATE KEY\n-----END PRIVATE KEY-----\n
+      clientId: "110440182929723430600"
+      clientEmail: "dremio-svc-account@dremio-poc.iam.gserviceaccount.com"
+      privateKeyId: "4a66cdb64db6f1ffbb8e038512b5a32bb8d53bf2"
+      privateKey: |-
+        -----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCbgA2b/aCLCBXE\n+zwHr93hByqetib2R/HPQ+meDhopBkmgGOaj5JUs/qpZBzIfoEYg/WEKf9CADyDq\nUg0+l4xGzrC5VZhLgCxIMhl0k35yPRdJR3SaKwA3xVxWYKTmaxcASEZ09TxuCBra\nihM7ScFILuLoOj3Pu8rDqvTu2EOKejvA+YrpBdEuaflrdIDNIOGGcSQf95WvcdJe\nbnXzDpmiDoNgYMTVy/ZyE26dRmLOgjuIL2V6DKyUIcrBJ1C8X5WfpQX0L9DxkEir\nQq459BoRK3c3/O1Bd+NQ5m3im3y3jGUPbV8YFSpKM26w+sK9LhhTETuKiOleB42U\nGAYvJQEpAgMBAAECggEAAzqhAOslRGdtRrMuEQplxQPIYeK7CcrLqpF1jlrEabN5\nbIT0p4gAt9Ff/MvjKBH32Tzs7diV0U4lhLtVQazIjm3bVwKzUDOmRI3s+ZhyFaUC\nhBSJemwUxWCCGHV9GlKaxMUIPx4aj6RecZXqOVINdlZdT61p72B61B5YMLkcvSLg\njSpq+anZX9SqA/EwmIvUlUJQl2r1c6Hb37E/ORLe53XxMcHiqYCnIdn1xLOyQCRZ\nItiJIw1YzsfJ/G6jnTeFVSc3JiDbRxNzyLIlxeDECyMPbF91kRSjQeSx+nuP/Yzr\nlgK0uutStT6rMtRLsdkkSzbH0QWAJucPfx8KuLuviwKBgQDWJYo6Xr1trwWE7fpY\nU3ovRlJeHJabD85sSFpoXet57FQ7lmS5zx7y2P1MtaFpsST6qdifqbXEtTUy07Nw\nj5dxjO20k+d82JvpVqMPNSRxOpLYxUiSG3J7Dy49QbMrEKSrqL7mc4nGYDDjWh75\nAOt9HWUAup+8EwfrAJn82/LQwwKBgQC55D1OmyuoMxGQkuu7dU0Es5BweRug1wjw\nmfV7b3W1a93cUkZOOLXi503sIZIFPZtQtWR9PjMAwLIFpgqBkD+LWdAcSHKm/eYL\nvm4PUO6syb9bwa087jBiJ/UMkmV+MbXK8i+e1+OD3IIJoyN4+J46Jx4pp/PxHZ+3\nr4N7y4xHowKBgQCVa1wnnjNOdPDE78feGWEH22ldgVUUnNLLezCZ4e6MA/pCGY3u\nmDZf/EfBXnph5NiIjjo4LZJGzqlv7Ycm4wookMzLUugSlJE1Ht5nngzvdI9B8WXR\njJU0iEMbOtxpEBPWMsgAxF09raBvAlLaK2okwn3XJGCQOjcsIh9P76hdQQKBgFpF\nBKR0Y8nlKsVrI0A/4SvESwLjPNBpO/Uivnu3j5CPFgjUh0Ga9nB+ZG+jibYzyYVy\n4J6VIs1dxdVKYVWzh7gS4CWr5MlFCH5xdh7H7W9I9T0Imyi4fhRcVPpK6TBT0XUB\nELDxI5G39gnaB/LJwIR61IHkBmjzOslHWPE30iJDAoGAYbggLmOI7HABHYDxA1FC\nPfVQUqdO6/0TcWRDCrChbBLmMZHuTocmuf5AP5Mi629BoJ5aLTPWmd8w4LLzL2Qs\ngNflkQv5qH8YA9c+U9I7YckElI+Mf47g1+/kyTxmRhF1XPl+Fn2hTDSk3fMaFx4f\nnKoRPH/j5h3HzOXXdVQ05iU=\n-----END PRIVATE KEY-----\n
+
+    # If using auto, please provide following values
+    # serviceAccountName: Service account that has enough permissions on the GCS bucket
+      serviceAccountName: "manoj-svc-account"
+
+    # Extra Properties
+    # Use the extra properties block to provide additional parameters to configure the distributed
+    # storage in the generated core-site.xml file.
+    #
+    #extraProperties: |
+    #  <property>
+    #    <name></name>
+    #    <value></value>
+    #  </property>
 
   # AWS S3
   # For more details of S3 configuration, see https://docs.dremio.com/deployment/dist-store-config.html#amazon-s3
@@ -404,5 +448,5 @@ service:
 # the credentials in a kubernetes secret and provide the secret name
 # here.  For more information, see
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-#imagePullSecrets:
-#  - secretname
+# imagePullSecrets:
+#  - dremiomanoj
