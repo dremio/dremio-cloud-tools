@@ -26,6 +26,7 @@ spec:
         dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
         {{- include "dremio.executor.podAnnotations" (list $ $engineName) | nindent 8}}
     spec:
+      {{- include "dremio.executor.serviceAccount" (list $ $engineName) | nindent 6}}
       terminationGracePeriodSeconds: 120
       {{- include "dremio.executor.nodeSelector" (list $ $engineName) | nindent 6}}
       {{- include "dremio.executor.tolerations" (list $ $engineName) | nindent 6}}
