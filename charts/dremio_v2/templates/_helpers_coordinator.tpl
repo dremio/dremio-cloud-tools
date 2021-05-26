@@ -29,6 +29,16 @@ Coordiantor - Dremio Direct Memory Allocation
 {{- end -}}
 
 {{/*
+Coordinator - Service Account
+*/}}
+{{- define "dremio.coordinator.serviceAccount" -}}
+{{- $coordinatorServiceAccount := coalesce $.Values.coordinator.serviceAccount $.Values.serviceAccount -}}
+{{- if $coordinatorServiceAccount -}}
+serviceAccountName: {{ $coordinatorServiceAccount }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Coordinator - Dremio Start Parameters
 */}}
 {{- define "dremio.coordinator.extraStartParams" -}}

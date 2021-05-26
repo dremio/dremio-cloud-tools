@@ -22,6 +22,7 @@ spec:
         dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
         {{- include "dremio.coordinator.podAnnotations" $ | nindent 8}}
     spec:
+      {{- include "dremio.coordinator.serviceAccount" $ | nindent 6 }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

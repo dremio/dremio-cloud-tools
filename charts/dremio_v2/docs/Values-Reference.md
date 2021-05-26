@@ -32,13 +32,26 @@ By default, this value is not set.
 
 In some environments, an internal mirror may be used that requires authentication. For enterprise users, you may need to specify the `imagePullSecret` for the Kubernetes cluster to have access to the Dremio enterprise image. Please refer to the documentation [Pull an Image from a Private Repository](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/) provided by Kubernetes on how to create an image pull secret.
 
+
+### Kubernetes Service Account
+
+#### `serviceAccount`
+
+Type: String
+
+By default, this value is not set and will use the default service account configured for the Kubernetes cluster.
+
+This value is independently overridable in each section ([`coordinator`](#coordinator), [`executor`](#executor), [`zookeeper`](#zookeeper)).
+
+More Info: See the [Service Accounts](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) documentation for Kubernetes.
+
 ### Storage Configuration
 
 #### `storageClass`
 
 Type: String
 
-By default, this value is not set and will use the default storage class configured for the cluster.
+By default, this value is not set and will use the default storage class configured for the Kubernetes cluster.
 
 Storage class has a direct impact on the performance of the Dremio cluster. Optionally set this value to use the same storage class for all persistent volumes created. This value is independently overridable in each section ([`coordinator`](#coordinator), [`executor`](#executor), [`zookeeper`](#zookeeper)).
 
@@ -507,6 +520,14 @@ Storage class has a direct impact on the performance of the Dremio cluster. On t
 
 More Info: Refer to the [`storageClass`](#storageclass) section of this reference.
 
+#### `coordinator.serviceAccount`
+
+Type: String
+
+By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `serviceAccount`.
+
+More Info: Refer to the [`serviceAccount`](#serviceaccount) section of this reference.
+
 #### `coordinator.extraStartParams`
 
 Type: String
@@ -774,9 +795,15 @@ Type: String
 
 By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `storageClass`. This value can be set on a **per-engine basis**, see the [Per-Engine Configuration](#per-engine-configuration) section.
 
-Storage class has a direct impact on the performance of the Dremio cluster. On the master coordinator node, RocksDB is stored on the persistent volume created with this storage class.
-
 More Info: Refer to the [`storageClass`](#storageclass) section of this reference.
+
+#### `executor.serviceAccount`
+
+Type: String
+
+By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `serviceAccount`. This value can be set on a **per-engine basis**, see the [Per-Engine Configuration](#per-engine-configuration) section.
+
+More Info: Refer to the [`serviceAccount`](#serviceaccount) section of this reference.
 
 #### `executor.extraStartParams`
 
@@ -904,6 +931,8 @@ executor:
         operator: "Exists"
         effect: "NoSchedule"
 
+      serviceAccount: "internal"
+
       extraStartParams: >-
         -DsomeTestKey=someValue
 
@@ -968,11 +997,12 @@ Type: String
 
 By default, this value is set to `local`.
 
-The valid values for `distStorage.type` are `local` (not recommended), `aws`, `azure`, or `azureStorage`. For specific configuration values for each, see the associated sections:
+The valid values for `distStorage.type` are `local` (not recommended), `aws`, `azure`, `azureStorage` or `gcp`. For specific configuration values for each, see the associated sections:
 
 * `aws` (S3): [AWS S3](#aws-s3)
 * `azure` (Azure ADLS Gen 1): [Azure ADLS Gen 1](#azure-adls-gen-1)
 * `azureStorage` (Azure Storage Gen2): [Azure Storage Gen2](#azure-storage-gen2)
+* `gcp` (Google Cloud Storage): [Google Cloud Storage](#google-cloud-storage)
 
 For example, to use AWS S3 as the distributed storage location, you can specify the following:
 
@@ -1145,7 +1175,7 @@ Type: String
 
 By default, this value is set to `Azure Storage Account Name` and must be changed to a valid Azure Storage account name.
 
-Specify a valid datalake store name that Dremio has write access to. For the required permissions, please see the Azure Ac section of the Azure Data Lake Storage Gen1 documentation for Dremio.
+Specify a valid datalake store name that Dremio has write access to. For the required permissions, please see the [Granting Azure Data Lake Store access](https://docs.dremio.com/data-sources/azure-data-lake-store.html#granting-azure-data-lake-store-access) section of the Azure Data Lake Storage Gen1 documentation for Dremio.
 
 #### `distStorage.azureStorage.filesystem`
 
@@ -1196,6 +1226,119 @@ distStorage:
       </property>
 [...]
 ```
+### Google Cloud Storage
+
+#### `distStorage.gcp.bucketName`
+
+Type: String
+
+By default, this value is set to `GCS Bucket Name` and must be changed to a valid bucket name.
+
+Specify a valid bucket name that Dremio has write access to.
+
+#### `distStorage.gcp.path`
+
+Type: String
+
+By default, this value is set to `/`.
+
+Dremio will write to the root path of the provided bucket. Set this value to an alternative path if you would like Dremio to write its contents to a subdirectory.
+
+#### `distStorage.gcp.authentication`
+
+Type: String
+
+By default, this value is set to `auto`.
+
+The valid values for `distStorage.gcp.authentication` are `auto` or `serviceAccountKeys`. When set to `auto`, Dremio will use Google Application Default Credentials to authenticate to the GCS bucket.
+
+***Note***: On GKE clusters with [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) enabled, we recommend creating a Kubernetes [Service Account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) and setting [`serviceAccount`](#serviceaccount) to reference the Kubernetes service account. If specifying different service accounts for coordinators/executors, ensure that all service accounts have access to the GCS bucket.
+
+#### Credentials for GCP GCS
+
+When set to `serviceAccountKeys`, the values `distStorage.gcp.credentials.projectId`, `distStorage.gcp.credentials.clientId`, `distStorage.gcp.credentials.clientEmail`, `distStorage.gcp.credentials.privateKeyId` and `distStorage.gcp.credentials.privateKey` are used to authenticate to the GCS bucket.
+
+For example, to use service account credential keys, you can do the following:
+
+```yaml
+distStorage:
+  [...]
+  gcp:
+    bucketName: "demo-bucket.dremio.com"
+    path: "/"
+    authentication: "serviceAccountKeys"
+    credentials:
+      projectId: "dremio-demo-project"
+      clientId: "000000000"
+      clientEmail: "demo-service-account@dremio-demo-project.iam.gserviceaccount.com"
+      privateKeyId: "0000000000000000000000000000000000000000"
+      privateKey: |-
+        -----BEGIN PRIVATE KEY-----\nPRIVATE KEY\n-----END PRIVATE KEY-----\n
+[...]
+```
+
+Alternatively, for example, to use a Kubernetes Service Account on GKE with Workload Identity:
+
+```yaml
+serviceAccount: "k8s-service-account-name"
+distStorage:
+  [...]
+  gcp:
+    bucketName: "demo-bucket.dremio.com"
+    path: "/"
+    authentication: "auto"
+[...]
+```
+
+##### `distStorage.gcp.credentials.projectId`
+
+Type: String
+
+By default, this value is not set.
+
+For Dremio to authenticate with service account credential keys, provide the project ID for the service account.
+
+##### `distStorage.gcp.credentials.clientId`
+
+Type: String
+
+By default, this value is not set.
+
+For Dremio to authenticate with service account credential keys, provide the client ID for the service account.
+
+##### `distStorage.gcp.credentials.clientEmail`
+
+Type: String
+
+By default, this value is not set.
+
+For Dremio to authenticate with service account credential keys, provide the client email for the service account.
+
+##### `distStorage.gcp.credentials.privateKeyId`
+
+Type: String
+
+By default, this value is not set.
+
+For Dremio to authenticate with service account credential keys, provide the private key ID for the service account.
+
+##### `distStorage.gcp.credentials.privateKey`
+
+Type: String
+
+By default, this value has a partial snippet of a private key.
+
+For Dremio to authenticate with service account credential keys, provide the private key for the service account. Ensure this value is provided in one line. You can directly copy the value as-is from the credentials JSON file, including any special characters, but without surrounding quotes. 
+
+#### Advanced Configuration for GCP GCS
+
+##### `distStorage.gcp.extraProperties`
+
+Type: String
+
+By default, this value is not set.
+
+This value can be used to specify additional properties to `core-site.xml` which is used to configure properties for the distributed storage source.
 
 ## Storage Values
 
@@ -1444,3 +1587,10 @@ Storage class has an impact on the performance of the Zookeeper instances when w
 
 More Info: Refer to the [`storageClass`](#storageclass) section of this reference.
 
+#### `zookeeper.serviceAccount`
+
+Type: String
+
+By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `serviceAccount`.
+
+More Info: Refer to the [`serviceAccount`](#serviceaccount) section of this reference.

@@ -17,6 +17,16 @@ storageClassName: {{ $zookeeperStorageClass }}
 {{- end -}}
 
 {{/*
+Zookeeper - Service Account
+*/}}
+{{- define "dremio.zookeeper.serviceAccount" -}}
+{{- $zookeeperServiceAccount := coalesce $.Values.zookeeper.serviceAccount $.Values.serviceAccount -}}
+{{- if $zookeeperServiceAccount -}}
+serviceAccountName: {{ $zookeeperServiceAccount }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Zookeeper - StatefulSet Annotations
 */}}
 {{- define "dremio.zookeeper.annotations" -}}
