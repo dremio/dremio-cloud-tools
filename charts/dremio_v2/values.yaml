@@ -24,21 +24,16 @@ annotations: {}
 podAnnotations: {}
 labels: {}
 podLabels: {}
-nodeSelector:
-  node.kubernetes.io/type: dremio
-tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "dremio"
-    effect: "NoSchedule"
+nodeSelector: {}
+tolerations: []
 
 # Dremio Coordinator
 coordinator:
   # CPU & Memory
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
-  cpu: 1.5
-  memory: 6144
+  cpu: 15
+  memory: 122800
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
@@ -123,8 +118,8 @@ executor:
   # CPU & Memory
   # Memory allocated to each executor, expressed in MB.
   # CPU allocated to each executor, expressed in CPU cores.
-  cpu: 1.5
-  memory: 6144
+  cpu: 15
+  memory: 122800
 
   # Engines
   # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
@@ -241,9 +236,6 @@ executor:
 
 # Zookeeper
 zookeeper:
-  # Uncomment to use remote zookeeper instead of creating statefulset.
-  #remoteHost: zk-hs.zookeeper.svc.cluster.local
-  
   # The Zookeeper image used in the cluster.
   image: k8s.gcr.io/kubernetes-zookeeper
   imageTag: 1.0-3.4.10
@@ -252,7 +244,7 @@ zookeeper:
   # Memory allocated to each zookeeper, expressed in MB.
   # CPU allocated to each zookeeper, expressed in CPU cores.
   cpu: 0.5
-  memory: 6144
+  memory: 1024
   count: 3
 
   volumeSize: 10Gi
@@ -397,7 +389,7 @@ service:
   # for the LoadBalancer's external IP.
   # The chart is setup for internal IP support for AKS, EKS, GKE.
   # For more information, see https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
-  internalLoadBalancer: true
+  #internalLoadBalancer: true
 
   # If you have a static IP allocated for your load balancer, uncomment the following
   # line and set the IP to provide the static IP used for the load balancer.

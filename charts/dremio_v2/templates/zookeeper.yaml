@@ -1,5 +1,4 @@
 {{- if not $.Values.DremioAdmin -}}
-{{- if not $.Values.zookeeper.remoteHost -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -137,5 +136,4 @@ spec:
       resources:
         requests:
           storage: {{ $.Values.zookeeper.volumeSize }}
-{{- end -}}
 {{- end -}}
