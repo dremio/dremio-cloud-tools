@@ -71,6 +71,7 @@ spec:
             {{- include "dremio.coordinator.extraStartParams" $ | nindent 12 -}}
             -Dzookeeper=zk-hs:2181
             -Dservices.coordinator.enabled=true
+            -Ddremio.debug.sysopt.c3.runtime.affinity=true
             -Dservices.coordinator.master.enabled=true
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
