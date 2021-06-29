@@ -193,7 +193,7 @@ executor:
   #
   # The settings above are overridable on a per-engine basis. These
   # values here will take precedence and *override* the configured values
-  # on a per-engine basis. Engine ovrrides are matched with the name in the above
+  # on a per-engine basis. Engine overrides are matched with the name in the above
   # list of engines.
   #
   # Special per-engine parameters:
@@ -330,7 +330,7 @@ distStorage:
   #
   # bucketName: The name of the S3 bucket for distributed storage.
   # path: The path, relative to the bucket, to create Dremio's directories.
-  # authentication: Valid types are: accessKeySecret or instanceMetadata.
+  # authentication: Valid types are: accessKeySecret, instanceMetadata, or awsProfile.
   #   - Note: Instance metadata is only supported in AWS EKS and requires that the
   #       EKS worker node IAM role is configured with sufficient access rights. At this time,
   #       Dremio does not support using an K8s service account based IAM role.
@@ -345,7 +345,13 @@ distStorage:
     #credentials:
     #  accessKey: "AWS Access Key"
     #  secret: "AWS Secret"
-
+    #
+    # If using awsProfile for authentication against S3, uncomment the lines below and use the values
+    # to choose the appropriate profile.
+    #
+    #credentials:
+    #  awsProfileName: "default"
+    #
     # Extra Properties
     # Use the extra properties block to provide additional parameters to configure the distributed
     # storage in the generated core-site.xml file.
