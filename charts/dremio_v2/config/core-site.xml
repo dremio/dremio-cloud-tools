@@ -92,6 +92,17 @@
     <description>The credential provider type.</description>
     <value>com.amazonaws.auth.InstanceProfileCredentialsProvider</value>
   </property>
+  {{ else if eq $.Values.distStorage.aws.authentication "awsProfile" -}}
+  <property>
+    <name>com.dremio.awsProfile</name>
+    <description>AWS Profile to use.</description>
+    <value>{{ required "AWS profile required" $.Values.distStorage.aws.credentials.awsProfileName}}</value>
+  </property>
+  <property>
+    <name>fs.s3a.aws.credentials.provider</name>
+    <description>The credential provider type.</description>
+    <value>com.dremio.plugins.s3.store.AWSProfileCredentialsProviderV1</value>
+  </property>
   {{- else -}}
     {{ fail "Unrecognized AWS authentication mode." }}
   {{- end -}}
