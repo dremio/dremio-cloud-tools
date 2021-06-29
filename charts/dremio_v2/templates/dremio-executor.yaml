@@ -68,6 +68,10 @@ spec:
             -Dservices.executor.enabled=true
             -Dservices.conduit.port=45679
             -Dservices.node-tag={{ $engineName }}
+        - name: AWS_CREDENTIAL_PROFILES_FILE
+          value: "/opt/dremio/aws/credentials"
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/opt/dremio/aws/credentials"
         command: ["/opt/dremio/bin/dremio"]
         args: ["start-fg"]
         ports:
