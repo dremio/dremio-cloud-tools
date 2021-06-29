@@ -1037,7 +1037,7 @@ Type: String
 
 By default, this value is set to `metadata`.
 
-The valid values for `distStorage.aws.authentication` are `metadata` or `accessKeySecret`. When set to `metadata`, Dremio will attempt to use the instance profile of the EKS node to authenticate to the S3 bucket. When set to `accesskeySecret`, the values `distStorage.aws.credentials.accessKey` and `distStorage.aws.credentials.secret` are used to authenticate. 
+The valid values for `distStorage.aws.authentication` are `metadata`, `accessKeySecret`, or `awsProfile`. When set to `metadata`, Dremio will attempt to use the instance profile of the EKS node to authenticate to the S3 bucket. When set to `accesskeySecret`, the values `distStorage.aws.credentials.accessKey` and `distStorage.aws.credentials.secret` are used to authenticate.  When set to `awsProfile`, the `distStorage.aws.credentials.awsProfileName` value is used to authenticate.
 
 ***Note***: Dremio does not support service account IAM roles on EKS.
 
@@ -1075,6 +1075,20 @@ Type: String
 By default, this value is not set.
 
 For Dremio to authenticate via access key and secret, provide a valid secret value.
+
+#### AWS Profile Authentication for AWS S3
+
+When using `awsProfile` for `distStorage.aws.authentication`, a folder containing a valid AWS `credentials` file needs to be mounted to `/opt/dremio/aws`.
+
+If using a profile that uses the `credentials_process` option, the target script needs to be mounted to the location specified in the `credentials` file. The script must also be marked as executable. If using the `defaultMode` option to set this, use the decimal value `511` which corresponds to octal `0777`.
+
+##### `distStorage.aws.credentials.awsProfileName`
+
+Type: String
+
+By default, this value is not set.
+
+Specifies the AWS Profile name to use for AWS Profile authentication.
 
 #### Advanced Configuration for AWS S3
 
