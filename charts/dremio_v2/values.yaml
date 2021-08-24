@@ -276,6 +276,12 @@ zookeeper:
   #nodeSelector: {}
   #tolerations: []
 
+# BusyBox
+busybox:
+  # The BusyBox image used in the cluster.
+  image: busybox
+  imageTag: latest
+
 # Control where uploaded files are stored for Dremio.
 # For more information, see https://docs.dremio.com/deployment/distributed-storage.html
 distStorage:

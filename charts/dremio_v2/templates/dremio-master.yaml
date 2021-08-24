@@ -106,10 +106,10 @@ spec:
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
       - name: start-only-one-dremio-master
-        image: busybox
+        image: {{ $.Values.busybox.image }}:{{ $.Values.busybox.imageTag }}
         command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
       - name: wait-for-zookeeper
-        image: busybox
+        image: {{ $.Values.busybox.image }}:{{ $.Values.busybox.imageTag }}
         command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;"]
       - name: chown-data-directory
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}

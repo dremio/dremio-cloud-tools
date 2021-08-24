@@ -197,6 +197,12 @@ Type: Dictionary
 
 This section controls the deployment of Zookeeper in Kubernetes. See the [Zookeeper Values](#zookeeper-values) section.
 
+#### `busybox`
+
+Type: Dictionary
+
+This section controls the deployment of BusyBox in Kubernetes. See the [BusyBox Values](#busybox-values) section.
+
 ### Advanced Configuration
 
 #### `extraStartParams`
@@ -1470,6 +1476,7 @@ By default, the value is set to `1.0-3.4.10`.
 
 The version of Zookeeper set has been validated by Dremio to work with the Dremio software. Changing this version is not recommended unless the tag is different due to a private container registry name difference.
 
+
 ### General Configuration
 
 #### `zookeeeper.cpu` & `zookeeper.memory`
@@ -1609,3 +1616,23 @@ Type: String
 By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `serviceAccount`.
 
 More Info: Refer to the [`serviceAccount`](#serviceaccount) section of this reference.
+
+## BusyBox Values
+
+### Image Configuration
+
+#### `busybox.image`
+
+Type: String
+
+By default, the value is set to `busybox`.
+
+The `image` refers to the location to retrieve the specific container image for BusyBox. In some cases, the `busybox.image` value may vary in corporate environments where there may be a private container registry that is used.
+
+#### `busybox.imageTag`
+
+Type: String
+
+By default, the value is set to `latest`.
+
+The version of BusyBox set has been validated by Dremio to work with the Dremio software. Changing this version is not recommended unless the tag is different due to a private container registry name difference.
