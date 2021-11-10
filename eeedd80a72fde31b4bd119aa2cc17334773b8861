@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "49478efc_57a0ea59",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2021-11-10T19:14:43Z",
+      "side": 1,
+      "message": "Why this commit? Leet\u0027s reference master.",
+      "range": {
+        "startLine": 14,
+        "startChar": 50,
+        "endLine": 14,
+        "endChar": 140
+      },
+      "revId": "eeedd80a72fde31b4bd119aa2cc17334773b8861",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3525975_14394a13",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2021-11-10T19:14:43Z",
+      "side": 1,
+      "message": "`cd`?",
+      "range": {
+        "startLine": 15,
+        "startChar": 25,
+        "endLine": 15,
+        "endChar": 27
+      },
+      "revId": "eeedd80a72fde31b4bd119aa2cc17334773b8861",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c466b86_0faf7701",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2021-11-10T19:14:43Z",
+      "side": 1,
+      "message": "Don\u0027t copy, this should not be a copy. They should add their own keys into a value.local.yaml which overrides values.",
+      "revId": "eeedd80a72fde31b4bd119aa2cc17334773b8861",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c0402a3_0a006a0f",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2021-11-10T19:14:43Z",
+      "side": 1,
+      "message": "... or other issues?",
+      "range": {
+        "startLine": 31,
+        "startChar": 115,
+        "endLine": 31,
+        "endChar": 174
+      },
+      "revId": "eeedd80a72fde31b4bd119aa2cc17334773b8861",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    }
+  ]
+}
