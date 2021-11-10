@@ -1,9 +1,10 @@
 # Installing Dremio on Kubernetes
 
+You can follow these instructions to install Dremio in a Kubernetes cluster provisioned through a cloud provider or running in an on-premises environment. Supported cloud providers are Amazon's Elastic Kubernetes Service (EKS), Google Cloud's Google Kubernetes Engine (GKE), and Microsoft Azure's Azure Kubernetes Service (AKS).
+
 If you are upgrading from the previous Helm chart for Dremio, please see the [Migrating Helm Chart Versions](./docs/setup/Migrating-Helm-Chart-Versions.md) documentation.
 
 ## Prerequisites
-
 
 * Ensure that you haven existing Kubernetes cluster. 
 * Ensure that Helm 3 is set up on a local machine.
@@ -11,16 +12,22 @@ If you are upgrading from the previous Helm chart for Dremio, please see the [Mi
 
 ## Procedure
 
-1. Download [the `dremio-cloud-tools` repository](https://github.com/dremio/dremio-cloud-tools/tree/30bffb1320d63fb13d9aee56e9e0dbf5449337b0).
-1. In a terminal window, cd to `dremio-cloud-tools/charts/dremio_v2/`.
-1. Create a copy of the file `values.yaml` in the same directory. The rest of this procedure refers to the copy as `values.local.yaml`. Making changes in this copy allows you to quickly update to the latest version of the chart by copying the `values.local.yaml` across Helm chart updates.
+1. Download [the `dremio-cloud-tools` repository](https://github.com/dremio/dremio-cloud-tools/tree/master/charts/dremio_v2).
+1. In a terminal window, change to the `dremio-cloud-tools/charts/dremio_v2/` directory.
+1. Review the default values in the file `values.yaml`, which configures the Dremio installation. If you want to override any of these values, create a file with the `.yaml` extension in this directory, copy into this file the keys for which you want to set non-default values, and then set the values in the file. Making changes in this file allows you to quickly update to the latest version of the chart by copying the file across Helm chart updates.
 1. Referring to "[`values.yaml` Reference](./docs/Values-Reference.md)", review the default values for configuring Dremio in the `values.local.yaml` file, and change values where necessary.
 1. Review the document "[Important Setup Considerations](./docs/setup/Important-Setup-Considerations.md)" and make any of the listed changes to the values in your `values.local.yaml` file that you think are necessary for your enironment.
-1. Install the Helm Chart by running this command from the `charts` directory:
+1. Install the Helm Chart by running one of these commands from the `charts` directory:
+   * If you are overriding any of the default values that are in the `values.yaml` file, run this command:
 
-   ```bash
-   $ helm install <release-name> dremio_v2 -f values.local.yaml
-   ```
+      ```bash
+      $ helm install <release-name> dremio_v2 -f <file>
+      ```
+      where `<file>` is the name of the file that you are using to override values.
+   * If you are not overriding any of the values in the `values.yaml` file, run this command:
+      ```bash
+      $ helm install <release-name> dremio_v2
+      ```
 
    If the installation takes longer than a few minutes to complete, you can check the status of the installation by using the following command:
 
@@ -28,7 +35,7 @@ If you are upgrading from the previous Helm chart for Dremio, please see the [Mi
    $ kubectl get pods
    ```
 
-   If a pod remains in **Pending** state for more than a few minutes, run the following command to view its status to check that there are sufficient resources for scheduling:
+   If a pod remains in **Pending** state for more than a few minutes, run the following command to view its status to check for issues, such as insufficient resources for scheduling:
 
    ```bash
    $ kubectl describe pods <pod-name>
