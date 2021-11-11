@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6b55982_e0987b16",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2021-11-11T16:07:19Z",
+      "side": 1,
+      "message": "have an\n\nAdditional nit: Remove space at the end of the line.",
+      "revId": "9677c33d3099e98f41e1a554a1eae5520e056631",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    }
+  ]
+}
