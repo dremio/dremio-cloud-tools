@@ -88,10 +88,46 @@
           </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
 
-        <encoder>
-          <pattern>%msg%n</pattern>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+          <providers>
+            <arguments />
+          </providers>
         </encoder>
       </appender>
+
+      <appender name="audit" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${dremio.log.path}/audit.json</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>${dremio.log.path}/archive/audit.%d{yyyy-MM-dd}.%i.json.gz</fileNamePattern>
+          <maxHistory>30</maxHistory>
+          <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>100MB</maxFileSize>
+          </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+          <providers>
+            <pattern><pattern>{"timestamp": "%date{ISO8601}"}</pattern></pattern>
+            <arguments />
+          </providers>
+        </encoder>
+      </appender>
+
+      <appender name="tracker" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${dremio.log.path}/tracker.json</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>${dremio.log.path}/archive/tracker.%d{yyyy-MM-dd}.%i.json.gz</fileNamePattern>
+          <maxHistory>30</maxHistory>
+          <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+              <maxFileSize>100MB</maxFileSize>
+          </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+          <pattern>%date{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+      </appender>
+
     </then>
   </if>
 
@@ -106,6 +142,25 @@
         <appender-ref ref="query"/>
       </then>
     </if>
+  </logger>
+
+  <logger name="audit.logger">
+    <level value="${dremio.log.level:-info}"/>
+    <if condition='isDefined("dremio.log.path")'>
+      <then>
+        <appender-ref ref="audit"/>
+      </then>
+    </if>
+  </logger>
+
+  <logger name="tracker.logger">
+      <level value="{dremio.log.level: -info}"/>
+      <if condition='isDefined("dremio.log.path")'>
+          <then>
+              <additivity value ="false"/>
+              <appender-ref ref="tracker"/>
+          </then>
+      </if>
   </logger>
 
   <logger name="com.dremio.exec.catalog.SourceMetadataManager" additivity="false">
@@ -146,6 +201,10 @@
         </appender>
       </then>
     </if>
+  </logger>
+
+  <logger name="org.apache.hadoop.hdfs.DFSClient">
+    <level value="warn"/>
   </logger>
 
   <root>
