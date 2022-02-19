@@ -61,11 +61,18 @@ coordinator:
 
   # Extra Volumes
   # Uncomment below to use a custom set of extra volumes for the coordinator.
-  #extraVolumes: []
+  extraVolumes: 
+    - name: timezone
+      hostPath: 
+        path: /usr/share/zoneinfo/Asia/Shanghai
+      
+
 
   # Extra Volume Mounts
   # Uncomment below to use a custom set of extra volume mounts for the coordinator.
-  #extraVolumeMounts: []
+  extraVolumeMounts: 
+    - name: timezone
+      mountPath: /etc/localtime
 
   # Uncomment this value to use a different storage class for the coordinator.
   #storageClass:
@@ -151,11 +158,17 @@ executor:
 
   # Extra Volumes
   # Uncomment below to use a custom set of extra volumes for executors.
-  #extraVolumes: []
+  extraVolumes: 
+    - name: timezone
+      hostPath: 
+        path: /usr/share/zoneinfo/Asia/Shanghai
+      
 
   # Extra Volume Mounts
   # Uncomment below to use a custom set of extra volume mounts for executors.
-  #extraVolumeMounts: []
+  extraVolumeMounts: 
+    - name: timezone
+      mountPath: /etc/localtime
 
   # Uncomment this value to use a different storage class for executors.
   storageClass: nfs
@@ -428,12 +441,15 @@ distStorage:
 
 # Extra Volumes
 # Array to add extra volumes to all Dremio resources.
-extraVolumes: []
-
+extraVolumes: 
+    - name: timezone
+      hostPath: 
+        path: /usr/share/zoneinfo/Asia/Shanghai
 # Extra Volume Mounts
 # Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
-extraVolumeMounts: []
-
+extraVolumeMounts: 
+    - name: timezone
+      mountPath: /etc/localtime
 # Dremio Service
 # The dremio-client service exposes the service for access outside of the Kubernetes cluster.
 service:
