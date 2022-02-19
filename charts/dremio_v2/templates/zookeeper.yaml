@@ -77,7 +77,7 @@ spec:
       {{- include "dremio.zookeeper.tolerations" $ | nindent 6 }}
       containers:
       - name: kubernetes-zookeeper
-        imagePullPolicy: Always
+        imagePullPolicy: Never
         image: "{{ $.Values.zookeeper.image }}:{{ $.Values.zookeeper.imageTag }}"
         resources:
           requests:

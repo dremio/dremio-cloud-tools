@@ -7,8 +7,8 @@
 # Using latest will cause Dremio to potentially upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
-image: dremio/dremio-oss
-imageTag: latest
+image: ericnee/dremio-oss
+imageTag: v0.0.2
 
 # Annotations, labels, node selectors, and tolerations
 #
@@ -32,8 +32,8 @@ coordinator:
   # CPU & Memory
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 4
+  memory: 4096
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
@@ -122,14 +122,14 @@ executor:
   # CPU & Memory
   # Memory allocated to each executor, expressed in MB.
   # CPU allocated to each executor, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 4
+  memory: 16384
 
   # Engines
   # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
   # Note: The number of executor pods will be the length of the array below * count.
   engines: ["default"]
-  count: 3
+  count: 2
 
   # Executor volume size.
   volumeSize: 128Gi
@@ -158,7 +158,7 @@ executor:
   #extraVolumeMounts: []
 
   # Uncomment this value to use a different storage class for executors.
-  #storageClass:
+  storageClass: nfs
 
   # Dremio C3
   # Designed for use with NVMe storage devices, performance may be impacted when using
@@ -256,7 +256,7 @@ zookeeper:
   # CPU allocated to each zookeeper, expressed in CPU cores.
   cpu: 0.5
   memory: 1024
-  count: 3
+  count: 1
 
   volumeSize: 10Gi
 
