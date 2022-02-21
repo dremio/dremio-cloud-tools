@@ -67,7 +67,6 @@ coordinator:
         path: /usr/share/zoneinfo/Asia/Shanghai
       
 
-
   # Extra Volume Mounts
   # Uncomment below to use a custom set of extra volume mounts for the coordinator.
   extraVolumeMounts: 
@@ -162,7 +161,6 @@ executor:
     - name: timezone
       hostPath: 
         path: /usr/share/zoneinfo/Asia/Shanghai
-      
 
   # Extra Volume Mounts
   # Uncomment below to use a custom set of extra volume mounts for executors.

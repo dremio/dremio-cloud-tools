@@ -78,7 +78,6 @@ spec:
             -Dservices.conduit.port=45679
             -Dsaffron.default.charset=UTF-8
             -Dsaffron.default.nationalcharset=UTF-8
-            -Dsaffron.default.collation.name=UTF-8$zh_CN
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
