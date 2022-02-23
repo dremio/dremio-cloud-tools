@@ -7,8 +7,8 @@
 # Using latest will cause Dremio to potentially upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
-image: dremio/dremio-oss
-imageTag: 20.1.0
+image: ericnee/dremio-oss
+imageTag: v20.1.0
 
 # Annotations, labels, node selectors, and tolerations
 #
