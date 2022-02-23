@@ -8,7 +8,7 @@
 # automatically during redeployments and may negatively impact
 # the cluster.
 image: ericnee/dremio-oss
-imageTag: v20.1.3
+imageTag: v20.1.0
 
 # Annotations, labels, node selectors, and tolerations
 #
