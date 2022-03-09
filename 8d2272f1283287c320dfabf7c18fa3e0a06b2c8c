@@ -16,6 +16,24 @@
       "revId": "8d2272f1283287c320dfabf7c18fa3e0a06b2c8c",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e0ba4ab_e97d85a1",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-09T20:59:12Z",
+      "side": 1,
+      "message": "nice catch: I need to increment the counter here\na valid id is between 1-255 as per zoo docs, and kubernetes hostnames are 0 based.\n\nZOO_SERVER_ID\u003d${HOSTNAME##*-}; \n(( ZOO_SERVER_ID++ )); \nexport ZOO_SERVER_ID",
+      "parentUuid": "9b84db39_35a98b5c",
+      "revId": "8d2272f1283287c320dfabf7c18fa3e0a06b2c8c",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
     }
   ]
 }
