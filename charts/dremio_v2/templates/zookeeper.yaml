@@ -83,14 +83,13 @@ spec:
         - -ec
         - |
             # Execute entrypoint as usual after obtaining ZOO_MY_ID based on POD hostname
-            #HOST_NUMBER=${HOSTNAME##*-}; (( HOST_NUMBER++ )); export ZOO_MY_ID=$HOST_NUMBER
             export HOST_NUMBER="${HOSTNAME##*-}"
             export ZOO_MY_ID="$((HOST_NUMBER + 1))"
             [ -z "${ZOO_MY_ID}" ] && echo "Failed to get index from hostname $HOSTNAME" && exit 1
             echo "ZOO_MY_ID=${ZOO_MY_ID}"
             rm -rf $ZOO_DATA_DIR/myid && echo "removed stale $ZOO_DATA_DIR/myid"
             /docker-entrypoint.sh
-            # there is a bug in the official image docker-entrypoint.sh does not myid if it exists
+            # there is a bug in the official image docker-entrypoint.sh does not write myid if it exists
             zkServer.sh start-foreground
         env:
 #        - name: ALLOW_ANONYMOUS_LOGIN
