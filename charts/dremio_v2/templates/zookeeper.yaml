@@ -78,6 +78,38 @@ spec:
       containers:
       - name: kubernetes-zookeeper
         imagePullPolicy: Always
+        command:
+        - bash
+        - -ec
+        - |
+            # Execute entrypoint as usual after obtaining ZOO_MY_ID based on POD hostname
+            export HOST_NUMBER="${HOSTNAME##*-}"
+            export ZOO_MY_ID="$((HOST_NUMBER + 1))"
+            [ -z "${ZOO_MY_ID}" ] && echo "Failed to get index from hostname $HOSTNAME" && exit 1
+            echo "ZOO_MY_ID=${ZOO_MY_ID}"
+            /docker-entrypoint.sh
+            zkServer.sh start-foreground
+        env:
+        - name: JVMFLAGS
+          value: "-Xmx{{ template "dremio.zookeeper.memory" $ }}m"
+        - name: ZOO_STANDALONE_ENABLED
+          value: "false"
+        - name: ZOO_4LW_COMMANDS_WHITELIST
+          value: "{{ $.Values.zookeeper.zookeeper4LWCommandsWhitelist }}"
+        - name: ZOO_ADMINSERVER_ENABLED
+          value: "{{ $.Values.zookeeper.zookeeperAdminserverEnabled }}"
+        - name: ZOO_AUTOPURGE_PURGEINTERVAL
+          value: "{{ $.Values.zookeeper.zookeeperAutopurgePurgeinterval }}"
+        - name: ZOO_SERVERS
+          {{- $replicaCount := int $.Values.zookeeper.count }}
+          {{- $followerPort := "2888" }}
+          {{- $electionPort := "3888" }}
+          {{- $clientPort   := "2181" }}
+          {{- $releaseNamespace := .Release.Namespace }}
+          {{- $zookeeperFullname := "zk" }}
+          {{- $zookeeperHeadlessServiceName := "zk-hs" }}
+          {{- $clusterDomain := "svc.cluster.local" }}
+          value: {{ range $i, $e := until $replicaCount }}server.{{ $e | add 1}}={{ $zookeeperFullname }}-{{ $e }}.{{ $zookeeperHeadlessServiceName }}.{{ $releaseNamespace }}.{{ $clusterDomain }}:{{ $followerPort }}:{{ $electionPort }};{{ $clientPort }} {{ end }}
         image: "{{ $.Values.zookeeper.image }}:{{ $.Values.zookeeper.imageTag }}"
         resources:
           requests:
@@ -90,40 +122,19 @@ spec:
           name: server
         - containerPort: 3888
           name: leader-election
-        command:
-        - sh
-        - -c
-        - "start-zookeeper \
-          --servers={{ $.Values.zookeeper.count }} \
-          --data_dir=/var/lib/zookeeper/data \
-          --data_log_dir=/var/lib/zookeeper/data/log \
-          --conf_dir=/opt/zookeeper/conf \
-          --client_port=2181 \
-          --election_port=3888 \
-          --server_port=2888 \
-          --tick_time=2000 \
-          --init_limit=10 \
-          --sync_limit=5 \
-          --heap={{- template "dremio.zookeeper.memory" $ -}}M \
-          --max_client_cnxns=60 \
-          --snap_retain_count=3 \
-          --purge_interval=12 \
-          --max_session_timeout=40000 \
-          --min_session_timeout=4000 \
-          --log_level=INFO"
         readinessProbe:
           exec:
-            command: ["sh", "-c", "zookeeper-ready 2181"]
+            command: ["/bin/bash", "-c", "[ \"$(echo ruok | nc 127.0.0.1 2181)\" == \"imok\" ]" ]
           initialDelaySeconds: 10
           timeoutSeconds: 5
         livenessProbe:
           exec:
-            command: ["sh", "-c", "zookeeper-ready 2181"]
+            command: ["/bin/bash", "-c", "[ \"$(echo ruok | nc 127.0.0.1 2181)\" == \"imok\" ]" ]
           initialDelaySeconds: 10
           timeoutSeconds: 5
         volumeMounts:
         - name: datadir
-          mountPath: /var/lib/zookeeper
+          mountPath: /data
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
