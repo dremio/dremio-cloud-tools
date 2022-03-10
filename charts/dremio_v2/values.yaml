@@ -248,8 +248,8 @@ executor:
 # Zookeeper
 zookeeper:
   # The Zookeeper image used in the cluster.
-  image: bitnami/zookeeper
-  imageTag: 3.5.9
+  image: zookeeper
+  imageTag: 3.7.0
 
   # CPU & Memory
   # Memory allocated to each zookeeper, expressed in MB.

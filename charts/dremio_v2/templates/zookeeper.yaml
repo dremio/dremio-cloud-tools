@@ -82,33 +82,40 @@ spec:
         - bash
         - -ec
         - |
-            # Execute entrypoint as usual after obtaining ZOO_SERVER_ID based on POD hostname
-            #HOST_NUMBER=${HOSTNAME##*-}; (( HOST_NUMBER++ )); export ZOO_SERVER_ID=$HOST_NUMBER
+            # Execute entrypoint as usual after obtaining ZOO_MY_ID based on POD hostname
+            #HOST_NUMBER=${HOSTNAME##*-}; (( HOST_NUMBER++ )); export ZOO_MY_ID=$HOST_NUMBER
             export HOST_NUMBER="${HOSTNAME##*-}"
-            export ZOO_SERVER_ID="$((HOST_NUMBER + 1))"
-            [ -z "${ZOO_SERVER_ID}" ] && echo "Failed to get index from hostname $HOSTNAME" && exit 1
-            exec /entrypoint.sh /run.sh
+            export ZOO_MY_ID="$((HOST_NUMBER + 1))"
+            [ -z "${ZOO_MY_ID}" ] && echo "Failed to get index from hostname $HOSTNAME" && exit 1
+            echo "ZOO_MY_ID=${ZOO_MY_ID}"
+            rm -rf $ZOO_DATA_DIR/myid && echo "removed stale $ZOO_DATA_DIR/myid"
+            /docker-entrypoint.sh
+            # there is a bug in the official image docker-entrypoint.sh does not myid if it exists
+            zkServer.sh start-foreground
         env:
-        - name: ALLOW_ANONYMOUS_LOGIN
-          value: "yes"
-        - name: ZOO_HEAP_SIZE
-          value: "{{ template "dremio.zookeeper.memory" $ }}"
+#        - name: ALLOW_ANONYMOUS_LOGIN
+#          value: "yes"
+        - name: JVMFLAGS
+          value: "-Xmx{{ template "dremio.zookeeper.memory" $ }}m"
+        - name: ZOO_STANDALONE_ENABLED
+          value: "false"
         - name: ZOO_4LW_COMMANDS_WHITELIST
 #         value: "ruok"                      #safer
           value: "srvr,mntr,stat,conf,ruok"  #useful when debugging
-        - name: ZOO_ENABLE_ADMIN_SERVER
-          value: "no"
-        - name: ZOO_AUTOPURGE_INTERVAL
+        - name: ZOO_ADMINSERVER_ENABLED
+          value: "false"
+        - name: ZOO_AUTOPURGE_PURGEINTERVAL
           value: "12"
         - name: ZOO_SERVERS
           {{- $replicaCount := int $.Values.zookeeper.count }}
           {{- $followerPort := "2888" }}
           {{- $electionPort := "3888" }}
+          {{- $clientPort   := "2181" }}
           {{- $releaseNamespace := .Release.Namespace }}
           {{- $zookeeperFullname := printf "zk" }}
           {{- $zookeeperHeadlessServiceName := printf "zk-hs" }}
           {{- $clusterDomain := "svc.cluster.local" }}
-          value: {{ range $i, $e := until $replicaCount }}{{ $zookeeperFullname }}-{{ $e }}.{{ $zookeeperHeadlessServiceName }}.{{ $releaseNamespace }}.{{ $clusterDomain }}:{{ $followerPort }}:{{ $electionPort }}::{{ $e | add 1}} {{ end }}
+          value: {{ range $i, $e := until $replicaCount }}server.{{ $e | add 1}}={{ $zookeeperFullname }}-{{ $e }}.{{ $zookeeperHeadlessServiceName }}.{{ $releaseNamespace }}.{{ $clusterDomain }}:{{ $followerPort }}:{{ $electionPort }};{{ $clientPort }} {{ end }}
         image: "{{ $.Values.zookeeper.image }}:{{ $.Values.zookeeper.imageTag }}"
         resources:
           requests:
@@ -133,7 +140,7 @@ spec:
           timeoutSeconds: 5
         volumeMounts:
         - name: datadir
-          mountPath: /bitnami/zookeeper
+          mountPath: /data
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
