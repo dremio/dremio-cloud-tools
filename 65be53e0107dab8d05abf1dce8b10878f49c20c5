@@ -16,6 +16,24 @@
       "revId": "65be53e0107dab8d05abf1dce8b10878f49c20c5",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52ac229b_45c2bcb6",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T19:49:17Z",
+      "side": 1,
+      "message": "sure, i will make ZOO_4LW_COMMANDS_WHITELIST, ZOO_ADMINSERVER_ENABLED, ZOO_AUTOPURGE_PURGEINTERVAL configurable.\n\nshould ZOO_STANDALONE_ENABLED\u003dfalse be left as is, or make this configurable too?\n\nI left out the others because we seem to be using defaults. for example the tick\n--tick_time\u003d2000 is specified, but the default is 2 anyways. so seemed redundant.\n\nLet me know if there are others that need to be configurable.\nsee\nhttps://hub.docker.com/_/zookeeper",
+      "parentUuid": "d834f79c_6b4e079e",
+      "revId": "65be53e0107dab8d05abf1dce8b10878f49c20c5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
     }
   ]
 }
