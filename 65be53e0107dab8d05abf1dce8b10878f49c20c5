@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d834f79c_6b4e079e",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2022-03-11T19:17:39Z",
+      "side": 1,
+      "message": "let\u0027s make whitelist/admin flags configurable (with those default) would also include the purge).\n\nShould some other values like timeout be configurable too?",
+      "revId": "65be53e0107dab8d05abf1dce8b10878f49c20c5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    }
+  ]
+}

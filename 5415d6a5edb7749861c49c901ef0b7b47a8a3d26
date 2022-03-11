@@ -161,6 +161,30 @@
     },
     {
       "key": {
+        "uuid": "6e901e7a_9377de16",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2022-03-11T19:17:39Z",
+      "side": 1,
+      "message": "tbh, it\u0027s minor but it feels like someone writing:\n\n  if (condition) {\n    return true;\n  } else {\n    return false;\n  }",
+      "parentUuid": "9a67ba85_f097d4db",
+      "range": {
+        "startLine": 132,
+        "startChar": 42,
+        "endLine": 132,
+        "endChar": 107
+      },
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6144249c_a6221838",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 1
@@ -211,6 +235,24 @@
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "00f38fa8_bc499b7c",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2022-03-11T19:17:39Z",
+      "side": 1,
+      "message": "Maybe I got it wrong myself? I guess the question is how ZK handles read data from an older version but I thought it may not be an issue if only used for Dremio because all the data would be ephemeral?",
+      "parentUuid": "bb36b8c9_cb7360a3",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
     }
   ]
 }
