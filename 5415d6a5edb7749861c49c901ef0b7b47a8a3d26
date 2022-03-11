@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7251bca0_1f61ad82",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T01:34:56Z",
+      "side": 1,
+      "message": "my bad, i had a stale namespace. removed in latest patchset",
+      "parentUuid": "c305a06f_e1809e47",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eab0f498_04e24e6d",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3c71388_ad2e6902",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T01:34:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "eab0f498_04e24e6d",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "3e42d65b_4414d55e",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T01:34:56Z",
+      "side": 1,
+      "message": "nope, just coding style. like it to be explicit.\nhappy to remove it if you want, nothing special about it.",
+      "parentUuid": "336b3377_f2d83d16",
+      "range": {
+        "startLine": 132,
+        "startChar": 42,
+        "endLine": 132,
+        "endChar": 107
+      },
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6144249c_a6221838",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 1
@@ -70,6 +130,24 @@
       "writtenOn": "2022-03-10T21:19:03Z",
       "side": 1,
       "message": "I guess we are not worried about migration?",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f0377be_d65aa591",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T01:34:56Z",
+      "side": 1,
+      "message": "I am not sure what we need to do about migrations. \nCan you point me to right way to do it. \n\nthe current image uses /data as the default location for data\n\noption 1. \nI can map /var/lib/zookeeper as a hard link to /data on startup\nalbeit this will help migrations it will create a ugly-ism for new instances\n\noption 2.\ni can add a script to tar /var/lib/zookeeper (if exists) on startup and move the contents to /data\n\nI am not sure such a upgrade will be universally correct for everyone. \n(let me know what is needed)",
+      "parentUuid": "6144249c_a6221838",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": true
