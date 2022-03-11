@@ -52,6 +52,24 @@
       "revId": "65be53e0107dab8d05abf1dce8b10878f49c20c5",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "446b1c6d_88548eaf",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T21:13:25Z",
+      "side": 1,
+      "message": "fixed in Patchset 3. \nhappy to add more variable as/when needed",
+      "parentUuid": "93ad05a3_2dbb33c0",
+      "revId": "65be53e0107dab8d05abf1dce8b10878f49c20c5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
