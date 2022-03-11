@@ -34,6 +34,24 @@
       "revId": "65be53e0107dab8d05abf1dce8b10878f49c20c5",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93ad05a3_2dbb33c0",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T20:05:30Z",
+      "side": 1,
+      "message": "I don\u0027t really know which of these users should modify in usual course of deployment and which they should not change unless they are experts. \nI only exposed the ones where we/dremio had picked the non-default options.\n(and ruok, needed for liveliness check)",
+      "parentUuid": "52ac229b_45c2bcb6",
+      "revId": "65be53e0107dab8d05abf1dce8b10878f49c20c5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": true
     }
   ]
 }
