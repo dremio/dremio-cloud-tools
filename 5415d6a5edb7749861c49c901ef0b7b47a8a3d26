@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "32ce9f32_75da8c22",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T17:29:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3c71388_ad2e6902",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "336b3377_f2d83d16",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 1
@@ -119,6 +137,30 @@
     },
     {
       "key": {
+        "uuid": "9a67ba85_f097d4db",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T17:29:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e42d65b_4414d55e",
+      "range": {
+        "startLine": 132,
+        "startChar": 42,
+        "endLine": 132,
+        "endChar": 107
+      },
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6144249c_a6221838",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 1
@@ -151,6 +193,24 @@
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb36b8c9_cb7360a3",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T17:29:40Z",
+      "side": 1,
+      "message": "I believe setting the DATA to the previous value /var/lib/zookeeper will allow for upgrades.\n\nNote: the volume mount called datadir will now get mounted to /data and its contents will be preserved. (i.e. what was in /var/lib/zookeeper will not appear in /data). this is because the datadir name is unchanged.\n\n         volumeMounts:\n         - name: datadir\n-          mountPath: /data\n+          mountPath: /var/lib/zookeeper\n\n(however upgrades should still be tested; I ask QA to test upgrade from 3.4 -\u003e 3.7 upgrade)",
+      "parentUuid": "6f0377be_d65aa591",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
+      "unresolved": false
     }
   ]
 }
