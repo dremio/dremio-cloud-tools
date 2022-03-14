@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "c305a06f_e1809e47",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "why is it a bug? if it is a stateful set, myid should be stable?",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": true
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "7251bca0_1f61ad82",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -32,10 +33,10 @@
       "message": "my bad, i had a stale namespace. removed in latest patchset",
       "parentUuid": "c305a06f_e1809e47",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": false
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "eab0f498_04e24e6d",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -49,10 +50,10 @@
       "side": 1,
       "message": "default should be to use the safer approach. If you want to make it configurable, create a helm value?",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": true
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "c3c71388_ad2e6902",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -67,10 +68,10 @@
       "message": "Ack",
       "parentUuid": "eab0f498_04e24e6d",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": false
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "32ce9f32_75da8c22",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -85,10 +86,10 @@
       "message": "Done",
       "parentUuid": "c3c71388_ad2e6902",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": false
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "336b3377_f2d83d16",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -108,10 +109,10 @@
         "endChar": 107
       },
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": true
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "3e42d65b_4414d55e",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -132,10 +133,10 @@
         "endChar": 107
       },
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": false
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "9a67ba85_f097d4db",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -156,10 +157,10 @@
         "endChar": 107
       },
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": false
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "6e901e7a_9377de16",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -180,10 +181,10 @@
         "endChar": 107
       },
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": false
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "6144249c_a6221838",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -197,10 +198,10 @@
       "side": 1,
       "message": "I guess we are not worried about migration?",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": true
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "6f0377be_d65aa591",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -215,10 +216,10 @@
       "message": "I am not sure what we need to do about migrations. \nCan you point me to right way to do it. \n\nthe current image uses /data as the default location for data\n\noption 1. \nI can map /var/lib/zookeeper as a hard link to /data on startup\nalbeit this will help migrations it will create a ugly-ism for new instances\n\noption 2.\ni can add a script to tar /var/lib/zookeeper (if exists) on startup and move the contents to /data\n\nI am not sure such a upgrade will be universally correct for everyone. \n(let me know what is needed)",
       "parentUuid": "6144249c_a6221838",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": true
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "bb36b8c9_cb7360a3",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -233,10 +234,10 @@
       "message": "I believe setting the DATA to the previous value /var/lib/zookeeper will allow for upgrades.\n\nNote: the volume mount called datadir will now get mounted to /data and its contents will be preserved. (i.e. what was in /var/lib/zookeeper will not appear in /data). this is because the datadir name is unchanged.\n\n         volumeMounts:\n         - name: datadir\n-          mountPath: /data\n+          mountPath: /var/lib/zookeeper\n\n(however upgrades should still be tested; I ask QA to test upgrade from 3.4 -\u003e 3.7 upgrade)",
       "parentUuid": "6f0377be_d65aa591",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": false
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "00f38fa8_bc499b7c",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
@@ -251,8 +252,25 @@
       "message": "Maybe I got it wrong myself? I guess the question is how ZK handles read data from an older version but I thought it may not be an issue if only used for Dremio because all the data would be ephemeral?",
       "parentUuid": "bb36b8c9_cb7360a3",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
-      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de",
-      "unresolved": true
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ae46487_755877a8",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-14T20:59:39Z",
+      "side": 1,
+      "message": "As i understand it there are several questions related to ZK upgrade\n1. is a rolling upgrade possible - yes, we tested that\n2. does the data mount point change impact the upgrade - no, as the stateful set moves the directory to the new mount point and it just works\n3. (if i understand correctly, you say all dremio data is ephemeral) in case of a non-rolling update, if there is non-dremio data, how is is impacted - This is a unknown.\n\nHow would you like us to address #3. \ndoesn\u0027t it depend on what else the customer is using ZK for?",
+      "parentUuid": "00f38fa8_bc499b7c",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
