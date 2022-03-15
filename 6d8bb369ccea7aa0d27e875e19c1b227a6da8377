@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "318e8edb_c0340359",
+        "filename": "charts/dremio_v2/values.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-03-15T18:17:17Z",
+      "side": 1,
+      "message": "Let\u0027s move this so that it is:\n\n  config:\n    commandsWhitelist:\n    adminServerEnabled:\n    autoPurgeInterval:\n\nAlso, remember to update the docs in this repo to reflect these changes. 🙂",
+      "revId": "6d8bb369ccea7aa0d27e875e19c1b227a6da8377",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}

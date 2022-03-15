@@ -289,6 +289,24 @@
       "parentUuid": "4ae46487_755877a8",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fb065d3_79f553d9",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-03-15T18:17:17Z",
+      "side": 1,
+      "message": "The customer shouldn\u0027t be using the Zookeeper that we deploy for Dremio as part of anything else. So, it should be safe to lose all the Zookeeper data as part of this update.",
+      "parentUuid": "9cac3802_d76cb1bb",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
