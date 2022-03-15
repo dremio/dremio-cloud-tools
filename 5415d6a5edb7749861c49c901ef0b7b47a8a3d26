@@ -307,6 +307,24 @@
       "parentUuid": "9cac3802_d76cb1bb",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bee0ad4_b5fbf79d",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-15T20:06:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8fb065d3_79f553d9",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
