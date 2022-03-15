@@ -271,6 +271,24 @@
       "parentUuid": "00f38fa8_bc499b7c",
       "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cac3802_d76cb1bb",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000015
+      },
+      "writtenOn": "2022-03-15T17:05:43Z",
+      "side": 1,
+      "message": "Yes it depends on what customer does, and I don\u0027t have datapoints on this. @ryan, any insights?",
+      "parentUuid": "4ae46487_755877a8",
+      "revId": "5415d6a5edb7749861c49c901ef0b7b47a8a3d26",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
