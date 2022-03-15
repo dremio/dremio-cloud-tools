@@ -24,6 +24,30 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f17761f5_ad533721",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-15T23:55:48Z",
+      "side": 1,
+      "message": "I did not realize Gerrit commit message was public. I have cleaned it up",
+      "parentUuid": "22f5fe83_b22c8b8b",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 35
+      },
+      "revId": "6d8bb369ccea7aa0d27e875e19c1b227a6da8377",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "318e8edb_c0340359",
