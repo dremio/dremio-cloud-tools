@@ -34,6 +34,24 @@
       "parentUuid": "318e8edb_c0340359",
       "revId": "6d8bb369ccea7aa0d27e875e19c1b227a6da8377",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a68bfd18_616c04dc",
+        "filename": "charts/dremio_v2/values.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-03-15T23:21:39Z",
+      "side": 1,
+      "message": "This is the file that needs updating: https://github.com/dremio/dremio-cloud-tools/blob/master/charts/dremio_v2/docs/Values-Reference.md\n\nIf we don\u0027t really want them to change these values, let\u0027s hard code them and force them to make a conscious choice of changing it in the template files. Either they are tunable (hence configurable via values.yaml) or not. Anything we present as an option in the values.yaml should be considered something we support them changing.",
+      "parentUuid": "d2bf4f57_d9f3cdf5",
+      "revId": "6d8bb369ccea7aa0d27e875e19c1b227a6da8377",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
