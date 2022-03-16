@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71424d15_d58d7975",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-03-16T03:49:12Z",
+      "side": 1,
+      "message": "You shared:\n\n  zookeeper@zk-2:/apache-zookeeper-3.7.0-bin$ echo ruok | nc zk-1.zk-hs 2181\n  imok\n\nI would like it to be just zk-\u003cnumber\u003e.zk-hs to remove the dependency on specifying the namespace and the cluster domain.",
+      "parentUuid": "a908b6a5_26ec2d53",
+      "revId": "6dbeca0a0e6b2f295762430b2951f59e0fe32857",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39bc202f_f139f96a",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 7
