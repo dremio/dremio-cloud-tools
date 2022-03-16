@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a908b6a5_26ec2d53",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-16T03:46:49Z",
+      "side": 1,
+      "message": "I dont understand, is there a change expected?  \nI have tried that no other combination of hostname/ fully qualified hostname works",
+      "parentUuid": "faf804d8_df64c74c",
+      "revId": "6dbeca0a0e6b2f295762430b2951f59e0fe32857",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39bc202f_f139f96a",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 7
