@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ceba65bb_c78fd841",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-16T01:44:45Z",
+      "side": 1,
+      "message": "the serviceName : zk-hs comes in the way because of which i have to use FQDN\n(the name without the service name does not resolve)\n\nhere is the relevant info\n\nzookeeper@zk-2:/apache-zookeeper-3.7.0-bin$ hostname -f\nzk-2.zk-hs.skeswani-zk-test.svc.cluster.local\n\nzookeeper@zk-2:/apache-zookeeper-3.7.0-bin$ hostname \nzk-2\n\nzookeeper@zk-2:/apache-zookeeper-3.7.0-bin$ cat /etc/resolv.conf \nnameserver 10.140.0.10\nsearch skeswani-zk-test.svc.cluster.local svc.cluster.local cluster.local c.dremio-1093.internal google.internal\noptions ndots:5\n\n\nzookeeper@zk-2:/apache-zookeeper-3.7.0-bin$ echo ruok | nc zk-1.zk-hs 2181\nimok\n\nzookeeper@zk-2:/apache-zookeeper-3.7.0-bin$ echo ruok | nc zk-1 2181\nnc: getaddrinfo for host \"zk-1\" port 2181: Name or service not known\n\nzookeeper@zk-2:/apache-zookeeper-3.7.0-bin$ echo ruok | nc zk-1.svc.cluster.local 2181\nnc: getaddrinfo for host \"zk-1.svc.cluster.local\" port 2181: Name or service not known\n\nzookeeper@zk-2:/apache-zookeeper-3.7.0-bin$ echo ruok | nc zk-1.cluster.local 2181\nnc: getaddrinfo for host \"zk-1.cluster.local\" port 2181: Name or service not known",
+      "parentUuid": "b91864fd_d5fd3373",
+      "revId": "6dbeca0a0e6b2f295762430b2951f59e0fe32857",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39bc202f_f139f96a",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 7
