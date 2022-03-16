@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "faf804d8_df64c74c",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-03-16T03:39:53Z",
+      "side": 1,
+      "message": "My comment specifically was that we don\u0027t need to supply the namespace. As you showed in your test, zk-1.zk-hs is fine which is what I was aiming for. (:",
+      "parentUuid": "ceba65bb_c78fd841",
+      "revId": "6dbeca0a0e6b2f295762430b2951f59e0fe32857",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39bc202f_f139f96a",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 7
