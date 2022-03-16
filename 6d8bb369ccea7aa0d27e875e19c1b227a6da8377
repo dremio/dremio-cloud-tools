@@ -135,6 +135,24 @@
       "parentUuid": "305befbe_1018f30f",
       "revId": "6d8bb369ccea7aa0d27e875e19c1b227a6da8377",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a943597_f67c1000",
+        "filename": "charts/dremio_v2/values.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-03-16T19:18:13Z",
+      "side": 1,
+      "message": "Ideally, support/field should be modifying the templates directly then to enable such temporary debug functionality rather than providing it in values.yaml. Anything that we put in values.yaml is viewed as something we support for the user to change as part of the regular runtime and, in this case, these values aren\u0027t something we want them to change unless instructed.\n\nIf we feel that we really should provide such an option for support convenience, one alternative is to do it as something like \"$.Values.zookeeper.debug.X\", combined with a default and to keep it out of the values.yaml file completely. This will allow us to specifically tell users to add it if we want but otherwise not expose them anywhere. However, it does add burden to us to maintain this for future iterations which is why I am hesitant to go down this path. (This configuration hasn\u0027t been necessary in the last few years of usage AFAIK.)",
+      "parentUuid": "c37f8e32_c43b92fe",
+      "revId": "6d8bb369ccea7aa0d27e875e19c1b227a6da8377",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
