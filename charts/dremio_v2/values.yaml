@@ -279,9 +279,9 @@ zookeeper:
 # Control where uploaded files are stored for Dremio.
 # For more information, see https://docs.dremio.com/deployment/distributed-storage.html
 distStorage:
-  # The supported distributed storage types are: local, aws, azure, gcp, or azureStorage.
+  # The supported distributed storage types are: local (<21.0.0 only), aws, azure, gcp, or azureStorage.
   #
-  # local: Not recommended for production use. When using local, dist-caching is disabled.
+  # local: (<21.0.0 only) Not recommended for production use. When using local, dist-caching is disabled.
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
