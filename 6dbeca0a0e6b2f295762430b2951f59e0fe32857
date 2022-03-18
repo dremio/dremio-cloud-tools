@@ -107,6 +107,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba194fc2_1b5d173c",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-18T18:08:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71424d15_d58d7975",
+      "revId": "6dbeca0a0e6b2f295762430b2951f59e0fe32857",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39bc202f_f139f96a",
@@ -120,6 +138,24 @@
       "writtenOn": "2022-03-16T00:55:47Z",
       "side": 1,
       "message": "Sorry, missed this in the initial review. This isn\u0027t guaranteed to be the correct value in all cases. However, the DNS should be configured already to search within the correct domain.",
+      "revId": "6dbeca0a0e6b2f295762430b2951f59e0fe32857",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4120d2d_16d2b653",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-18T18:08:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39bc202f_f139f96a",
       "revId": "6dbeca0a0e6b2f295762430b2951f59e0fe32857",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
