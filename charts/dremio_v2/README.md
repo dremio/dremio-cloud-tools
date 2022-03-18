@@ -1,3 +1,5 @@
+Quick Links: [Dremio](https://dremio.com/) | [Dremio Documentation](https://docs.dremio.com/) | **[Helm Chart Documentation](./docs/)**
+
 # Installing Dremio on Kubernetes
 
 You can follow these instructions to install Dremio in a Kubernetes cluster provisioned through a cloud provider or running in an on-premises environment. Supported cloud providers are Amazon Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), and Microsoft Azure Kubernetes Service (AKS).
