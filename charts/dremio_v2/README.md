@@ -1,3 +1,5 @@
+Quick Links: [Dremio](https://dremio.com/) | [Dremio Documentation](https://docs.dremio.com/) | **[Helm Chart Documentation](./docs/)**
+
 # Installing Dremio on Kubernetes
 
 You can follow these instructions to install Dremio in a Kubernetes cluster provisioned through a cloud provider or running in an on-premises environment. Supported cloud providers are Amazon Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), and Microsoft Azure Kubernetes Service (AKS).
@@ -46,7 +48,7 @@ If you are upgrading from the previous Helm chart for Dremio, please see the [Mi
 
 ## What to do next
 
-Now that you've installed the Dremio Helm chart, you can get the HTTP addresses for connecting to Dremio's UI, connecting to Dremio from BI tools via JDBC/ODBC, and for connecting to Dremio from BI tools via Apache Arrow Flight.
+Now that you've installed the Dremio Helm chart, you can get the HTTP addresses for connecting to Dremio's UI, connecting to Dremio from BI tools via JDBC/ODBC, and for connecting to Dremio from BI tools via Apache Arrow Flight. See below for additional information.
 
 ### Getting the HTTP address for connecting to the Dremio UI
 
