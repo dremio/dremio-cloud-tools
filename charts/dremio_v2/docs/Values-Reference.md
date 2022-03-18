@@ -997,7 +997,9 @@ Type: String
 
 By default, this value is set to `local`.
 
-The valid values for `distStorage.type` are `local` (not recommended), `aws`, `azure`, `azureStorage` or `gcp`. For specific configuration values for each, see the associated sections:
+***Note***: 'local' has been deprecated in Dremio 21.0.0+.
+
+The valid values for `distStorage.type` are `local` (not recommended, not supported in Dremio 21.0.0+), `aws`, `azure`, `azureStorage` or `gcp`. For specific configuration values for each, see the associated sections:
 
 * `aws` (S3): [AWS S3](#aws-s3)
 * `azure` (Azure ADLS Gen 1): [Azure ADLS Gen 1](#azure-adls-gen-1)

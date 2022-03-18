@@ -9,6 +9,7 @@ If you are upgrading from the previous Helm chart for Dremio, please see the [Mi
 * Ensure that you have an existing Kubernetes cluster.
 * Ensure that Helm 3 is set up on a local machine.
 * Ensure that a local kubectl is configured to access your Kubernetes cluster.
+* Ensure that you have cloud storage available (required for 21.0.0+), see [here](./docs/Values-Reference.md#diststoragetype) for more details.
 
 ## Procedure
 
