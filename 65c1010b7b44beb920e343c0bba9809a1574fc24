@@ -67,6 +67,24 @@
       "message": "See my comment above.",
       "revId": "65c1010b7b44beb920e343c0bba9809a1574fc24",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d968f2d4_0509c66b",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000258
+      },
+      "writtenOn": "2022-03-30T16:58:46Z",
+      "side": 1,
+      "message": "I just realized that my comment is now below 😂",
+      "parentUuid": "a456372b_b943abd1",
+      "revId": "65c1010b7b44beb920e343c0bba9809a1574fc24",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
