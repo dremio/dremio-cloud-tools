@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fec715f2_461b1787",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000258
+      },
+      "writtenOn": "2022-03-30T18:21:49Z",
+      "side": 1,
+      "message": "This really isn\u0027t a security requirement. I will leave it up to you. Just wanted to let you know.",
+      "parentUuid": "349f134a_386c83d3",
+      "revId": "65c1010b7b44beb920e343c0bba9809a1574fc24",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a456372b_b943abd1",
         "filename": "charts/dremio_v2/templates/zookeeper.yaml",
         "patchSetId": 1
