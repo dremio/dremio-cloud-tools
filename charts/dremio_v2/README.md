@@ -107,3 +107,14 @@ $ kubectl get services dremio-client
 
    If you want to change the expose port on the load balancer, change the value of the setting `coordinator.flight.port` in the file `values.local.yaml`.
 * If the value in the TYPE column of the output is `NodePort`, access Dremio using Flight through http://localhost:31357.
+
+## Upgrading Zookeeper
+
+To upgrade to the official Zookeeper image set the following tags in `values.local.yaml` file.
+
+```
+zookeeper:
+  image: zookeeper
+  imageTag: 3.8.0
+```
+
