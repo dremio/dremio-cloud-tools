@@ -1462,7 +1462,7 @@ When setting this property, the load balancer attempts to use the provided IP ad
 
 Type: String
 
-By default, the value is set to `k8s.gcr.io/kubernetes-zookeeper`.
+By default, the value is set to `zookeeper`.
 
 The `image` refers to the location to retrieve the specific container image for Zookeeper. In some cases, the `zookeeper.image` value may vary in corporate environments where there may be a private container registry that is used.
 
@@ -1470,7 +1470,7 @@ The `image` refers to the location to retrieve the specific container image for 
 
 Type: String
 
-By default, the value is set to `1.0-3.4.10`.
+By default, the value is set to `3.8.0`.
 
 The version of Zookeeper set has been validated by Dremio to work with the Dremio software. Changing this version is not recommended unless the tag is different due to a private container registry name difference.
 

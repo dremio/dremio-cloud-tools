@@ -254,8 +254,8 @@ executor:
 # Zookeeper
 zookeeper:
   # The Zookeeper image used in the cluster.
-  image: k8s.gcr.io/kubernetes-zookeeper
-  imageTag: 1.0-3.4.10
+  image: zookeeper
+  imageTag: 3.8.0
 
   # CPU & Memory
   # Memory allocated to each zookeeper, expressed in MB.
