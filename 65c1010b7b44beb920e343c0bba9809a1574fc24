@@ -106,6 +106,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2de6faa_bcdf64b3",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-30T19:24:35Z",
+      "side": 1,
+      "message": "Ack.\n\nI think i will leave it as-is for now.\nIf there is a issue with nc we can decide to open a ticket with upstream and/or roll/append to the image",
+      "parentUuid": "fec715f2_461b1787",
+      "revId": "65c1010b7b44beb920e343c0bba9809a1574fc24",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a456372b_b943abd1",
