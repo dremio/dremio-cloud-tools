@@ -84,3 +84,14 @@ tolerations:
   {{- toYaml $adminPodTolerations | nindent 2 }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Admin - Pod Affinity
+*/}}
+{{- define "dremio.admin.affinity" -}}
+{{- $adminPodAffinity := coalesce $.Values.coordinator.affinity $.Values.affinity -}}
+{{- if $adminPodAffinity -}}
+affinity:
+  {{- toYaml $adminPodAffinity | nindent 2 }}
+{{- end -}}
+{{- end -}}

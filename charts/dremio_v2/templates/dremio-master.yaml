@@ -23,16 +23,7 @@ spec:
         {{- include "dremio.coordinator.podAnnotations" $ | nindent 8}}
     spec:
       {{- include "dremio.coordinator.serviceAccount" $ | nindent 6 }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values:
-                    - dremio-coordinator
-              topologyKey: "kubernetes.io/hostname"
+      {{- include "dremio.coordinator.affinity" $ | nindent 6 }}
       terminationGracePeriodSeconds: 120
       {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}

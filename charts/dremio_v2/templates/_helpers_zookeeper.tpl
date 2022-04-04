@@ -90,3 +90,14 @@ tolerations:
   {{- toYaml $zookeeperTolerations | nindent 2 }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Zookeeper - Pod Affinity
+*/}}
+{{- define "dremio.zookeeper.affinity" -}}
+{{- $zookeeperAffinity := coalesce $.Values.zookeeper.affinity $.Values.affinity -}}
+{{- if $zookeeperAffinity -}}
+affinity:
+  {{- toYaml $zookeeperAffinity | nindent 2 }}
+{{- end -}}
+{{- end -}}
