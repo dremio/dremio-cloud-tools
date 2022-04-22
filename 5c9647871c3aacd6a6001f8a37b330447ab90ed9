@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09f921bc_c6c38cf9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-22T22:11:05Z",
+      "side": 1,
+      "message": "-2 to ensure that the following is addressed before merge.\n\nTo release for dremio-cloud-tools:\n1. Ensure that this change is released along with a release version and that this change is communicated in release notes.\n2. Provide migration documentation. This may be a breaking change for customers, this should be clearly communicated and advise not upgrading if they aren\u0027t moving their Kubernetes image version.",
+      "revId": "5c9647871c3aacd6a6001f8a37b330447ab90ed9",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1c42a90_caa6156e",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-22T22:11:05Z",
+      "side": 1,
+      "message": "We had discussed having checks in place to catch users who are using the previous version and to error out such that they know not to deploy using this new template.",
+      "revId": "5c9647871c3aacd6a6001f8a37b330447ab90ed9",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
