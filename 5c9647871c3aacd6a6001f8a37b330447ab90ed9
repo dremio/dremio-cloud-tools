@@ -33,6 +33,24 @@
       "message": "We had discussed having checks in place to catch users who are using the previous version and to error out such that they know not to deploy using this new template.",
       "revId": "5c9647871c3aacd6a6001f8a37b330447ab90ed9",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76f0b74d_09b0b834",
+        "filename": "charts/dremio_v2/templates/zookeeper.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-04-25T18:34:13Z",
+      "side": 1,
+      "message": "Added check, and updated readme",
+      "parentUuid": "f1c42a90_caa6156e",
+      "revId": "5c9647871c3aacd6a6001f8a37b330447ab90ed9",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
