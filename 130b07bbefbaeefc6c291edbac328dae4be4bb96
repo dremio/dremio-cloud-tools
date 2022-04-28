@@ -24,6 +24,30 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07797a58_e3b0b9f6",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-04-28T21:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b9b5e5a_9be63139",
+      "range": {
+        "startLine": 111,
+        "startChar": 13,
+        "endLine": 111,
+        "endChar": 14
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b80a70c6_e0d63b32",
@@ -70,6 +94,54 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9579b2f_5879b928",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-04-28T21:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b80a70c6_e0d63b32",
+      "range": {
+        "startLine": 113,
+        "startChar": 69,
+        "endLine": 113,
+        "endChar": 70
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1720897_490e193d",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-04-28T21:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "706ad3c9_11815b49",
+      "range": {
+        "startLine": 113,
+        "startChar": 27,
+        "endLine": 113,
+        "endChar": 36
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "398ebe9d_5af0c83b",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-04-28T19:18:58Z",
       "side": 1,
       "message": "Might be better in the usual yaml format:\n   zookeeper:\n     image: zookeeper\n     imageTag: 3.8.0",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 25
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6ac817e_3c79e481",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-04-28T21:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "398ebe9d_5af0c83b",
       "range": {
         "startLine": 116,
         "startChar": 0,
@@ -162,6 +258,78 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35c2e069_1895fdc5",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-04-28T21:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e8944cb_9a52fb56",
+      "range": {
+        "startLine": 27,
+        "startChar": 42,
+        "endLine": 27,
+        "endChar": 73
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d91c5fb9_fbfc950d",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-04-28T21:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc86e6f4_f43ed18b",
+      "range": {
+        "startLine": 27,
+        "startChar": 109,
+        "endLine": 27,
+        "endChar": 128
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "879a1f10_7bc8e0aa",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-04-28T21:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50d8bb60_f1c7176a",
+      "range": {
+        "startLine": 27,
+        "startChar": 26,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "681c2d21_a105db08",
@@ -175,6 +343,30 @@
       "writtenOn": "2022-04-28T19:18:58Z",
       "side": 1,
       "message": "I think this one should go into templates/zookeeper.yaml.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 10
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2558bba8_b0059e33",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-04-28T21:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "681c2d21_a105db08",
       "range": {
         "startLine": 24,
         "startChar": 0,
