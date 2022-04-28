@@ -95,6 +95,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50d8bb60_f1c7176a",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-28T19:20:55Z",
+      "side": 1,
+      "message": "Nit: capitalization",
+      "range": {
+        "startLine": 27,
+        "startChar": 26,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e8944cb_9a52fb56",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-28T19:20:55Z",
+      "side": 1,
+      "message": "\u0027k8s.gcr.io/kubernetes-zookeeper\u0027 with quotes.",
+      "range": {
+        "startLine": 27,
+        "startChar": 42,
+        "endLine": 27,
+        "endChar": 73
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc86e6f4_f43ed18b",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-28T19:20:55Z",
+      "side": 1,
+      "message": "\u0027Upgrading Zookeeper\u0027 with quotes.",
+      "range": {
+        "startLine": 27,
+        "startChar": 109,
+        "endLine": 27,
+        "endChar": 128
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "681c2d21_a105db08",
         "filename": "charts/dremio_v2/config/dremio.conf",
         "patchSetId": 8
