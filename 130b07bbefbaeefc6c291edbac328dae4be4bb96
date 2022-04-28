@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b9b5e5a_9be63139",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-28T19:18:58Z",
+      "side": 1,
+      "message": "Nit: Capitalization as Zookeeper is a name.",
+      "range": {
+        "startLine": 111,
+        "startChar": 13,
+        "endLine": 111,
+        "endChar": 14
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b80a70c6_e0d63b32",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-28T19:18:58Z",
+      "side": 1,
+      "message": "For consistency w/ the rest of the documentation, please change to (with the code-quotes):\n  `values.local.yaml`",
+      "range": {
+        "startLine": 113,
+        "startChar": 69,
+        "endLine": 113,
+        "endChar": 70
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "706ad3c9_11815b49",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-28T19:18:58Z",
+      "side": 1,
+      "message": "Nit: Capitalization as Zookeeper is a name, otherwise use `zookeeper` for it to refer to the image name.",
+      "range": {
+        "startLine": 113,
+        "startChar": 27,
+        "endLine": 113,
+        "endChar": 36
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "398ebe9d_5af0c83b",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-28T19:18:58Z",
+      "side": 1,
+      "message": "Might be better in the usual yaml format:\n   zookeeper:\n     image: zookeeper\n     imageTag: 3.8.0",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 25
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "681c2d21_a105db08",
+        "filename": "charts/dremio_v2/config/dremio.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-04-28T19:18:58Z",
+      "side": 1,
+      "message": "I think this one should go into templates/zookeeper.yaml.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 10
+      },
+      "revId": "130b07bbefbaeefc6c291edbac328dae4be4bb96",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
