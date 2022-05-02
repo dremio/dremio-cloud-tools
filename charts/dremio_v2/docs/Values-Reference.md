@@ -22,7 +22,9 @@ Type: String
 
 By default, the value is set to `latest`.
 
-It is **strongly** recommended to pin the version of Dremio that we are deploying by setting the `imageTag` to a precise version and not leave the value as latest. Since Dremio versions are not backwards compatible, leaving it as latest may automatically upgrade dremio during pod creation.
+The `imageTag` refers to the tag/version of the container image for Dremio.
+
+***Note***: It is **strongly** recommended to pin the version of Dremio that we are deploying by setting the `imageTag` to a precise version and not leave the value as latest. If you are directly consuming Dremio's images from Docker Hub, when specifying which version to use, it is recommended to use the full version tag in the form `X.Y.Z` (i.e. `21.1.0`), as image tags in the form `X.Y` (i.e. `21.1`) are continually updated with the latest patch version released. Since Dremio versions are not backwards compatible, leaving it as latest or in the form `X.Y` may automatically upgrade Dremio during pod creation.
 
 #### `imagePullSecrets`
 
