@@ -2,9 +2,15 @@
 #
 # It is *highly* recommended to update the version tag to
 # the version that you are using. This will ensure that all
-# the pods are using the same version of the software.
+# the pods are using the same version of the software. If
+# you are directly consuming Dremio's images from Docker Hub,
+# when specifying which version to use, it is best to use the
+# full version tag in the form X.Y.Z (i.e. 21.1.0), as image
+# tags in the form X.Y (i.e. 21.1) are updated with the latest
+# patch version released.
 #
-# Using latest will cause Dremio to potentially upgrade versions
+# Using the image tag latest or in the form X.Y
+# will potentially cause Dremio to upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
 image: dremio/dremio-oss
