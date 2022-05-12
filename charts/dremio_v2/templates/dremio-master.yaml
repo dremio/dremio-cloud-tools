@@ -63,6 +63,12 @@ spec:
         {{- end }}
         {{- include "dremio.coordinator.extraVolumeMounts" $ | nindent 8 }}
         env:
+        {{- if and $.Values.telemetry.enabled (eq $.Values.telemetry.type "jmx") }}
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        {{- end }}
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "dremio.coordinator.heapMemory" $ }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
@@ -76,6 +82,15 @@ spec:
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
             -Dservices.conduit.port=45679
+            {{- if and $.Values.telemetry.enabled (eq $.Values.telemetry.type "jmx") }}
+            -Dcom.sun.management.jmxremote
+            -Dcom.sun.management.jmxremote.authenticate=false
+            -Dcom.sun.management.jmxremote.ssl=false
+            -Dcom.sun.management.jmxremote.local.only=false
+            -Dcom.sun.management.jmxremote.port={{ $.Values.telemetry.jmxPort }}
+            -Dcom.sun.management.jmxremote.rmi.port={{ $.Values.telemetry.jmxPort }}
+            -Djava.rmi.server.hostname=$(POD_IP)
+            {{- end }}
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
@@ -94,6 +109,10 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        {{- if and $.Values.telemetry.enabled (eq $.Values.telemetry.type "jmx") }}
+        - containerPort: {{ $.Values.telemetry.jmxPort }}
+          name: jmx-port
+        {{- end }}
         readinessProbe:
           httpGet:
             path: /
