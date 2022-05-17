@@ -475,3 +475,23 @@ service:
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 # imagePullSecrets:
 #  - secretname
+
+telemetry:
+  # enable telemetry configurators
+  enabled: false
+  # Supported value cloudwatch | prometheus | slf4j | jmx
+  # for non JMX telemetry configurator, jar file must be pre-allocated in `/jars/3rdparty`
+  # fork docker image or use extra volumes to add it.
+#  type: "jmx"
+#  jmxPort: 9072
+  # multiline value for dremio-telemtry.yaml
+#  yaml: |-
+#    auto-reload:
+#      enabled: True
+#      period: 500
+#      unit: MILLISECONDS
+#
+#    metrics:
+#      - name: jobs
+#        reporter:
+#          type: jmx

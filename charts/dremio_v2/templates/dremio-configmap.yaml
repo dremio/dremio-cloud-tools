@@ -4,6 +4,10 @@ metadata:
   name: dremio-config
 data:
   {{- tpl ($.Files.Glob "config/*").AsConfig . | nindent 2 }}
+  {{- if $.Values.telemetry.enabled }}
+  dremio-telemetry.yaml: |
+  {{- $.Values.telemetry.yaml | nindent 4 }}
+  {{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
