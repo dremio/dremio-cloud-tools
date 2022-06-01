@@ -78,7 +78,7 @@ spec:
       containers:
       - name: kubernetes-zookeeper
         imagePullPolicy: Always
-        image: "{{ $.Values.zookeeper.image }}:{{ $.Values.zookeeper.imageTag }}"
+        image: "{{ $.Values.global.imageRegistry }}{{ $.Values.zookeeper.image }}:{{ $.Values.zookeeper.imageTag }}"
         resources:
           requests:
             cpu: {{ $.Values.zookeeper.cpu }}

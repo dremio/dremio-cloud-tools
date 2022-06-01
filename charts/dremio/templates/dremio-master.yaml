@@ -36,7 +36,7 @@ spec:
       {{- end }}
       containers:
       - name: dremio-master-coordinator
-        image: {{.Values.image}}:{{.Values.imageTag}}
+        image: {{.Values.global.imageRegistry}}{{.Values.image}}:{{.Values.imageTag}}
         imagePullPolicy: IfNotPresent
         resources:
           requests:
@@ -85,14 +85,14 @@ spec:
           periodSeconds: 5
       initContainers:
       - name: start-only-one-master
-        image: busybox
+        image: {{.Values.global.imageRegistry}}busybox
         command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
       - name: wait-for-zk
-        image: busybox
+        image: {{.Values.global.imageRegistry}}busybox
         command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
       # since we're mounting a separate volume, reset permission to dremio uid/gid
       - name: chown-data-directory
-        image: {{.Values.image}}:{{.Values.imageTag}}
+        image: {{.Values.global.imageRegistry}}{{.Values.image}}:{{.Values.imageTag}}
         imagePullPolicy: IfNotPresent
         securityContext:
           runAsUser: 0
@@ -104,7 +104,7 @@ spec:
         - "dremio:dremio"
         - "/opt/dremio/data"
       - name: upgrade-task
-        image: {{.Values.image}}:{{.Values.imageTag}}
+        image: {{.Values.global.imageRegistry}}{{.Values.image}}:{{.Values.imageTag}}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: dremio-master-volume
@@ -114,7 +114,7 @@ spec:
         - "upgrade"
       {{- if .Values.tls.ui.enabled }}
       - name: generate-ui-keystore
-        image: {{.Values.image}}:{{.Values.imageTag}}
+        image: {{.Values.global.imageRegistry}}{{.Values.image}}:{{.Values.imageTag}}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: dremio-tls
@@ -136,7 +136,7 @@ spec:
       {{- end }}
       {{- if .Values.tls.client.enabled }}
       - name: generate-client-keystore
-        image: {{.Values.image}}:{{.Values.imageTag}}
+        image: {{.Values.global.imageRegistry}}{{.Values.image}}:{{.Values.imageTag}}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: dremio-tls

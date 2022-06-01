@@ -28,7 +28,7 @@ spec:
       {{- end }}
       containers:
       - name: dremio-coordinator
-        image: {{.Values.image}}:{{.Values.imageTag}}
+        image: {{.Values.global.imageRegistry}}{{.Values.image}}:{{.Values.imageTag}}
         imagePullPolicy: IfNotPresent
         resources:
           requests:
@@ -66,11 +66,11 @@ spec:
           name: server
       initContainers:
       - name: wait-for-zk
-        image: busybox
+        image: {{.Values.global.imageRegistry}}busybox
         command:  ["sh", "-c", "until nc -z dremio-client {{ .Values.coordinator.web.port | default 9047 }} > /dev/null; do echo waiting for dremio master; sleep 2; done;"]
       {{- if .Values.tls.ui.enabled }}
       - name: generate-ui-keystore
-        image: {{.Values.image}}:{{.Values.imageTag}}
+        image: {{.Values.global.imageRegistry}}{{.Values.image}}:{{.Values.imageTag}}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: dremio-tls
@@ -92,7 +92,7 @@ spec:
       {{- end }}
       {{- if .Values.tls.client.enabled }}
       - name: generate-client-keystore
-        image: {{.Values.image}}:{{.Values.imageTag}}
+        image: {{.Values.global.imageRegistry}}{{.Values.image}}:{{.Values.imageTag}}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: dremio-tls

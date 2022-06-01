@@ -4,6 +4,12 @@
 image: dremio/dremio-oss
 imageTag: latest
 
+# Global image registry
+# make sure to add slash in the end of URL
+# Example: your_private_global_registry:8080/
+global:
+  imageRegistry: ""
+
 # Check out Dremio documentation for memory and cpu requirements for
 # the coordinators and the executors.
 # The value of memory should be in MB. CPU is in no of cores.
