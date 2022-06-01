@@ -230,7 +230,7 @@ For example, to have an `initContainer` with the Dremio image, you can specify t
 ```yaml
 extraInitContainers: |
   - name: dremio-hello-world
-    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+    image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
     command: ["echo", "Hello World"]
 [...]
 ```
@@ -565,7 +565,7 @@ coordinator:
   [...]
   extraInitContainers: |
     - name: dremio-hello-world
-      image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+      image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
       command: ["echo", "Hello World"]
 [...]
 ```
@@ -842,7 +842,7 @@ coordinator:
   [...]
   extraInitContainers: |
     - name: dremio-hello-world
-      image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+      image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
       command: ["echo", "Hello World"]
 [...]
 ```
@@ -940,7 +940,7 @@ executor:
 
       extraInitContainers: |
         - name: dremio-hello-world
-          image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+          image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
           command: ["echo", "Hello World"]
 
       extraVolumes:

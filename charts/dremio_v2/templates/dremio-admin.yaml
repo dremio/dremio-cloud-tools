@@ -14,7 +14,7 @@ metadata:
 spec:
   containers:
   - name: dremio-admin
-    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+    image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
     imagePullPolicy: IfNotPresent
     stdin: true
     tty: true

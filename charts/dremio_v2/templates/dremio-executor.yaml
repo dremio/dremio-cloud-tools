@@ -32,7 +32,7 @@ spec:
       {{- include "dremio.executor.tolerations" (list $ $engineName) | nindent 6}}
       containers:
       - name: dremio-executor
-        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         resources:
           requests:
@@ -82,7 +82,7 @@ spec:
       initContainers:
       {{- include "dremio.executor.extraInitContainers" (list $ $engineName) | nindent 6 }}
       - name: chown-data-directory
-        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         securityContext:
           runAsUser: 0
