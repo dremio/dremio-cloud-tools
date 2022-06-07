@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da8dd925_6bf2dd4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-06-07T04:16:29Z",
+      "side": 1,
+      "message": "Final branch cut is on Jun 10\nCan I get a +2 to merge.",
+      "revId": "9106a63e326eb428cf06c538350077a128464ac0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
