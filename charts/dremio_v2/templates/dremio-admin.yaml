@@ -31,6 +31,7 @@ spec:
   {{- include "dremio.imagePullSecrets" $ | nindent 2 }}
   {{- include "dremio.admin.nodeSelector" $ | nindent 2 }}
   {{- include "dremio.admin.tolerations" $ | nindent 2 }}
+  {{- include "dremio.admin.affinity" $ | nindent 2 }}
   volumes:
   - name: dremio-master-volume
     persistentVolumeClaim:

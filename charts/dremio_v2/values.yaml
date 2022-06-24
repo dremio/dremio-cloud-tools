@@ -32,6 +32,7 @@ labels: {}
 podLabels: {}
 nodeSelector: {}
 tolerations: []
+affinity: {}
 
 # Dremio Coordinator
 coordinator:
@@ -84,6 +85,16 @@ coordinator:
   #podLabels: {}
   #nodeSelector: {}
   #tolerations: []
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: "app"
+                operator: In
+                values:
+                - dremio-coordinator
+          topologyKey: "kubernetes.io/hostname"
 
   # Web UI
   web:
@@ -186,7 +197,7 @@ executor:
     volumes:
     - size: 100Gi
 
-  # These values, when defined and not empty, override the provided shared annotations, labels, node selectors, or tolerations.
+  # These values, when defined and not empty, override the provided shared annotations, labels, node selectors, tolerations, or affinity.
   # Uncomment only if you are trying to override the chart's shared values.
   #annotations: {}
   #podAnnotations: {}
@@ -194,6 +205,7 @@ executor:
   #podLabels: {}
   #nodeSelector: {}
   #tolerations: []
+  #affinity: {}
 
   # Engine Overrides
   #
@@ -222,6 +234,7 @@ executor:
   #     podLabels: {}
   #     nodeSelector: {}
   #     tolerations: []
+  #     affinity: {}
   #
   #     serviceAccount: ""
   #
@@ -281,6 +294,16 @@ zookeeper:
   #podLabels: {}
   #nodeSelector: {}
   #tolerations: []
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: "app"
+                operator: In
+                values:
+                - zk
+          topologyKey: "kubernetes.io/hostname"
 
 # Control where uploaded files are stored for Dremio.
 # For more information, see https://docs.dremio.com/deployment/distributed-storage.html

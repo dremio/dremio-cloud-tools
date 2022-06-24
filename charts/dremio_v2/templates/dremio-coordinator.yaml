@@ -25,6 +25,8 @@ spec:
     spec:
       {{- include "dremio.coordinator.serviceAccount" $ | nindent 6 }}
       terminationGracePeriodSeconds: 120
+      affinity:
+        {{- include "dremio.coordinator.affinity" $ | nindent 8 }}
       {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
       containers:

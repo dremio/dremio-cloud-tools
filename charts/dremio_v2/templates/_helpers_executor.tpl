@@ -330,3 +330,17 @@ tolerations:
   {{- toYaml $engineTolerations | nindent 2 }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Executor - Pod Affinity
+*/}}
+{{- define "dremio.executor.affinity" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $engineAffinity := coalesce $engineConfiguration.affinity $context.Values.executor.affinity $context.Values.affinity -}}
+{{- if $engineAffinity -}}
+affinity:
+  {{- toYaml $engineAffinity | nindent 2 }}
+{{- end -}}
+{{- end -}}

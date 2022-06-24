@@ -63,16 +63,7 @@ spec:
       {{- include "dremio.zookeeper.podAnnotations" $ | nindent 8 }}
     spec:
       {{- include "dremio.zookeeper.serviceAccount" $ | nindent 6 }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values:
-                    - zk
-              topologyKey: "kubernetes.io/hostname"
+      {{- include "dremio.zookeeper.affinity" $ | nindent 6 }}
       {{- include "dremio.zookeeper.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.zookeeper.tolerations" $ | nindent 6 }}
       containers:
