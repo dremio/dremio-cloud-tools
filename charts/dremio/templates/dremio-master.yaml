@@ -1,0 +1,202 @@
+{{ if not .Values.DremioAdmin }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dremio-master
+spec:
+  serviceName: "dremio-cluster-pod"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dremio-coordinator
+  template:
+    metadata:
+      labels:
+        app: dremio-coordinator
+        role: dremio-cluster-pod
+      annotations:
+        dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - dremio-master
+              topologyKey: "kubernetes.io/hostname"
+      terminationGracePeriodSeconds: 5
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- range $key, $value := .Values.nodeSelector }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      containers:
+      - name: dremio-master-coordinator
+        image: {{.Values.image}}:{{.Values.imageTag}}
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: {{.Values.coordinator.memory}}M
+            cpu: {{.Values.coordinator.cpu}}
+        volumeMounts:
+        - name: dremio-master-volume
+          mountPath: /opt/dremio/data
+        - name: dremio-config
+          mountPath: /opt/dremio/conf
+        {{- if or .Values.tls.ui.enabled .Values.tls.client.enabled }}
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        {{- end }}
+        env:
+        - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
+          value: "{{ template "HeapMemory" .Values.coordinator.memory }}"
+        - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
+          value: "{{ template "DirectMemory" .Values.coordinator.memory }}"
+        - name: DREMIO_JAVA_EXTRA_OPTS
+          value: >-
+            -Dzookeeper=zk-hs:2181
+            -Dservices.coordinator.master.embedded-zookeeper.enabled=false
+            -Dservices.executor.enabled=false
+            {{- if .Values.extraStartParams }}
+            {{ .Values.extraStartParams }}
+            {{- end }}
+        command: ["/opt/dremio/bin/dremio"]
+        args:
+        - "start-fg"
+        ports:
+        - containerPort: 9047
+          name: web
+        - containerPort: 31010
+          name: client
+        - containerPort: 45678
+          name: server
+        readinessProbe:
+          httpGet:
+            path: /
+            {{- if .Values.tls.ui.enabled }}
+            scheme: HTTPS
+            {{- end }}
+            port: 9047
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      initContainers:
+      - name: start-only-one-master
+        image: busybox
+        command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
+      - name: wait-for-zk
+        image: busybox
+        command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
+      # since we're mounting a separate volume, reset permission to dremio uid/gid
+      - name: chown-data-directory
+        image: {{.Values.image}}:{{.Values.imageTag}}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: dremio-master-volume
+          mountPath: /opt/dremio/data
+        command: ["chown"]
+        args:
+        - "dremio:dremio"
+        - "/opt/dremio/data"
+      - name: upgrade-task
+        image: {{.Values.image}}:{{.Values.imageTag}}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-master-volume
+          mountPath: /opt/dremio/data
+        command: ["/opt/dremio/bin/dremio-admin"]
+        args:
+        - "upgrade"
+      {{- if .Values.tls.ui.enabled }}
+      - name: generate-ui-keystore
+        image: {{.Values.image}}:{{.Values.imageTag}}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-ui
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args:
+        - "pkcs12"
+        - "-export"
+        - "-inkey"
+        - "/dremio-tls-secret/tls.key"
+        - "-in"
+        - "/dremio-tls-secret/tls.crt"
+        - "-out"
+        - "/opt/dremio/tls/ui.pkcs12"
+        - "-passout"
+        - "pass:"
+      {{- end }}
+      {{- if .Values.tls.client.enabled }}
+      - name: generate-client-keystore
+        image: {{.Values.image}}:{{.Values.imageTag}}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-client
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args:
+        - "pkcs12"
+        - "-export"
+        - "-inkey"
+        - "/dremio-tls-secret/tls.key"
+        - "-in"
+        - "/dremio-tls-secret/tls.crt"
+        - "-out"
+        - "/opt/dremio/tls/client.pkcs12"
+        - "-passout"
+        - "pass:"
+      {{- end }}
+      volumes:
+      - name: dremio-config
+        configMap:
+          name: dremio-config
+      {{- if or .Values.tls.ui.enabled .Values.tls.client.enabled }}
+      - name: dremio-tls
+        emptyDir: {}
+      {{- end }}
+      {{- if .Values.tls.ui.enabled }}
+      - name: dremio-tls-secret-ui
+        secret:
+          secretName: {{ .Values.tls.ui.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
+      {{- if .Values.tls.client.enabled }}
+      - name: dremio-tls-secret-client
+        secret:
+          secretName: {{ .Values.tls.client.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      {{- end}}
+  volumeClaimTemplates:
+  - metadata:
+      name: dremio-master-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      {{- if .Values.storageClass }}
+      storageClassName: {{ .Values.storageClass }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{.Values.coordinator.volumeSize}}
+{{ end }}

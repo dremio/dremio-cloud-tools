@@ -1,0 +1,147 @@
+{{ if not .Values.DremioAdmin }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dremio-coordinator
+spec:
+  serviceName: "dremio-cluster-pod"
+  replicas: {{.Values.coordinator.count}}
+  podManagementPolicy: "Parallel"
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: dremio-coordinator
+  template:
+    metadata:
+      labels:
+        app: dremio-coordinator
+        role: dremio-cluster-pod
+      annotations:
+        dremio-configmap/checksum: {{ (.Files.Glob "config/*").AsConfig | sha256sum }}
+    spec:
+      terminationGracePeriodSeconds: 5
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- range $key, $value := .Values.nodeSelector }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      containers:
+      - name: dremio-coordinator
+        image: {{.Values.image}}:{{.Values.imageTag}}
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: {{.Values.coordinator.memory}}M
+            cpu: {{.Values.coordinator.cpu}}
+        volumeMounts:
+        - name: dremio-config
+          mountPath: /opt/dremio/conf
+        {{- if or .Values.tls.ui.enabled .Values.tls.client.enabled }}
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        {{- end }}
+        env:
+        - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
+          value: "{{ template "HeapMemory" .Values.coordinator.memory }}"
+        - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
+          value: "{{ template "DirectMemory" .Values.coordinator.memory }}"
+        - name: DREMIO_JAVA_EXTRA_OPTS
+          value: >-
+            -Dzookeeper=zk-hs:2181
+            -Dservices.coordinator.master.enabled=false
+            -Dservices.executor.enabled=false
+            {{- if .Values.extraStartParams }}
+            {{ .Values.extraStartParams }}
+            {{- end }}
+        command: ["/opt/dremio/bin/dremio"]
+        args:
+        - "start-fg"
+        ports:
+        - containerPort: 9047
+          name: web
+        - containerPort: 31010
+          name: client
+        - containerPort: 45678
+          name: server
+      initContainers:
+      - name: wait-for-zk
+        image: busybox
+        command:  ["sh", "-c", "until nc -z dremio-client {{ .Values.coordinator.web.port | default 9047 }} > /dev/null; do echo waiting for dremio master; sleep 2; done;"]
+      {{- if .Values.tls.ui.enabled }}
+      - name: generate-ui-keystore
+        image: {{.Values.image}}:{{.Values.imageTag}}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-ui
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args:
+        - "pkcs12"
+        - "-export"
+        - "-inkey"
+        - "/dremio-tls-secret/tls.key"
+        - "-in"
+        - "/dremio-tls-secret/tls.crt"
+        - "-out"
+        - "/opt/dremio/tls/ui.pkcs12"
+        - "-passout"
+        - "pass:"
+      {{- end }}
+      {{- if .Values.tls.client.enabled }}
+      - name: generate-client-keystore
+        image: {{.Values.image}}:{{.Values.imageTag}}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-client
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args:
+        - "pkcs12"
+        - "-export"
+        - "-inkey"
+        - "/dremio-tls-secret/tls.key"
+        - "-in"
+        - "/dremio-tls-secret/tls.crt"
+        - "-out"
+        - "/opt/dremio/tls/client.pkcs12"
+        - "-passout"
+        - "pass:"
+      {{- end }}
+      volumes:
+      - name: dremio-config
+        configMap:
+          name: dremio-config
+      {{- if or .Values.tls.ui.enabled .Values.tls.client.enabled }}
+      - name: dremio-tls
+        emptyDir: {}
+      {{- end }}
+      {{- if .Values.tls.ui.enabled }}
+      - name: dremio-tls-secret-ui
+        secret:
+          secretName: {{ .Values.tls.ui.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
+      {{- if .Values.tls.client.enabled }}
+      - name: dremio-tls-secret-client
+        secret:
+          secretName: {{ .Values.tls.client.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      {{- end}}
+{{ end }}

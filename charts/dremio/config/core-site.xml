@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<configuration>
+  <!-- If you are editing any content in this file, please remove lines with double curly braces around them -->
+{{- if and .Values.distStorage.type (ne .Values.distStorage.type "local") }}
+  <!-- S3 Configuration Section -->
+  {{- if eq .Values.distStorage.type "aws" }}
+  <property>
+    <name>fs.dremioS3.impl</name>
+    <description>The FileSystem implementation. Must be set to com.dremio.plugins.s3.store.S3FileSystem</description>
+    <value>com.dremio.plugins.s3.store.S3FileSystem</value>
+  </property>
+  <property>
+    <name>fs.s3a.aws.credentials.provider</name>
+    <description>The credential provider type.</description>
+    <value>org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider</value>
+  </property>
+  <property>
+    <name>fs.s3a.access.key</name>
+    <description>AWS access key ID.</description>
+    <value>{{ required "AWS access key required" .Values.distStorage.aws.accessKey}}</value>
+  </property>
+  <property>
+    <name>fs.s3a.secret.key</name>
+    <description>AWS secret key.</description>
+    <value>{{ required "AWS secret required" .Values.distStorage.aws.secret}}</value>
+  </property>
+  {{- end }}
+  <!-- ADLS Configuration Section -->
+  {{- if eq .Values.distStorage.type "azure" }}
+  <!-- Please read
+       https://docs.dremio.com/data-sources/azure-data-lake-store.html
+       for information on setting up ADLS access -->
+  <property>
+    <name>fs.adl.impl</name>
+    <description>Must be set to org.apache.hadoop.fs.adl.AdlFileSystem</description>
+    <value>org.apache.hadoop.fs.adl.AdlFileSystem</value>
+  </property>
+  <property>
+    <name>dfs.adls.oauth2.client.id</name>
+    <description>Application ID of the registered application under Azure Active Directory</description>
+    <value>{{required "Azure application ID required" .Values.distStorage.azure.applicationId}}</value>
+  </property>
+  <property>
+    <name>dfs.adls.oauth2.credential</name>
+    <description>Generated password value for the registered application</description>
+    <value>{{required "Azure secret value required" .Values.distStorage.azure.secret}}</value>
+  </property>
+  <property>
+    <name>dfs.adls.oauth2.refresh.url</name>
+    <description>Azure Active Directory OAuth 2.0 Token Endpoint for registered applications.</description>
+    <value>{{required "Azure OAuth2 token endpoint required" .Values.distStorage.azure.oauth2EndPoint}}</value>
+  </property>
+  <property>
+    <name>dfs.adls.oauth2.access.token.provider.type </name>
+    <description>Must be set to ClientCredential</description>
+    <value>ClientCredential</value>
+  </property>
+  <property>
+    <name>fs.adl.impl.disable.cache</name>
+    <description>Only include this property AFTER validating the ADLS connection.</description>
+    <value>false</value>
+  </property>
+  {{- end }}
+  <!-- Azure Storage v2 Configuration Section -->
+  {{- if eq .Values.distStorage.type "azureStorage" }}
+  <property>
+     <name>fs.dremioAzureStorage.impl</name>
+     <description>FileSystem implementation. Must always be com.dremio.plugins.azure.AzureStorageFileSystem</description>
+     <value>com.dremio.plugins.azure.AzureStorageFileSystem</value>
+  </property>
+  <property>
+    <name>dremio.azure.account</name>
+    <description>The name of the storage account.</description>
+    <value>{{required "Azure storage account name required" .Values.distStorage.azureStorage.accountName}}</value>
+  </property>
+  <property>
+    <name>dremio.azure.key</name>
+    <description>The shared access key for the storage account.</description>
+    <value>{{required "Shared access key for the storage account required" .Values.distStorage.azureStorage.accessKey}}</value>
+  </property>
+  <property>
+    <name>dremio.azure.mode</name>
+    <description>The storage account type. Value: STORAGE_V2</description>
+    <value>STORAGE_V2</value>
+  </property>
+  <property>
+    <name>dremio.azure.secure</name>
+    <description>Boolean option to enable SSL connections. Value: True/False</description>
+    <value>True</value>
+  </property>
+  {{- end }}
+{{- end }}
+</configuration>

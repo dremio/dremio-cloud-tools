@@ -1,0 +1,401 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dremioClusterName": {
+      "type": "string",
+      "defaultValue": "mydremio",
+      "metadata": {
+        "description": "Name for the Dremio Cluster"
+      }
+    },
+    "dataDiskName": {
+      "type": "string",
+      "defaultValue": "[concat(parameters('dremioClusterName'), '-data-disk')]",
+      "metadata": {
+        "description": "Name for the Dremio Master Data Disk"
+      }
+    },
+    "dataDiskSize": {
+      "type": "int",
+      "defaultValue": 20,
+      "metadata": {
+        "description": "Size of the Dremio Master Data Disk"
+      }
+    },
+    "virtualNetworkNewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "metadata": {
+        "description": "Determines whether or not a new virtual network should be provisioned."
+      }
+    },
+    "addressPrefixes": {
+      "type": "array",
+      "defaultValue": [
+        "10.0.0.0/16"
+      ],
+      "metadata": {
+        "description": "Address prefix of the virtual network"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "default",
+      "metadata": {
+        "description": "Name of the subnet"
+      }
+    },
+    "subnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24",
+      "metadata": {
+        "description": "Subnet prefix of the virtual network"
+      }
+    },
+    "publicIpNewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "metadata": {
+        "description": "Determines whether or not a new public ip should be provisioned."
+      }
+    },
+    "publicIpName": {
+      "type": "string",
+      "defaultValue": "[concat(parameters('dremioClusterName'), '-webui-publicip')]",
+      "metadata": {
+        "description": "Name of the public ip address"
+      }
+    },
+    "publicIpDns": {
+      "type": "string",
+      "defaultValue": "[concat(parameters('dremioClusterName'), '-dremio-', uniqueString(resourceGroup().id, deployment().name))]",
+      "metadata": {
+        "description": "DNS of the public ip address for the VM"
+      }
+    },
+    "publicIpResourceGroupName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Name of the resource group for the public ip address"
+      }
+    },
+    "publicIpAllocationMethod": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "Allocation method for the public ip address"
+      }
+    },
+    "publicIpSku": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard"
+      ],
+      "metadata": {
+        "description": "Name of the resource group for the public ip address"
+      }
+    },
+    "externalLoadBalancer": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Create an external load balancer"
+      }
+    },
+    "existingSubnet": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "(Optional) - existing subnet"
+      }
+    }
+  },
+  "variables": {
+    "computeApiVersion": "2018-06-01",
+    "location": "[resourceGroup().location]",
+    "virtualNetworkName": "[concat(parameters('dremioClusterName'), '-vnet')]",
+    "publicIpAddressId": "[resourceId(parameters('publicIpResourceGroupName'), 'Microsoft.Network/publicIPAddresses', parameters('publicIpName'))]",
+    "networkSecurityGroupName": "dremio-nsg",
+    "singlePlacementGroup": "true",
+    "enableAcceleratedNetworking": "false",
+    "priority": "Regular",
+    "ipAllocationMethod": "[parameters('publicIpAllocationMethod')]",
+    "upgradeMode": "Manual",
+    "namingInfix": "[toLower(substring(concat(parameters('dremioClusterName'), uniqueString(resourceGroup().id)), 0, 9))]",
+    "loadBalancerName": "[concat(variables('namingInfix'), '-lb')]",
+    "lbID": "[resourceId('Microsoft.Network/loadBalancers',variables('loadBalancerName'))]",
+    "natPoolName": "[concat(variables('namingInfix'), 'natpool')]",
+    "bePoolName": "[concat(variables('namingInfix'), 'bepool')]",
+    "natStartPort": 50000,
+    "natEndPort": 50119,
+    "natBackendPort": 9047,
+    "frontEndIPConfigId": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontEnd')]",
+    "backendAddressPoolId": "[concat(variables('lbID'),'/backendAddressPools/', variables('bePoolName'))]",
+    "externallb": "[or(parameters('externalLoadBalancer'), equals(trim(parameters('existingSubnet')), ''))]",
+    "lbfrontEndIPConfig": "[if(variables('externallb'), variables('externallbFronEndIpConfig'), variables('internallbFrontEndIpConfig'))]",
+    "externallbFronEndIpConfig": {
+      "publicIPAddress": {
+        "id": "[variables('publicIpAddressId')]"
+      }
+    },
+    "internallbFrontEndIpConfig": {
+      "subnet": {
+          "privateIPAllocationMethod": "Dynamic",
+          "id": "[parameters('existingSubnet')]"
+      }
+    },
+    "networkAclsBypass": "AzureServices",
+    "networkAclsDefaultAction": "Deny",
+    "install": false
+  },
+  "resources": [
+    {
+        "type": "Microsoft.Compute/disks",
+        "sku": {
+            "name": "StandardSSD_LRS",
+            "tier": "Standard"
+        },
+        "name": "[parameters('dataDiskName')]",
+        "apiVersion": "[variables('computeApiVersion')]",
+        "location": "[variables('location')]",
+        "scale": null,
+        "properties": {
+            "creationData": {
+                "createOption": "Empty"
+            },
+            "diskSizeGB": "[parameters('dataDiskSize')]"
+        }
+    },
+    {
+      "condition": "[equals(parameters('virtualNetworkNewOrExisting'), 'new')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "[variables('computeApiVersion')]",
+      "name": "[variables('virtualNetworkName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": "[parameters('addressPrefixes')]"
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnetPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('networkSecurityGroupName')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "[variables('computeApiVersion')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "default-allow-ssh",
+            "properties": {
+              "priority": 1000,
+              "sourceAddressPrefix": "*",
+              "protocol": "Tcp",
+              "destinationPortRange": "22",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "default-allow-dremio-ui",
+            "properties": {
+              "priority": 100,
+              "sourceAddressPrefix": "*",
+              "protocol": "Tcp",
+              "destinationPortRange": "9047",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "default-allow-dremio-client",
+            "properties": {
+              "priority": 110,
+              "sourceAddressPrefix": "*",
+              "protocol": "Tcp",
+              "destinationPortRange": "31010",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "default-allow-for-letsencrypt",
+            "properties": {
+              "priority": 1100,
+              "sourceAddressPrefix": "*",
+              "protocol": "Tcp",
+              "destinationPortRange": "80",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[and(variables('install'), variables('externallb'))]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "[variables('computeApiVersion')]",
+      "name": "[parameters('publicIpName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('publicIpAllocationMethod')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('publicIpDns')]"
+        }
+      }
+    },
+    {
+      "condition": "[variables('install')]",
+      "type": "Microsoft.Network/loadBalancers",
+      "name": "[variables('loadBalancerName')]",
+      "location": "[variables('location')]",
+      "apiVersion": "[variables('computeApiVersion')]",
+      "sku": {
+          "name": "Standard"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIpName'))]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "LoadBalancerFrontEnd",
+            "properties": "[variables('lbfrontEndIPConfig')]"
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[variables('bePoolName')]"
+          }
+        ],
+        "loadBalancingRules": [
+            {
+                "name": "dremio-ui",
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[variables('frontEndIPConfigId')]"
+                    },
+                    "frontendPort": 9047,
+                    "backendPort": 9047,
+                    "enableFloatingIP": false,
+                    "idleTimeoutInMinutes": 4,
+                    "protocol": "Tcp",
+                    "enableTcpReset": false,
+                    "loadDistribution": "SourceIP",
+                    "disableOutboundSnat": false,
+                    "backendAddressPool": {
+                        "id": "[variables('backendAddressPoolId')]"
+                    },
+                    "probe": {
+                        "id": "[concat(variables('lbID'), '/probes/dremio-ui')]"
+                    }
+                }
+            },
+            {
+                "name": "dremio-client",
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[variables('frontEndIPConfigId')]"
+                    },
+                    "frontendPort": 31010,
+                    "backendPort": 31010,
+                    "enableFloatingIP": false,
+                    "idleTimeoutInMinutes": 4,
+                    "protocol": "Tcp",
+                    "enableTcpReset": false,
+                    "loadDistribution": "SourceIP",
+                    "disableOutboundSnat": false,
+                    "backendAddressPool": {
+                        "id": "[variables('backendAddressPoolId')]"
+                    },
+                    "probe": {
+                        "id": "[concat(variables('lbID'), '/probes/dremio-ui')]"
+                    }
+                }
+            }
+        ],
+        "probes": [
+            {
+                "name": "dremio-ui",
+                "properties": {
+                    "protocol": "Tcp",
+                    "port": 9047,
+                    "intervalInSeconds": 15,
+                    "numberOfProbes": 2
+                }
+            }
+        ],
+        "inboundNatRules": [],
+        "outboundRules": [],
+        "inboundNatPools": [
+          {
+            "name": "[variables('natPoolName')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('frontEndIPConfigID')]"
+              },
+              "protocol": "tcp",
+              "idleTimeoutInMinutes": 4,
+              "enableFloatingIP": false,
+              "enableTcpReset": false,
+              "frontendPortRangeStart": "[variables('natStartPort')]",
+              "frontendPortRangeEnd": "[variables('natEndPort')]",
+              "backendPort": "[variables('natBackendPort')]"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "dataDiskId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/disks/', parameters('dataDiskName'))]"
+    },
+    "subnetId": {
+      "type": "string",
+      "value": "[if(equals(parameters('virtualNetworkNewOrExisting'), 'new'), resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets/', variables('virtualNetworkName'), parameters('subnetName')), parameters('existingSubnet'))]"
+    },
+    "loadBalancerId": {
+      "type": "string",
+      "value": "[if(variables('install'), resourceId('Microsoft.Network/loadBalancers/', variables('loadBalancerName')), '')]"
+    },
+    "nsgId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
+    },
+    "dremioUIAddress": {
+      "type": "string",
+      "value": "[if(variables('install'), if(variables('externallb'), reference(concat('Microsoft.Network/publicIPAddresses/', parameters('publicIpName')), variables('computeApiVersion')).dnsSettings.fqdn, first(reference(variables('loadBalancerName')).frontendIPConfigurations).properties.privateIPAddress), '')]"
+    }
+  }
+}

@@ -1,0 +1,404 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Setup a Dremio cluster.'
+Parameters:
+  keyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    AllowedPattern: ".+"
+    ConstraintDescription: Must select an existing EC2 KeyPair
+    Description: "AWS key pair to use to SSH to the VMs. SSH username for the VMs are centos (has sudo privilege). SSH into machines for changing configuration, reviewing logs, etc."
+  clusterSize:
+    Type: String
+    Description: "The type and number of machines are chosen based on the size selected."
+    AllowedValues:
+      - "X-Small--1-executor"
+      - "Small--5-executors"
+      - "Medium--10-executors"
+      - "Large--25-executors"
+      - "X-Large--50-executors"
+    Default: "Small--5-executors"
+  useVPC:
+    Type: AWS::EC2::VPC::Id
+    Description: "VPC to deploy the cluster into."
+  useSubnet:
+    Type: AWS::EC2::Subnet::Id
+    Description: "Subnet to deploy the cluster into. Must be in the selected VPC."
+  dremioDownloadURL:
+    Type: String
+    Description: "(Optional) HTTP or HTTPS URL to a Dremio RPM. Leave empty to install the latest Dremio CE release."
+    Default: ""
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: Dremio Cluster
+        Parameters:
+          - coordinatorInstanceType
+          - coordinatorCount
+          - executorInstanceType
+          - executorCount
+          - clusterSize
+          - useVPC
+          - useSubnet
+          - dremioDownloadURL
+      -
+        Label:
+          default: AWS resource configuration
+        Parameters:
+          - keyName
+    ParameterLabels:
+      keyName:
+        default : "AWS keypair"
+      clusterSize:
+        default: "Cluster size"
+      useSubnet:
+        default: "Deploy to Subnet"
+      useVPC:
+        default: "Deploy to VPC"
+      dremioDownloadURL:
+        default: "Dremio download URL"
+Mappings:
+  Custom:
+    Variables:
+      URL: https://download.dremio.com/community-server/dremio-community-LATEST.noarch.rpm
+  ClusterSizes:
+    X-Small--1-executor:
+      coordinatorInstanceType: m5.2xlarge
+      coordinatorDiskSize: 10
+      coordinatorMaxMemory: 28672
+      executorInstanceType: r5d.4xlarge
+      executorCount: 1
+      executorDiskSize: 10
+      executorMaxMemory: 122880
+    Small--5-executors:
+      coordinatorInstanceType: m5.2xlarge
+      coordinatorDiskSize: 50
+      coordinatorMaxMemory: 28672
+      executorInstanceType: r5d.4xlarge
+      executorCount: 5
+      executorDiskSize: 50
+      executorMaxMemory: 122880
+    Medium--10-executors:
+      coordinatorInstanceType: m5.4xlarge
+      coordinatorDiskSize: 100
+      coordinatorMaxMemory: 61440
+      executorInstanceType: r5d.4xlarge
+      executorCount: 10
+      executorDiskSize: 100
+      executorMaxMemory: 122880
+    Large--25-executors:
+      coordinatorInstanceType: m5.4xlarge
+      coordinatorDiskSize: 100
+      coordinatorMaxMemory: 61440
+      executorInstanceType: r5d.4xlarge
+      executorCount: 25
+      executorDiskSize: 100
+      executorMaxMemory: 122880
+    X-Large--50-executors:
+      coordinatorInstanceType: m5.4xlarge
+      coordinatorDiskSize: 100
+      coordinatorMaxMemory: 61440
+      executorInstanceType: r5d.4xlarge
+      executorCount: 50
+      executorDiskSize: 100
+      executorMaxMemory: 122880
+  RegionMap:
+    # Centos 7 Images
+    us-east-1: # N Virginia
+      AMI: ami-02eac2c0129f6376b
+    us-east-2: # Ohio
+      AMI: ami-0f2b4fc905b0bd1f1
+    us-west-1: # California
+      AMI: ami-074e2d6769f445be5
+    us-west-2: # Oregon
+      AMI: ami-01ed306a12b7d1c96
+    ca-central-1: # Québec
+      AMI: ami-033e6106180a626d0
+    eu-central-1: # Frankfurt
+      AMI: ami-04cf43aca3e6f3de3
+    eu-west-1: # Ireland
+      AMI: ami-0ff760d16d9497662
+    eu-west-2: # London
+      AMI: ami-0eab3a90fc693af19
+    ap-southeast-1: # Singapore
+      AMI: ami-0b4dd9d65556cac22
+    ap-southeast-2: # Sydney
+      AMI: ami-08bd00d7713a39e7d
+    ap-south-1 : # Mumbai
+      AMI: ami-02e60be79e78fef21
+    ap-northeast-1: # Tokyo
+      AMI: ami-045f38c93733dd48d
+    ap-northeast-2: # Seoul
+      AMI: ami-06cf2a72dadf92410
+    sa-east-1: # São Paulo
+      AMI: ami-0b8d86d4bf91850af
+  SubnetConfig:
+    VPC:
+      CIDR: 10.0.0.0/16
+    Public:
+      CIDR: 10.0.0.0/24
+Conditions:
+  CreateVPC: !Equals [!Ref useSubnet, ""]
+Resources:
+  VPC:
+    Condition: CreateVPC
+    Type: AWS::EC2::VPC
+    Properties:
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      CidrBlock: !FindInMap [SubnetConfig, VPC, CIDR]
+      Tags:
+      - Key: Name
+        Value: !Join ["-", [!Ref "AWS::StackName", "net"]]
+
+  PublicSubnet:
+    Condition: CreateVPC
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap [SubnetConfig, Public, CIDR]
+      Tags:
+      - Key: Name
+        Value: !Join ["-", [!Ref "AWS::StackName", "public"]]
+      - Key: Network
+        Value: Public
+
+  InternetGateway:
+    Condition: CreateVPC
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: !Join ["-", [!Ref "AWS::StackName", "ig"]]
+
+  VPCGatewayAttachment:
+    Condition: CreateVPC
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicRouteTable:
+    Condition: CreateVPC
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Join ["-", [!Ref "AWS::StackName", "public"]]
+
+  PublicSubnetRouteTableAssociation:
+    Condition: CreateVPC
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicRoute:
+    Condition: CreateVPC
+    Type: AWS::EC2::Route
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  DremioSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Dremio Access"
+      VpcId: !If [CreateVPC, !Ref VPC, !Ref useVPC]
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '9047'
+        ToPort: '9047'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '31010'
+        ToPort: '31010'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+  AvailabilityWaitHandle:
+    Type: AWS::CloudFormation::WaitConditionHandle
+  AvailabilityWaitCondition:
+    Type: AWS::CloudFormation::WaitCondition
+    DependsOn: DremioMaster
+    Properties:
+      Handle: !Ref "AvailabilityWaitHandle"
+      Timeout: "600"
+
+  DremioSecurityGroupSelfIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref DremioSecurityGroup
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref DremioSecurityGroup
+
+  DremioMaster:
+    Type: AWS::EC2::Instance
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Join ["-", [!Ref "AWS::StackName", "DremioMaster"]]
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      KeyName: !Ref keyName
+      InstanceType: !FindInMap [ClusterSizes, !Ref clusterSize, coordinatorInstanceType]
+      NetworkInterfaces:
+        - DeleteOnTermination: "true"
+          AssociatePublicIpAddress: "true"
+          DeviceIndex: 0
+          SubnetId: !If [CreateVPC, !Ref PublicSubnet, !Ref useSubnet]
+          GroupSet: [!Ref DremioSecurityGroup]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: !FindInMap [ClusterSizes, !Ref clusterSize, coordinatorDiskSize]
+            DeleteOnTermination: true
+            VolumeType: gp2
+      UserData:
+        Fn::Base64: !Sub
+          - |
+            #!/bin/bash -x
+            statusFile=/tmp/statusfile
+
+            if [ ! -d /opt/dremio ]; then
+              url=${dremioDownloadURL}
+              [ -z $url ] && url=${DOWNLOAD_URL}
+              yum -y install java-1.8.0-openjdk-devel $url
+              if [ $? != 0 ]; then
+                echo "{ \"Status\" : \"FAILURE\", \"UniqueId\" : \"${AWS::StackName}\", \"Data\" : \"Failed\", \"Reason\" : \"Unable to download Dremio\" }" > $statusFile
+                curl -T $statusFile '${AvailabilityWaitHandle}'
+                exit 1
+              fi
+            fi
+
+            DREMIO_HOME=/opt/dremio
+            DREMIO_CONFIG_FILE=/etc/dremio/dremio.conf
+            DREMIO_ENV_FILE=/etc/dremio/dremio-env
+
+            sed -i -e "s/executor.enabled: true/executor.enabled: false/" \
+                $DREMIO_CONFIG_FILE
+            sed -i -e "s/#DREMIO_MAX_MEMORY_SIZE_MB=/DREMIO_MAX_MEMORY_SIZE_MB=${MEMORY_SIZE}/" \
+                $DREMIO_ENV_FILE
+
+            cp $DREMIO_HOME/share/dremio/dremio.service /etc/systemd/system
+            systemctl daemon-reload
+            systemctl start dremio
+            systemctl enable dremio
+
+            until curl -Iks http://localhost:9047; do
+              echo waiting for website availability
+              sleep 2
+            done
+            echo "{ \"Status\" : \"SUCCESS\", \"UniqueId\" : \"${AWS::StackName}\", \"Data\" : \"Ready\", \"Reason\" : \"Website Available\" }" > $statusFile
+            curl -T $statusFile '${AvailabilityWaitHandle}'
+          - DOWNLOAD_URL: !FindInMap [ Custom, Variables, "URL"]
+            MEMORY_SIZE: !FindInMap [ClusterSizes, !Ref clusterSize, coordinatorMaxMemory]
+
+  DremioExecutorLC:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    DependsOn: DremioMaster
+    Properties:
+      AssociatePublicIpAddress: true
+      #EbsOptimized: true
+      ImageId:
+        Fn::FindInMap:
+        - RegionMap
+        - !Ref AWS::Region
+        - AMI
+      InstanceMonitoring: true
+      InstanceType: !FindInMap [ClusterSizes, !Ref clusterSize, executorInstanceType]
+      KeyName: !Ref keyName
+      SecurityGroups: [!Ref DremioSecurityGroup]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: !FindInMap [ClusterSizes, !Ref clusterSize, executorDiskSize]
+            DeleteOnTermination: true
+            VolumeType: gp2
+      UserData:
+        Fn::Base64: !Sub
+          - |
+            #!/bin/bash -x
+
+            if [ ! -d /opt/dremio ]; then
+              url=${dremioDownloadURL}
+              [ -z $url ] && url=${DOWNLOAD_URL}
+              yum -y install java-1.8.0-openjdk-devel $url
+            fi
+
+            # Setup ephemeral disk for spill - this is based on executors are r5d class machines
+            SPILL_DIR=/var/ephemeral/spill
+            NVME_SPILL=nvme1n1
+
+            mkdir -p $SPILL_DIR
+            file -s /dev/$NVME_SPILL | grep "/dev/$NVME_SPILL: data" && mkfs -t xfs /dev/$NVME_SPILL && \
+            UUID=$(blkid | grep $NVME_SPILL | awk -F'"' '{ print $2 }') && \
+            echo "UUID=$UUID $SPILL_DIR xfs defaults,nofail  0  2" >> /etc/fstab  && \
+            mount -a
+            chown dremio:dremio $SPILL_DIR
+
+            # Setup ephemeral disk for C3 - this is based on executors are r5d class machines
+            CLOUDCACHE_DIR=/var/ephemeral/cloudcache
+            NVME_CLOUDCACHE=nvme2n1
+
+            mkdir -p $CLOUDCACHE_DIR
+            file -s /dev/$NVME_CLOUDCACHE | grep "/dev/$NVME_CLOUDCACHE: data" && mkfs -t xfs /dev/$NVME_CLOUDCACHE && \
+            UUID=$(blkid | grep $NVME_CLOUDCACHE | awk -F'"' '{ print $2 }') && \
+            echo "UUID=$UUID $CLOUDCACHE_DIR xfs defaults,nofail  0  2" >> /etc/fstab  && \
+            mount -a
+            chown dremio:dremio $CLOUDCACHE_DIR
+
+            DREMIO_CONFIG_FILE=/etc/dremio/dremio.conf
+            DREMIO_ENV_FILE=/etc/dremio/dremio-env
+
+            sed -i -e "s/coordinator.master.enabled: true/coordinator.master.enabled: false/" \
+                -e "s/coordinator.enabled: true/coordinator.enabled: false/" \
+                -e "/local:/a \ \ spilling: [\"$SPILL_DIR\"]" \
+                $DREMIO_CONFIG_FILE
+            sed -i -e "s/#DREMIO_MAX_MEMORY_SIZE_MB=/DREMIO_MAX_MEMORY_SIZE_MB=${MEMORY_SIZE}/" \
+                $DREMIO_ENV_FILE
+            cat <<EOF >> $DREMIO_CONFIG_FILE
+            zookeeper: "${ZK}:2181"
+            services.executor.cache.path.db: "$CLOUDCACHE_DIR"
+            services.executor.cache.path.fs: ["$CLOUDCACHE_DIR"]
+            services.executor.cache.pctquota.db: 10
+            services.executor.cache.pctquota.fs: [100]
+            EOF
+
+            cp $DREMIO_HOME/share/dremio/dremio.service /etc/systemd/system
+            systemctl daemon-reload
+            systemctl start dremio
+            systemctl enable dremio
+          - ZK: !GetAtt DremioMaster.PrivateIp
+            DOWNLOAD_URL: !FindInMap [ Custom, Variables, "URL"]
+            MEMORY_SIZE: !FindInMap [ClusterSizes, !Ref clusterSize, executorMaxMemory]
+
+  DremioExecutorASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    DependsOn: DremioExecutorLC
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Join ["-", [!Ref "AWS::StackName", DremioExecutor]]
+          PropagateAtLaunch: true
+          ResourceType: "auto-scaling-group"
+          ResourceId: !Ref "AWS::StackName"
+      LaunchConfigurationName: !Ref DremioExecutorLC
+      VPCZoneIdentifier: [!If [CreateVPC, !Ref PublicSubnet, !Ref useSubnet]]
+      DesiredCapacity: !FindInMap [ClusterSizes, !Ref clusterSize, executorCount]
+      MaxSize: !FindInMap [ClusterSizes, !Ref clusterSize, executorCount]
+      MinSize: !FindInMap [ClusterSizes, !Ref clusterSize, executorCount]
+
+Outputs:
+  DremioUI:
+    Description: Dremio UI.
+    Value: !Join [ "", ["http://", !GetAtt DremioMaster.PublicIp, ":9047"]]

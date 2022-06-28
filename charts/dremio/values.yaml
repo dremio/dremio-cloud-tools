@@ -1,0 +1,117 @@
+# The image used to build the Dremio cluster. It is recommended to update the
+# version tag to the version that you are using. This will ensure that all
+# the pods are using the same version of the software.
+image: dremio/dremio-oss
+imageTag: latest
+
+# Check out Dremio documentation for memory and cpu requirements for
+# the coordinators and the executors.
+# The value of memory should be in MB. CPU is in no of cores.
+coordinator:
+  memory: 122880
+  cpu: 15
+  # This count is for slave coordinators only.
+  # The chart will always create one master coordinator - you are
+  # not required to have more than one master coordinator.
+  count: 0
+  web:
+    port: 9047
+  client:
+    port: 31010
+  volumeSize: 100Gi
+executor:
+  memory: 122880
+  cpu: 15
+  count: 3
+  volumeSize: 100Gi
+  cloudCache:
+    # Requires Dremio version 4.0.0 or later
+    enabled: true
+    quota:
+      # Percentage of the diskspace for the running Kubernetes node
+      # that can be used for Cloud Cache files.
+      fs_pct: 70
+      # Percentage of that space that can be used for the internal
+      # Cloud Cache database.
+      db_pct: 70
+      # Percentage of that space that can be used for cacheing
+      # materialised reflections.  This is an upper-bound, not a
+      # reservation.
+      cache_pct: 100
+zookeeper:
+  memory: 1024
+  cpu: 0.5
+  count: 3
+  volumeSize: 10Gi
+
+# To create a TLS secret, use the following command:
+# kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
+tls:
+  ui:
+    # To enable TLS for the web UI, set the enabled flag to true and provide
+    # the appropriate Kubernetes TLS secret.
+    enabled: false
+    secret: dremio-tls-secret-ui
+  client:
+    # To enable TLS for the client endpoints, set the enabled flag to
+    # true and provide the appropriate Kubernetes TLS secret. Client
+    # endpoint encryption is available only on Dremio Enterprise
+    # Edition and should not be enabled otherwise.
+    enabled: false
+    secret: dremio-tls-secret-client
+
+# If your Kubernetes cluster does not support LoadBalancer,
+# comment out the line below for the helm chart to succeed or add
+# the correct serviceType for your cluster.
+serviceType: LoadBalancer
+
+# If the loadBalancer supports sessionAffinity and
+# you have one or more coordinators, enable it
+#sessionAffinity: ClientIP
+
+# Enable the following flag if you wish to route traffic through a shared VPC
+# for the LoadBalancer's external IP.
+# The chart is setup for internal IP support for AKS, EKS, GKE.
+# For more information, see https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+#internalLoadBalancer: true
+
+# To use custom storage class, uncomment and provide the value here.
+# Otherwise the default storage class configured for your K8S cluster is used.
+#storageClass: managed-premium
+
+# For private and protected docker image repository, you should store
+# the credentials in a kubernetes secret and provide the secret name
+# here.  For more information, see
+# https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+#imagePullSecrets: secretname
+
+# Target pods to nodes based on labels set on the nodes.  For more
+# information, see
+# https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+#nodeSelector:
+#  key: value
+
+# Control where uploaded files are stored.  See
+# https://docs.dremio.com/deployment/distributed-storage.html for more
+# information
+distStorage:
+  # Valid values are local, aws, azure or azureStorage. aws and azure
+  # choice requires additional configuration data.
+  type: "local"
+  aws: # S3
+    bucketName: "Your_AWS_bucket_name"
+    path: "/"
+    accessKey: "Your_AWS_Access_Key"
+    secret: "Your_AWS_Secret"
+  azure: # ADLS gen1
+    datalakeStoreName: "Your_Azure_DataLake_Storage_name"
+    path: "/"
+    applicationId: "Your_Azure_Application_Id"
+    secret: "Your_Azure_Secret"
+    oauth2EndPoint: "Azure_OAuth2_Endpoint"
+  azureStorage: # AzureStorage gen2v2
+    accountName: "Azure_storage_v2_account_name"
+    accessKey: "Access_key_for_the_storage_account"
+
+    filesystem: "Filesystem_in_storage_account"
+    path: "/"

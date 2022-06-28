@@ -1,0 +1,41 @@
+{{- if not $.Values.DremioAdmin -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: dremio-client
+  labels:
+    app: dremio-client
+    {{- include "dremio.service.labels" $ | nindent 4 }}
+  {{- include "dremio.service.annotations" $ | nindent 2 }}
+spec:
+  ports:
+  - port: {{ $.Values.coordinator.client.port | default 31010 }}
+    targetPort: client
+    name: client
+  - port: {{ $.Values.coordinator.web.port | default 9047 }}
+    targetPort: web
+    name: web
+  - port: {{ $.Values.coordinator.flight.port | default 32010 }}
+    targetPort: flight
+    name: flight
+  selector:
+    app: dremio-coordinator
+  type: {{ $.Values.service.type }}
+  {{- if and (eq $.Values.service.type "LoadBalancer") $.Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ $.Values.service.loadBalancerIP }}
+  {{- end -}}
+  {{- if $.Values.service.sessionAffinity }}
+  sessionAffinity: {{ $.Values.service.sessionAffinity }}
+  {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dremio-cluster-pod
+spec:
+  ports:
+  - port: 9999
+  clusterIP: None
+  selector:
+    role: dremio-cluster-pod
+{{- end -}}

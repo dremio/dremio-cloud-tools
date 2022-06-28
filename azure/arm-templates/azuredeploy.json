@@ -1,0 +1,187 @@
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterName": {
+          "type": "string",
+          "defaultValue": "mydremio",
+          "metadata": {
+            "description": "Dremio cluster name in Azure."
+          }
+        },
+        "clusterSize": {
+          "type": "string",
+          "allowedValues": ["X-Small (1 executor)", "Small (5 executors)", "Medium (10 executors)", "Large (25 executors)", "X-Large (50 executors)"],
+          "metadata": {
+            "description": "The type and number of machines are chosen based on the size selected."
+          }
+        },
+        "SSHUsername": {
+          "type": "string",
+          "defaultValue": "azuser",
+          "metadata": {
+            "description": "SSH username for the virtual machines. (Can be used to SSH into machines for changing configuration, reviewing logs, etc.)"
+          }
+        },
+        "authenticationType": {
+          "type": "string",
+          "defaultValue": "password",
+          "allowedValues": [
+            "password",
+            "SSHPublicKey"
+          ],
+          "metadata": {
+            "description": "Type of authentication to use for SSH."
+          }
+        },
+        "PasswordOrSSHPublicKey": {
+          "type": "securestring",
+          "metadata": {
+            "description": "Password or ssh public key for the virtual machines. If password, password must be minimum 8 characters with at least 1 upper case letter, 1 lower case letter and 1 number."
+          }
+        },
+        "useExistingSubnet": {
+          "type": "string",
+          "defaultValue": "",
+          "metadata": {
+            "description": "Optional - resource id of existing subnet to deploy to; the subnet needs to be in the same region as the cluster.  If empty, a new virtual network and subnet will be created."
+          }
+        },
+        "usePrivateIP": {
+          "type": "bool",
+          "defaultValue": false,
+          "metadata": {
+            "description": "Select true if you are using existing subnet and you want to use an internal ip from the subnet to access Dremio."
+          }
+        },
+        "dremioBinary": {
+          "type": "string",
+          "defaultValue": "",
+          "metadata": {
+            "description": "Optional - publicly accessible URL to a Dremio installation rpm"
+          }
+        }
+    },
+    "variables": {
+      "baseURI": "https://raw.githubusercontent.com/dremio/dremio-cloud-tools/master/azure/arm-templates/nested/",
+      "apiVersion": "2018-05-01",
+      "shortName": "[take(resourceGroup().name, 40)]",
+      "rgName": "[resourceGroup().name]",
+      "location": "[resourceGroup().location]",
+      "stateRgName": "[resourceGroup().name]",
+      "dataDiskName": "[concat(parameters('clusterName'), '-master-data-disk')]",
+      "dataDiskId": "[concat(subscription().id, '/resourceGroups/', variables('stateRgName'), '/providers/Microsoft.Compute/disks/', variables('dataDiskName'))]",
+      "clusterSizes": {
+        "X-Small (1 executor)": {
+          "coordinatorVmSize": "Standard_D4_v3",
+          "coordinatorCount": 0,
+          "executorVmSize": "Standard_E16s_v3",
+          "executorCount": 1,
+          "metadataDiskSize": 10
+        },
+        "Small (5 executors)": {
+          "coordinatorVmSize": "Standard_D4_v3",
+          "coordinatorCount": 0,
+          "executorVmSize": "Standard_E16s_v3",
+          "executorCount": 5,
+          "metadataDiskSize": 50
+        },
+        "Medium (10 executors)": {
+          "coordinatorVmSize": "Standard_D8_v3",
+          "coordinatorCount": 0,
+          "executorVmSize": "Standard_E16s_v3",
+          "executorCount": 10,
+          "metadataDiskSize": 100
+        },
+        "Large (25 executors)": {
+          "coordinatorVmSize": "Standard_D8_v3",
+          "coordinatorCount": 0,
+          "executorVmSize": "Standard_E16s_v3",
+          "executorCount": 25,
+          "metadataDiskSize": 100
+        },
+        "X-Large (50 executors)": {
+          "coordinatorVmSize": "Standard_D8_v3",
+          "coordinatorCount": 0,
+          "executorVmSize": "Standard_E16s_v3",
+          "executorCount": 50,
+          "metadataDiskSize": 100
+        }
+      }
+    },
+    "resources": [
+        {
+          "apiVersion": "2018-02-01",
+          "name": "pid-1f30d282-b6d2-5dc6-9630-85533cc11b98",
+          "type": "Microsoft.Resources/deployments",
+          "properties": {
+            "mode": "Incremental",
+            "template": {
+              "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+              "contentVersion": "1.0.0.0",
+              "resources": []
+            }
+          }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "name": "[concat(variables('shortName'), '-state-deployment')]",
+            "resourceGroup": "[variables('stateRgName')]",
+            "dependsOn": [
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                   "uri": "[concat(variables('baseURI'), 'dremioState.json')]",
+                   "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                   "dremioClusterName": {"value": "[parameters('clusterName')]"},
+                   "dataDiskName": {"value": "[variables('dataDiskName')]"},
+                   "dataDiskSize": {"value": "[variables('clusterSizes')[parameters('clusterSize')].metadataDiskSize]"},
+                   "virtualNetworkNewOrExisting": {"value": "[if(equals(trim(parameters('useExistingSubnet')), ''), 'new', 'existing')]"},
+                   "existingSubnet": {"value": "[parameters('useExistingSubnet')]"}
+                 }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "name": "[concat(variables('shortName'), '-compute-deployment')]",
+            "resourceGroup": "[variables('rgName')]",
+            "dependsOn": [
+                "[concat(variables('shortName'), '-state-deployment')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                   "uri": "[concat(variables('baseURI'), 'dremioCluster.json')]",
+                   "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                   "dremioClusterName": {"value": "[parameters('clusterName')]"},
+                   "executorCount": {"value": "[variables('clusterSizes')[parameters('clusterSize')].executorCount]"},
+                   "executorVmSize": {"value": "[variables('clusterSizes')[parameters('clusterSize')].executorVmSize]"},
+                   "coordinatorCount": {"value": "[variables('clusterSizes')[parameters('clusterSize')].coordinatorCount]"},
+                   "coordinatorVmSize": {"value": "[variables('clusterSizes')[parameters('clusterSize')].coordinatorVmSize]"},
+                   "dremioDownloadURL": {"value": "[parameters('dremioBinary')]"},
+                   "dataDiskId": {"value": "[reference(concat(variables('shortName'), '-state-deployment')).outputs.dataDiskId.value]"},
+                   "sshUsername": {"value": "[parameters('SSHUsername')]"},
+                   "sshPasswordOrKey": {"value": "[parameters('PasswordOrSSHPublicKey')]"},
+                   "subnetId": {"value": "[reference(concat(variables('shortName'), '-state-deployment')).outputs.subnetId.value]"},
+                   "loadBalancerId": {"value": "[reference(concat(variables('shortName'), '-state-deployment')).outputs.loadBalancerId.value]"},
+                   "nsgId": {"value": "[reference(concat(variables('shortName'), '-state-deployment')).outputs.nsgId.value]"},
+                   "usePrivateIP": {"value": "[parameters('usePrivateIP')]"}
+                 }
+            }
+        }
+    ],
+    "outputs": {
+      "dremioUi": {
+        "type": "string",
+        "value": "[concat('http://', reference(concat(variables('shortName'), '-compute-deployment')).outputs.dremioHost.value, ':9047')]"
+      }
+    }
+}

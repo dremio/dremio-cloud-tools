@@ -1,0 +1,42 @@
+{{ if not .Values.DremioAdmin }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: dremio-client
+  labels:
+    app: dremio-client
+  {{- if .Values.internalLoadBalancer }}
+  {{- if eq .Values.internalLoadBalancer true }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    cloud.google.com/load-balancer-type: "Internal"
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+    service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
+  {{- end }}
+  {{- end }}
+spec:
+  ports:
+  - port: {{ .Values.coordinator.client.port | default 31010 }}
+    targetPort: 31010
+    name: client
+  - port: {{ .Values.coordinator.web.port | default 9047 }}
+    targetPort: 9047
+    name: web
+  selector:
+    app: dremio-coordinator
+  type: {{ .Values.serviceType | default "NodePort" }}
+  {{- if .Values.sessionAffinity }}
+  sessionAffinity: {{ .Values.sessionAffinity }}
+  {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dremio-cluster-pod
+spec:
+  ports:
+  - port: 9999
+  clusterIP: None
+  selector:
+    role: dremio-cluster-pod
+{{ end }}
