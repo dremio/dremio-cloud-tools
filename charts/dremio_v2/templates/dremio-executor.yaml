@@ -68,6 +68,7 @@ spec:
             -Dservices.executor.enabled=true
             -Dservices.conduit.port=45679
             -Dservices.node-tag={{ $engineName }}
+            -Dsaffron.default.charset=UTF-8
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
