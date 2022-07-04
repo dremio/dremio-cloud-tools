@@ -22,9 +22,7 @@ Type: String
 
 By default, the value is set to `latest`.
 
-The `imageTag` refers to the tag/version of the container image for Dremio.
-
-***Note***: It is **strongly** recommended to pin the version of Dremio that we are deploying by setting the `imageTag` to a precise version and not leave the value as latest. If you are directly consuming Dremio's images from Docker Hub, when specifying which version to use, it is recommended to use the full version tag in the form `X.Y.Z` (i.e. `21.1.0`), as image tags in the form `X.Y` (i.e. `21.1`) are continually updated with the latest patch version released. Since Dremio versions are not backwards compatible, leaving it as latest or in the form `X.Y` may automatically upgrade Dremio during pod creation.
+It is **strongly** recommended to pin the version of Dremio that we are deploying by setting the `imageTag` to a precise version and not leave the value as latest. Since Dremio versions are not backwards compatible, leaving it as latest may automatically upgrade dremio during pod creation.
 
 #### `imagePullSecrets`
 
@@ -999,9 +997,7 @@ Type: String
 
 By default, this value is set to `local`.
 
-***Note***: 'local' has been deprecated in Dremio 21.0.0+.
-
-The valid values for `distStorage.type` are `local` (not recommended, not supported in Dremio 21.0.0+), `aws`, `azure`, `azureStorage` or `gcp`. For specific configuration values for each, see the associated sections:
+The valid values for `distStorage.type` are `local` (not recommended), `aws`, `azure`, `azureStorage` or `gcp`. For specific configuration values for each, see the associated sections:
 
 * `aws` (S3): [AWS S3](#aws-s3)
 * `azure` (Azure ADLS Gen 1): [Azure ADLS Gen 1](#azure-adls-gen-1)
@@ -1462,7 +1458,7 @@ When setting this property, the load balancer attempts to use the provided IP ad
 
 Type: String
 
-By default, the value is set to `zookeeper`.
+By default, the value is set to `k8s.gcr.io/kubernetes-zookeeper`.
 
 The `image` refers to the location to retrieve the specific container image for Zookeeper. In some cases, the `zookeeper.image` value may vary in corporate environments where there may be a private container registry that is used.
 
@@ -1470,7 +1466,7 @@ The `image` refers to the location to retrieve the specific container image for 
 
 Type: String
 
-By default, the value is set to `3.8.0`.
+By default, the value is set to `1.0-3.4.10`.
 
 The version of Zookeeper set has been validated by Dremio to work with the Dremio software. Changing this version is not recommended unless the tag is different due to a private container registry name difference.
 

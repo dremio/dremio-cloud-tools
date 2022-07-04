@@ -13,8 +13,9 @@
 # will potentially cause Dremio to upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
-image: dremio/dremio-oss
-imageTag: 22.0.0
+
+image: ericnee/dremio-oss
+imageTag: v20.1.0
 
 # Annotations, labels, node selectors, and tolerations
 #
