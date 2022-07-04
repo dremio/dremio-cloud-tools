@@ -59,7 +59,7 @@ coordinator:
   extraStartParams: >-
     -Dsaffron.default.charset=UTF-16LE
     -Dsaffron.default.nationalcharset=UTF-16LE
-    -Dsaffron.default.collat​​ion.name=UTF-16LE\$en_US
+    -Dsaffron.default.collation.name=UTF-16LE\$en_US
 
   # Extra Init Containers
   # Uncomment the below lines to use a custom set of extra init containers for the coordinator.
@@ -157,7 +157,7 @@ executor:
   extraStartParams: >-
     -Dsaffron.default.charset=UTF-16LE
     -Dsaffron.default.nationalcharset=UTF-16LE
-    -Dsaffron.default.collat​​ion.name=UTF-16LE\$en_US
+    -Dsaffron.default.collation.name=UTF-16LE\$en_US
 
   # Extra Init Containers
   # Uncomment the below lines to use a custom set of extra init containers for executors.
