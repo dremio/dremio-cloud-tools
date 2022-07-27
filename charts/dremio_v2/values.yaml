@@ -40,7 +40,7 @@ coordinator:
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
   cpu: 4
-  memory: 4096
+  memory: 10240
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
