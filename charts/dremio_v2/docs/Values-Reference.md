@@ -235,6 +235,24 @@ extraInitContainers: |
 [...]
 ```
 
+#### `extraContainers`
+
+Type: String
+
+By default, this value is not set.
+
+This value controls additional `containers` ("sidecars") that run alongside the standard containers in Dremio's pods. The value specified here may reference values specified in the built-in `Values` object in Helm.
+
+For example, to have a `container` with the Dremio image, you can specify the following:
+
+```yaml
+extraContainers: |
+  - name: dremio-hello-world
+    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+    command: ["echo", "Hello World"]
+[...]
+```
+
 #### `extraVolumes`
 
 Type: Array
@@ -572,6 +590,28 @@ coordinator:
 
 More Info: Refer to the [`extraInitContainers`](#extrainitcontainers) section of this reference.
 
+#### `coordinator.extraContainers`
+
+Type: String
+
+By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `extraContainers`.
+
+This value controls additional `containers` ("sidecars") that run alongside the standard containers in Dremio's coordinator pods. The value specified here may reference values specified in the `values.yaml` file.
+
+For example, to have a `container` with the Dremio image, you can specify the following:
+
+```yaml
+coordinator:
+  [...]
+  extraContainers: |
+    - name: dremio-hello-world
+      image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+      command: ["echo", "Hello World"]
+[...]
+```
+
+More Info: Refer to the [`extraContainers`](#extracontainers) section of this reference.
+
 #### `coordinator.extraVolumes`
 
 Type: Array
@@ -818,7 +858,7 @@ This value controls additional parameters passed to the Dremio process.
 For example, to pass an additional system property to the java process, you can specify the following:
 
 ```yaml
-coordinator:
+executor:
   [...]
   extraStartParams: >-
     -DsomeTestKey=someValue
@@ -838,7 +878,7 @@ This value controls additional `initContainers` that are started as part of the 
 For example, to have an `initContainer` with the Dremio image, you can specify the following:
 
 ```yaml
-coordinator:
+executor:
   [...]
   extraInitContainers: |
     - name: dremio-hello-world
@@ -848,6 +888,28 @@ coordinator:
 ```
 
 More Info: Refer to the [`extraInitContainers`](#extrainitcontainers) section of this reference.
+
+#### `executor.extraContainers`
+
+Type: String
+
+By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `extraContainers`.
+
+This value controls additional `containers` ("sidecars") that run alongside the standard containers in Dremio's executor pods. The value specified here may reference values specified in the `values.yaml` file.
+
+For example, to have a `container` with the Dremio image, you can specify the following:
+
+```yaml
+executor:
+  [...]
+  extraContainers: |
+    - name: dremio-hello-world
+      image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+      command: ["echo", "Hello World"]
+[...]
+```
+
+More Info: Refer to the [`extraContainers`](#extracontainers) section of this reference.
 
 #### `executor.extraVolumes`
 
@@ -939,6 +1001,11 @@ executor:
         -DsomeTestKey=someValue
 
       extraInitContainers: |
+        - name: dremio-hello-world-init
+          image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+          command: ["echo", "Hello World"]
+
+      extraContainers: |
         - name: dremio-hello-world
           image: {{ $.Values.image }}:{{ $.Values.imageTag }}
           command: ["echo", "Hello World"]
