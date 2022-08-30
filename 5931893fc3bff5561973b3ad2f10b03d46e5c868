@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19e35b37_2d59b1d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-08-30T07:36:00Z",
+      "side": 1,
+      "message": "Commit messages are public. Please create an associated DX to address this and provide a more descriptive change message. When creating the DX, please ensure that you provide a release note for the change.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 36
+      },
+      "revId": "5931893fc3bff5561973b3ad2f10b03d46e5c868",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c890b61_eb2afc6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-08-30T07:36:00Z",
+      "side": 1,
+      "message": "The change for the policy itself looks good to me. Please clean up the two identified issues.",
+      "revId": "5931893fc3bff5561973b3ad2f10b03d46e5c868",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91307d6c_25ae455d",
+        "filename": "charts/dremio_v2/Chart.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2022-08-30T07:36:00Z",
+      "side": 1,
+      "message": "We haven\u0027t really done version bumping for this chart. Let\u0027s just leave it at 2.0.0 to reduce the reconciliation process for end users.",
+      "revId": "5931893fc3bff5561973b3ad2f10b03d46e5c868",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
