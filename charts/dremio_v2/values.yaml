@@ -9,6 +9,9 @@
 # tags in the form X.Y (i.e. 21.1) are updated with the latest
 # patch version released.
 #
+# If you use the form X.Y (e.g. 20.1) then you
+# must enclose it in double-quotes (e.g. "20.1")
+#
 # Using the image tag latest or in the form X.Y
 # will potentially cause Dremio to upgrade versions
 # automatically during redeployments and may negatively impact
