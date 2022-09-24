@@ -1,0 +1,121 @@
+{{- if not $.Values.DremioAdmin -}}
+{{- range $engineIndex, $engineName := $.Values.executor.engines -}}
+{{- $executorName := ternary "dremio-executor" (printf "dremio-executor-%s" $engineName) (eq $engineName "default") -}}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ $executorName }}
+  {{- include "dremio.executor.annotations" (list $ $engineName) | nindent 2}}
+  {{- include "dremio.executor.labels" (list $ $engineName) | nindent 2}}
+spec:
+  serviceName: "dremio-cluster-pod"
+  replicas: {{ template "dremio.executor.count" (list $ $engineName) }}
+  podManagementPolicy: "Parallel"
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: {{ $executorName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $executorName }}
+        role: dremio-cluster-pod
+        {{- include "dremio.executor.podLabels" (list $ $engineName) | nindent 8}}
+      annotations:
+        dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
+        {{- include "dremio.executor.podAnnotations" (list $ $engineName) | nindent 8}}
+    spec:
+      {{- include "dremio.executor.serviceAccount" (list $ $engineName) | nindent 6}}
+      terminationGracePeriodSeconds: 120
+      {{- include "dremio.executor.nodeSelector" (list $ $engineName) | nindent 6}}
+      {{- include "dremio.executor.tolerations" (list $ $engineName) | nindent 6}}
+      containers:
+      - name: dremio-executor
+        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: {{ template "dremio.executor.cpu" (list $ $engineName) }}
+            memory: {{ template "dremio.executor.memory" (list $ $engineName) }}
+        volumeMounts:
+        - name: {{ template "dremio.executor.volumeClaimName" (list $ $engineName) }}
+          mountPath: /opt/dremio/data
+        - name: dremio-config
+          mountPath: /opt/dremio/conf
+        - name: dremio-hive2-config
+          mountPath: /opt/dremio/plugins/connectors/hive2.d
+        - name: dremio-hive2-config
+          mountPath: /opt/dremio/plugins/connectors/hive2-ee.d
+        - name: dremio-hive3-config
+          mountPath: /opt/dremio/plugins/connectors/hive3.d
+        - name: dremio-hive3-config
+          mountPath: /opt/dremio/plugins/connectors/hive3-ee.d
+        {{- include "dremio.executor.cloudCache.volumeMounts" (list $ $engineName) | nindent 8 }}
+        {{- include "dremio.executor.extraVolumeMounts" (list $ $engineName) | nindent 8 }}
+        env:
+        - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
+          value: "{{ template "dremio.executor.heapMemory" (list $ $engineName) }}"
+        - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
+          value: "{{ template "dremio.executor.directMemory" (list $ $engineName) }}"
+        - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
+          value: >-
+            {{- include "dremio.executor.extraStartParams" (list $ $engineName) | nindent 12 -}}
+            -Dzookeeper=zk-hs:2181
+            -Dservices.coordinator.enabled=false
+            -Dservices.coordinator.master.enabled=false
+            -Dservices.coordinator.master.embedded-zookeeper.enabled=false
+            -Dservices.executor.enabled=true
+            -Dservices.conduit.port=45679
+            -Dservices.node-tag={{ $engineName }}
+        - name: AWS_CREDENTIAL_PROFILES_FILE
+          value: "/opt/dremio/aws/credentials"
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/opt/dremio/aws/credentials"
+        command: ["/opt/dremio/bin/dremio"]
+        args: ["start-fg"]
+        ports:
+        - containerPort: 45678
+          name: server-fabric
+        - containerPort: 45679
+          name: server-conduit
+      initContainers:
+      {{- include "dremio.executor.extraInitContainers" (list $ $engineName) | nindent 6 }}
+      - name: chown-data-directory
+        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: {{ template "dremio.executor.volumeClaimName" (list $ $engineName) }}
+          mountPath: /opt/dremio/data
+        command: ["chown"]
+        args: ["dremio:dremio", "/opt/dremio/data"]
+      {{- include "dremio.executor.cloudCache.initContainers" (list $ $engineName) | nindent 6 }}
+      - name: wait-for-zookeeper
+        image: busybox
+        command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;"]
+      volumes:
+      - name: dremio-config
+        configMap:
+          name: {{ template "dremio.executor.config" (list $ $engineName) }}
+      - name: dremio-hive2-config
+        configMap:
+          name: dremio-hive2-config
+      - name: dremio-hive3-config
+        configMap:
+          name: dremio-hive3-config
+      {{- include "dremio.executor.extraVolumes" (list $ $engineName) | nindent 6 }}
+      {{- include "dremio.imagePullSecrets" $ | nindent 6 }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ template "dremio.executor.volumeClaimName" (list $ $engineName) }}
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      {{- include "dremio.executor.storageClass" (list $ $engineName) | nindent 6 }}
+      resources:
+        requests:
+          storage: {{ template "dremio.executor.volumeSize" (list $ $engineName) }}
+  {{- include "dremio.executor.cloudCache.volumeClaimTemplate" (list $ $engineName) | nindent 2 }}
+{{ end -}}
+{{- end -}}

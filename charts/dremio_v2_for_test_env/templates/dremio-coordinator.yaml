@@ -1,0 +1,179 @@
+{{- if not $.Values.DremioAdmin -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dremio-coordinator
+  {{- include "dremio.coordinator.annotations" $ | nindent 2 }}
+  {{- include "dremio.coordinator.labels" $ | nindent 2 }}
+spec:
+  serviceName: "dremio-cluster-pod"
+  replicas: {{ $.Values.coordinator.count }}
+  podManagementPolicy: "Parallel"
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: dremio-coordinator
+  template:
+    metadata:
+      labels:
+        app: dremio-coordinator
+        role: dremio-cluster-pod
+        {{- include "dremio.coordinator.podLabels" $ | nindent 8 }}
+      annotations:
+        dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
+        {{- include "dremio.coordinator.podAnnotations" $ | nindent 8 }}
+    spec:
+      {{- include "dremio.coordinator.serviceAccount" $ | nindent 6 }}
+      terminationGracePeriodSeconds: 120
+      {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
+      {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
+      containers:
+      - name: dremio-coordinator
+        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: {{ $.Values.coordinator.cpu }}
+            memory: {{ $.Values.coordinator.memory }}M
+        volumeMounts:
+        - name: dremio-config
+          mountPath: /opt/dremio/conf
+        - name: dremio-hive2-config
+          mountPath: /opt/dremio/plugins/connectors/hive2.d
+        - name: dremio-hive2-config
+          mountPath: /opt/dremio/plugins/connectors/hive2-ee.d
+        - name: dremio-hive3-config
+          mountPath: /opt/dremio/plugins/connectors/hive3.d
+        - name: dremio-hive3-config
+          mountPath: /opt/dremio/plugins/connectors/hive3-ee.d
+        {{- if or $.Values.coordinator.web.tls.enabled (or $.Values.coordinator.client.tls.enabled $.Values.coordinator.flight.tls.enabled) }}
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        {{- end }}
+        {{- include "dremio.coordinator.extraVolumeMounts" $ | nindent 8 }}
+        env:
+        - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
+          value: "{{ template "dremio.coordinator.heapMemory" $ }}"
+        - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
+          value: "{{ template "dremio.coordinator.directMemory" $ }}"
+        - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
+          value: >-
+            {{- include "dremio.coordinator.extraStartParams" $ | nindent 12 -}}
+            -Dzookeeper=zk-hs:2181
+            -Dservices.coordinator.enabled=true
+            -Dservices.coordinator.master.enabled=false
+            -Dservices.coordinator.master.embedded-zookeeper.enabled=false
+            -Dservices.executor.enabled=false
+            -Dservices.conduit.port=45679
+        - name: AWS_CREDENTIAL_PROFILES_FILE
+          value: "/opt/dremio/aws/credentials"
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/opt/dremio/aws/credentials"
+        command: ["/opt/dremio/bin/dremio"]
+        args: ["start-fg"]
+        ports:
+        - containerPort: 31010
+          name: client
+        - containerPort: 32010
+          name: flight
+        - containerPort: 45678
+          name: server-fabric
+        - containerPort: 45679
+          name: server-conduit
+        readinessProbe:
+          httpGet:
+            path: /
+            {{- if $.Values.coordinator.web.tls.enabled }}
+            scheme: HTTPS
+            {{- end }}
+            port: 9047
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      initContainers:
+      {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
+      - name: wait-for-dremio-master
+        image: busybox
+        command:  ["sh", "-c", "until nc -z dremio-client {{ $.Values.coordinator.web.port }} > /dev/null; do echo Waiting for Dremio master.; sleep 2; done;"]
+      {{- if $.Values.coordinator.web.tls.enabled }}
+      - name: generate-ui-keystore
+        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-ui
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args: ["pkcs12", "-export", "-inkey", "/dremio-tls-secret/tls.key", "-in", "/dremio-tls-secret/tls.crt", "-out", "/opt/dremio/tls/ui.pkcs12", "-passout", "pass:"]
+      {{- end }}
+      {{- if $.Values.coordinator.client.tls.enabled }}
+      - name: generate-client-keystore
+        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-client
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args: ["pkcs12", "-export", "-inkey", "/dremio-tls-secret/tls.key", "-in", "/dremio-tls-secret/tls.crt", "-out", "/opt/dremio/tls/client.pkcs12", "-passout", "pass:"]
+      {{- end }}
+      {{- if $.Values.coordinator.flight.tls.enabled }}
+      - name: generate-flight-keystore
+        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: dremio-tls
+          mountPath: /opt/dremio/tls
+        - name: dremio-tls-secret-flight
+          mountPath: /dremio-tls-secret
+        command: ["/usr/bin/openssl"]
+        args: ["pkcs12", "-export", "-inkey", "/dremio-tls-secret/tls.key", "-in", "/dremio-tls-secret/tls.crt", "-out", "/opt/dremio/tls/flight.pkcs12", "-passout", "pass:"]
+      {{- end }}
+      volumes:
+      - name: dremio-config
+        configMap:
+          name: dremio-config
+      - name: dremio-hive2-config
+        configMap:
+          name: dremio-hive2-config
+      - name: dremio-hive3-config
+        configMap:
+          name: dremio-hive3-config
+      {{- if or $.Values.coordinator.web.tls.enabled (or $.Values.coordinator.client.tls.enabled $.Values.coordinator.flight.tls.enabled) }}
+      - name: dremio-tls
+        emptyDir: {}
+      {{- end }}
+      {{- if $.Values.coordinator.web.tls.enabled }}
+      - name: dremio-tls-secret-ui
+        secret:
+          secretName: {{ $.Values.coordinator.web.tls.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
+      {{- if $.Values.coordinator.client.tls.enabled }}
+      - name: dremio-tls-secret-client
+        secret:
+          secretName: {{ $.Values.coordinator.client.tls.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
+      {{- if $.Values.coordinator.flight.tls.enabled }}
+      - name: dremio-tls-secret-flight
+        secret:
+          secretName: {{ $.Values.coordinator.flight.tls.secret }}
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+      {{- end }}
+      {{- include "dremio.coordinator.extraVolumes" $ | nindent 6 }}
+      {{- include "dremio.imagePullSecrets" $ | nindent 6}}
+{{- end -}}
