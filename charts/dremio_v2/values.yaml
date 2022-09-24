@@ -360,7 +360,7 @@ distStorage:
   aws:
     bucketName: "dremio"
     path: "/"
-    authentication: "metadata"
+    authentication: "accessKeySecret"
     # If using accessKeySecret for authentication against S3, uncomment the lines below and use the values
     # to configure the appropriate credentials.
     #
