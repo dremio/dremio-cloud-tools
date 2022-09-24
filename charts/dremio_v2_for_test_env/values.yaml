@@ -39,7 +39,7 @@ coordinator:
   # CPU & Memory
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
-  cpu: 4
+  cpu: 1
   memory: 4096
 
   # This count is used for slave coordinators only.
@@ -137,8 +137,8 @@ executor:
   # CPU & Memory
   # Memory allocated to each executor, expressed in MB.
   # CPU allocated to each executor, expressed in CPU cores.
-  cpu: 4
-  memory: 16384
+  cpu: 1
+  memory: 4096
 
   # Engines
   # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
