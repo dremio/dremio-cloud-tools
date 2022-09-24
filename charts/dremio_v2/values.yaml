@@ -308,7 +308,7 @@ distStorage:
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
-  type: "local"
+  type: "aws"
 
   # Google Cloud Storage
   #
@@ -358,15 +358,15 @@ distStorage:
   #       Dremio does not support using an K8s service account based IAM role.
   # credentials: If using accessKeySecret authentication, uncomment the credentials section below.
   aws:
-    bucketName: "AWS Bucket Name"
+    bucketName: "dremio"
     path: "/"
     authentication: "metadata"
     # If using accessKeySecret for authentication against S3, uncomment the lines below and use the values
     # to configure the appropriate credentials.
     #
-    #credentials:
-    #  accessKey: "AWS Access Key"
-    #  secret: "AWS Secret"
+    credentials:
+      accessKey: "WEWXlZLUzEDXwrSM"
+      secret: "PeLZIP0oUZU8eahuL5WiIN5uNK9CwNz3"
     #
     # If using awsProfile for authentication against S3, uncomment the lines below and use the values
     # to choose the appropriate profile.
