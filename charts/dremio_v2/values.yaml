@@ -14,8 +14,8 @@
 # automatically during redeployments and may negatively impact
 # the cluster.
 
-image: ericnee/dremio-oss
-imageTag: v20.1.0
+image: dremio/dremio-oss
+imageTag: 22.1.1
 
 # Annotations, labels, node selectors, and tolerations
 #
