@@ -78,8 +78,8 @@
   </property>
   <property>
     <name>fs.s3a.endpoint</name>
-    <description>minio-oa.default.svc.cluster.local:9000</description>
-    <value>ENDPOINT</value>
+    <description>Endpoint can either be an IP or a hostname, where Minio server is running . However the endpoint value cannot contain the http(s) prefix. E.g. 175.1.2.3:9000 is a valid endpoint.</description>
+    <value>minio-oa.default.svc.cluster.local:9000</value>
   </property>
   <property>
     <name>fs.s3a.connection.ssl.enabled</name>
@@ -87,9 +87,19 @@
     <value>false</value>
   </property>
   <property>
+    <name>fs.s3a.path.style.access</name>
+    <description>Value has to be set to true.</description>
+    <value>true</value>
+  </property>
+  <property>
     <name>fs.s3a.access.key</name>
     <description>AWS access key ID.</description>
     <value>{{ required "AWS access key required" $.Values.distStorage.aws.credentials.accessKey}}</value>
+  </property>
+  <property>
+    <name>dremio.s3.compat</name>
+    <description>Value has to be set to true.</description>
+    <value>true</value>
   </property>
   <property>
     <name>fs.s3a.secret.key</name>
