@@ -77,6 +77,16 @@
     <value>org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider</value>
   </property>
   <property>
+    <name>fs.s3a.endpoint</name>
+    <description>minio-oa.default.svc.cluster.local:9000</description>
+    <value>ENDPOINT</value>
+  </property>
+  <property>
+    <name>fs.s3a.connection.ssl.enabled</name>
+    <description>Value can either be true or false, set to true to use SSL with a secure Minio server.</description>
+    <value>false</value>
+  </property>
+  <property>
     <name>fs.s3a.access.key</name>
     <description>AWS access key ID.</description>
     <value>{{ required "AWS access key required" $.Values.distStorage.aws.credentials.accessKey}}</value>
