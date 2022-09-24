@@ -65,17 +65,27 @@
   {{- end -}}
   {{- if eq $.Values.distStorage.type "aws" }}
   <!-- S3 Configuration Section -->
-  <property>
+<property>
     <name>fs.dremioS3.impl</name>
     <description>The FileSystem implementation. Must be set to com.dremio.plugins.s3.store.S3FileSystem</description>
     <value>com.dremio.plugins.s3.store.S3FileSystem</value>
-  </property>
+</property>
   {{ if eq $.Values.distStorage.aws.authentication "accessKeySecret" -}}
   <property>
     <name>fs.s3a.aws.credentials.provider</name>
     <description>The credential provider type.</description>
     <value>org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider</value>
   </property>
+  <property>
+    <name>dremio.s3.compat</name>
+    <description>Value has to be set to true.</description>
+    <value>true</value>
+</property>
+  <property>
+    <name>fs.s3a.path.style.access</name>
+    <description>Value has to be set to true.</description>
+    <value>false</value>
+</property>
   <property>
     <name>fs.s3a.endpoint</name>
     <description>Endpoint can either be an IP or a hostname, where Minio server is running . However the endpoint value cannot contain the http(s) prefix. E.g. 175.1.2.3:9000 is a valid endpoint.</description>
