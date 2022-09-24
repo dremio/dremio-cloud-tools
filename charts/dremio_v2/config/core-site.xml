@@ -92,11 +92,6 @@
     <value>{{ required "AWS access key required" $.Values.distStorage.aws.credentials.accessKey}}</value>
   </property>
   <property>
-    <name>dremio.s3.compat</name>
-    <description>Value has to be set to true.</description>
-    <value>true</value>
-  </property>
-  <property>
     <name>fs.s3a.secret.key</name>
     <description>AWS secret key.</description>
     <value>{{ required "AWS secret required" $.Values.distStorage.aws.credentials.secret}}</value>
