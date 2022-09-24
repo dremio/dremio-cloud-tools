@@ -15,7 +15,7 @@
 # the cluster.
 
 image: ericnee/dremio-oss
-imageTag: v20.1.0
+imageTag: 22.1.1
 
 # Annotations, labels, node selectors, and tolerations
 #
