@@ -475,3 +475,25 @@ service:
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 # imagePullSecrets:
 #  - secretname
+
+# Dremio Ingress
+# If needed services can be exposed with existing loadbalancer through an ingress,
+# to do so please expose the service with a ClusterIP instead of LoadBalancer
+ 
+ingress:
+  enabled: false
+  ingressClassName: nginx
+  annotations: []
+  hosts:
+    - name: dremio-client
+      port: 31010
+    - name: dremio
+      port: 9047
+    - name: dremio-flight
+      port: 32010
+  tls:
+    - secretName: dremio-tls
+      hosts:
+        - dremio-client
+        - dremio
+        - dremio-flight
