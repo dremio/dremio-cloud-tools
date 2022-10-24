@@ -35,6 +35,9 @@ spec:
           requests:
             cpu: {{ $.Values.coordinator.cpu }}
             memory: {{ $.Values.coordinator.memory }}M
+          limits:
+            cpu: {{ $.Values.coordinator.cpu }}
+            memory: {{ $.Values.coordinator.memory }}M
         volumeMounts:
         - name: dremio-config
           mountPath: /opt/dremio/conf
