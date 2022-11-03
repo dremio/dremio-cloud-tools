@@ -12,6 +12,7 @@ metadata:
   {{- include "dremio.admin.podAnnotations" $ | nindent 2}}
   {{- include "dremio.admin.podLabels" $ | nindent 2}}
 spec:
+  {{- include "dremio.admin.serviceAccount" $ | nindent 2 }}
   containers:
   - name: dremio-admin
     image: {{ $.Values.image }}:{{ $.Values.imageTag }}
@@ -21,7 +22,7 @@ spec:
     resources:
       requests:
         cpu: {{ $.Values.coordinator.cpu }}
-        memory: {{ $.Values.coordinator.memory }}M
+        memory: {{ $.Values.coordinator.memory }}
     volumeMounts:
     - name: dremio-master-volume
       mountPath: /opt/dremio/data
