@@ -528,6 +528,8 @@ Type: String
 
 By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `serviceAccount`.
 
+This service account will also be used by the Dremio admin pod.
+
 More Info: Refer to the [`serviceAccount`](#serviceaccount) section of this reference.
 
 #### `coordinator.extraStartParams`
