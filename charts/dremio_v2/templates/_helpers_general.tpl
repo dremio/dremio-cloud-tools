@@ -84,3 +84,13 @@ tolerations:
   {{- toYaml $adminPodTolerations | nindent 2 }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Admin - Service Account
+*/}}
+{{- define "dremio.admin.serviceAccount" -}}
+{{- $adminServiceAccount := $.Values.coordinator.serviceAccount -}}
+{{- if $adminServiceAccount -}}
+serviceAccount: {{ $adminServiceAccount }}
+{{- end -}}
+{{- end -}}
