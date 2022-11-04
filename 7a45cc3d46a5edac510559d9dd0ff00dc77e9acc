@@ -34,6 +34,24 @@
       "parentUuid": "deb09518_1b04a34a",
       "revId": "7a45cc3d46a5edac510559d9dd0ff00dc77e9acc",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1acbc67c_d7e04295",
+        "filename": "charts/dremio_v2/templates/dremio-admin.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-11-04T13:14:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f266530_dc4dbd0a",
+      "revId": "7a45cc3d46a5edac510559d9dd0ff00dc77e9acc",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
