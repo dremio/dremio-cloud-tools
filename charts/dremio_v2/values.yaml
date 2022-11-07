@@ -15,6 +15,7 @@
 # the cluster.
 image: dremio/dremio-oss
 imageTag: latest
+DremioAdmin: True
 
 # Annotations, labels, node selectors, and tolerations
 #
@@ -52,7 +53,7 @@ coordinator:
 
   # Kubernetes Service Account
   # Uncomment below to use a custom Kubernetes service account for the coordinator.
-  #serviceAccount: ""
+  serviceAccount: "testsa"
 
   # Uncomment the lines below to use a custom set of extra startup parameters for the coordinator.
   #extraStartParams: >-
@@ -292,7 +293,7 @@ distStorage:
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
-  type: "local"
+  type: "gcp"
 
   # Google Cloud Storage
   #
