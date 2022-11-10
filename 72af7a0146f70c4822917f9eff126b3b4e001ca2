@@ -16,6 +16,24 @@
       "message": "We probably need to reference this in the following file\nhttps://github.com/dremio/dremio-cloud-tools/blob/master/charts/dremio_v2/docs/Values-Reference.md",
       "revId": "72af7a0146f70c4822917f9eff126b3b4e001ca2",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fe196bc_f03c5731",
+        "filename": "charts/dremio_v2/templates/dremio-admin.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-11-10T19:03:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a277cbe6_62c8d1b8",
+      "revId": "72af7a0146f70c4822917f9eff126b3b4e001ca2",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
