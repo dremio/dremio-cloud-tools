@@ -1,0 +1,12 @@
+auto-reload:
+  enabled: True
+  period: 60
+  unit: SECONDS
+
+metrics:
+  - name: prometheus_reporter
+    comment: >
+      Publish metrics on prometheus
+    reporter:
+      type: prometheus
+      port: 12543
