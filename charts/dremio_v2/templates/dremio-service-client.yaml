@@ -38,4 +38,46 @@ spec:
   clusterIP: None
   selector:
     role: dremio-cluster-pod
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  finalizers:
+  labels:
+    metrics: dremio
+  name: dremio-telemetry
+spec:
+  ports:
+  - name: telemetry
+    port: 12543
+    protocol: TCP
+    targetPort: telemetry
+  selector:
+    role: dremio-cluster-pod
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+  labels:
+    release: kube-prometheus
+  name: dremio
+spec:
+  endpoints:
+  - interval: 30s
+    path: /auth/metrics
+    port: telemetry
+    scrapeTimeout: 10s
+    metricRelabelings:
+    - action: replace
+      regex: (.*$)
+      replacement: dremio_${1}
+      sourceLabels:
+      - __name__
+      targetLabel: __name__
+  selector:
+    matchLabels:
+      metrics: dremio
+---
 {{- end -}}

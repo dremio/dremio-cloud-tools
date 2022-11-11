@@ -79,6 +79,8 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        - containerPort: 12543
+          name: telemetry
       initContainers:
       {{- include "dremio.executor.extraInitContainers" (list $ $engineName) | nindent 6 }}
       - name: chown-data-directory

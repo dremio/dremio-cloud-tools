@@ -80,6 +80,8 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        - containerPort: 12543
+          name: telemetry
         readinessProbe:
           httpGet:
             path: /
