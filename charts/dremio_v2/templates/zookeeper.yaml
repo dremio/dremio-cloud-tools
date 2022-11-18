@@ -112,7 +112,7 @@ spec:
         resources:
           requests:
             cpu: {{ $.Values.zookeeper.cpu }}
-            memory: {{ $.Values.zookeeper.memory }}M
+            memory: {{ $.Values.zookeeper.memory }}Mi
         ports:
         - containerPort: 2181
           name: client
