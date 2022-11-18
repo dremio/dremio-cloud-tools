@@ -58,7 +58,7 @@ Executor - Memory Resource Request
 {{- $engineName := index . 1 -}}
 {{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
 {{- $engineMemory := default ($context.Values.executor.memory) $engineConfiguration.memory -}}
-{{- $engineMemory -}}M
+{{- $engineMemory -}}Mi
 {{- end -}}
 
 {{/*
