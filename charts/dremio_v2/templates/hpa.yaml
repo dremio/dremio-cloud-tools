@@ -1,0 +1,35 @@
+{{- if $.Values.hpa -}}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: dremio-executor-scaler
+spec:
+  maxReplicas: {{ $.Values.hpa.maxReplicas }}
+  minReplicas: {{ $.Values.hpa.minReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: dremio-executor
+  metrics:
+  - type: Pods
+    pods:
+      metric:
+        name: {{ $.Values.hpa.metric.metricName }}
+      target:
+        type: {{ $.Values.hpa.metric.target.type }}
+        averageValue: {{ $.Values.hpa.metric.target.value }}
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Pods
+          value: 4
+          periodSeconds: 15
+      selectPolicy: Max
+{{- end -}}

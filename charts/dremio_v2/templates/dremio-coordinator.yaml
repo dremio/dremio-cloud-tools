@@ -80,6 +80,7 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        {{- include "dremio.coordinator.extraPorts" $ | nindent 8 }}
         readinessProbe:
           httpGet:
             path: /

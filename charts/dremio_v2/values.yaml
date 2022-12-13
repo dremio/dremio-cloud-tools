@@ -13,8 +13,8 @@
 # will potentially cause Dremio to upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
-image: dremio/dremio-oss
-imageTag: latest
+image: gcr.io/dremio-1093/dremio-ee
+imageTag: bngo-1213-150 
 
 # Annotations, labels, node selectors, and tolerations
 #
@@ -38,8 +38,8 @@ coordinator:
   # CPU & Memory
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 1
+  memory: 12288
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
@@ -48,15 +48,22 @@ coordinator:
   # Coordinator data volume size (applies to the master coordinator only).
   # In most managed Kubernetes environments (AKS, GKE, etc.), the size of the disk has a direct impact on
   # the provisioned and maximum performance of the disk.
-  volumeSize: 128Gi
+  volumeSize: 12Gi
 
   # Kubernetes Service Account
   # Uncomment below to use a custom Kubernetes service account for the coordinator.
   #serviceAccount: ""
 
   # Uncomment the lines below to use a custom set of extra startup parameters for the coordinator.
-  #extraStartParams: >-
-  #  -DsomeKey=someValue
+  extraStartParams: >-
+    -Dservices.web-admin.port=9010
+    -Dservices.web-admin.enabled=true
+    -Dservices.web-admin.host=0.0.0.0
+  
+  extraPorts:
+    - containerPort: 9010
+      name: prometheus
+      protocol: TCP
 
   # Extra Init Containers
   # Uncomment the below lines to use a custom set of extra init containers for the coordinator.
@@ -81,7 +88,11 @@ coordinator:
   #annotations: {}
   #podAnnotations: {}
   #labels: {}
-  #podLabels: {}
+  podAnnotations: {
+    "prometheus.io/path": '/metrics',
+    "prometheus.io/port": '9010',
+    "prometheus.io/scrape": 'true'
+  }
   #nodeSelector: {}
   #tolerations: []
 
@@ -128,25 +139,32 @@ executor:
   # CPU & Memory
   # Memory allocated to each executor, expressed in MB.
   # CPU allocated to each executor, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 1
+  memory: 12288
 
   # Engines
   # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
   # Note: The number of executor pods will be the length of the array below * count.
   engines: ["default"]
-  count: 3
+  count: 1
 
   # Executor volume size.
-  volumeSize: 128Gi
+  volumeSize: 12Gi
 
   # Kubernetes Service Account
   # Uncomment below to use a custom Kubernetes service account for executors.
   #serviceAccount: ""
 
   # Uncomment the lines below to use a custom set of extra startup parameters for executors.
-  #extraStartParams: >-
-  #  -DsomeKey=someValue
+  extraStartParams: >-
+    -Dservices.web-admin.port=9010
+    -Dservices.web-admin.enabled=true
+    -Dservices.web-admin.host=0.0.0.0
+
+  extraPorts:
+    - containerPort: 9010
+      name: prometheus
+      protocol: TCP
 
   # Extra Init Containers
   # Uncomment the below lines to use a custom set of extra init containers for executors.
@@ -169,6 +187,20 @@ executor:
   # Dremio C3
   # Designed for use with NVMe storage devices, performance may be impacted when using
   # persistent volume storage that resides far from the physical node.
+  podAnnotations: {
+    "prometheus.io/path": '/metrics',
+    "prometheus.io/port": '9010',
+    "prometheus.io/scrape": 'true'
+  }
+
+  lifecycle:
+    postStart:
+      exec:
+        command: ['bash', '/opt/dremio/bin/aclHandler.sh', '-a', 'remove']
+    preStop:
+      exec:
+        command: ['bash', '/opt/dremio/bin/aclHandler.sh', '-a', 'add']
+
   cloudCache:
     enabled: true
 
@@ -251,6 +283,12 @@ executor:
   #         size: 100Gi
   #         storageClass: ""
 
+# Secrets
+secrets:
+  DREMIO_USER: brian.ngo
+  DREMIO_PASSWORD: Test!1234
+  DREMIO_URL: http://34.127.33.200:9047
+
 # Zookeeper
 zookeeper:
   # The Zookeeper image used in the cluster.
@@ -262,7 +300,7 @@ zookeeper:
   # CPU allocated to each zookeeper, expressed in CPU cores.
   cpu: 0.5
   memory: 1024
-  count: 3
+  count: 1
 
   volumeSize: 10Gi
 
@@ -292,7 +330,7 @@ distStorage:
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
-  type: "local"
+  type: "gcp"
 
   # Google Cloud Storage
   #
@@ -306,7 +344,7 @@ distStorage:
   #       has access to the GCS bucket.
   # credentials: If using serviceAccountKeys authentication, uncomment the credentials section below.
   gcp:
-    bucketName: "GCS Bucket Name"
+    bucketName: "bngo-auto-scale"
     path: "/"
     authentication: "auto"
 
@@ -475,3 +513,22 @@ service:
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 # imagePullSecrets:
 #  - secretname
+
+
+# TODO: document this
+# auto scaling settings 
+hpa:
+  # max num of replicas
+  maxReplicas: 5
+  # min num of replicas
+  minReplicas: 2
+  metric:
+    # Prometheus metric type
+    metricType: 
+    # Prometheus metrics name
+    metricName: fragments_active
+    target:
+      # scale up target type
+      type: Value
+      # scale up metric
+      value: 10

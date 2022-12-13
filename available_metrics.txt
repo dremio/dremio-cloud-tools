@@ -1,0 +1,339 @@
+# HELP dremio_memory_direct_current Generated from Dropwizard metric import (metric=dremio.memory.direct_current, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_memory_direct_current gauge
+dremio_memory_direct_current 1.048576E8
+# HELP rpc_peers Generated from Dropwizard metric import (metric=rpc.peers, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE rpc_peers gauge
+rpc_peers 1.0
+# HELP dremio_memory_remaining_heap_allocations Generated from Dropwizard metric import (metric=dremio.memory.remaining_heap_allocations, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_memory_remaining_heap_allocations gauge
+dremio_memory_remaining_heap_allocations 4026531.0
+# HELP memory_heap_init Generated from Dropwizard metric import (metric=memory.heap.init, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$56/820169180)
+# TYPE memory_heap_init gauge
+memory_heap_init 2.05520896E8
+# HELP memory_pools_G1_Old_Gen_used_after_gc Generated from Dropwizard metric import (metric=memory.pools.G1-Old-Gen.used-after-gc, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$68/1727022161)
+# TYPE memory_pools_G1_Old_Gen_used_after_gc gauge
+memory_pools_G1_Old_Gen_used_after_gc 0.0
+# HELP rpc_bit_data_peak Generated from Dropwizard metric import (metric=rpc.bit.data.peak, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE rpc_bit_data_peak gauge
+rpc_bit_data_peak 0.0
+# HELP dremio_exec_cachemanager_valid_buffer_map_count Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.valid_buffer_map_count, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_valid_buffer_map_count gauge
+dremio_exec_cachemanager_valid_buffer_map_count 0.0
+# HELP dremio_exec_cachemanager_total_dataset_get_loops_processed Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_dataset_get_loops_processed, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_dataset_get_loops_processed gauge
+dremio_exec_cachemanager_total_dataset_get_loops_processed 0.0
+# HELP memory_pools_Code_Cache_committed Generated from Dropwizard metric import (metric=memory.pools.Code-Cache.committed, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$66/1961982904)
+# TYPE memory_pools_Code_Cache_committed gauge
+memory_pools_Code_Cache_committed 2.097152E7
+# HELP memory_pools_Compressed_Class_Space_used Generated from Dropwizard metric import (metric=memory.pools.Compressed-Class-Space.used, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$65/481444248)
+# TYPE memory_pools_Compressed_Class_Space_used gauge
+memory_pools_Compressed_Class_Space_used 1.1667024E7
+# HELP memory_pools_Metaspace_max Generated from Dropwizard metric import (metric=memory.pools.Metaspace.max, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$64/1540342818)
+# TYPE memory_pools_Metaspace_max gauge
+memory_pools_Metaspace_max -1.0
+# HELP threads_terminated_count Generated from Dropwizard metric import (metric=threads.terminated.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$69/139483039)
+# TYPE threads_terminated_count gauge
+threads_terminated_count 0.0
+# HELP buffer_pool_mapped_count Generated from Dropwizard metric import (metric=buffer-pool.mapped.count, type=com.codahale.metrics.jvm.JmxAttributeGauge)
+# TYPE buffer_pool_mapped_count gauge
+buffer_pool_mapped_count 0.0
+# HELP memory_pools_G1_Eden_Space_committed Generated from Dropwizard metric import (metric=memory.pools.G1-Eden-Space.committed, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$66/1961982904)
+# TYPE memory_pools_G1_Eden_Space_committed gauge
+memory_pools_G1_Eden_Space_committed 1.257242624E9
+# HELP dremio_exec_cachemanager_total_buffer_requests Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_buffer_requests, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_buffer_requests gauge
+dremio_exec_cachemanager_total_buffer_requests 0.0
+# HELP threads_daemon_count Generated from Dropwizard metric import (metric=threads.daemon.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$71/1548315366)
+# TYPE threads_daemon_count gauge
+threads_daemon_count 47.0
+# HELP dremio_exec_cachemanager_total_generation_requests Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_generation_requests, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_generation_requests gauge
+dremio_exec_cachemanager_total_generation_requests 0.0
+# HELP gc_G1_Old_Generation_time Generated from Dropwizard metric import (metric=gc.G1-Old-Generation.time, type=com.codahale.metrics.jvm.GarbageCollectorMetricSet$$Lambda$42/33327404)
+# TYPE gc_G1_Old_Generation_time gauge
+gc_G1_Old_Generation_time 0.0
+# HELP memory_pools_G1_Eden_Space_used Generated from Dropwizard metric import (metric=memory.pools.G1-Eden-Space.used, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$65/481444248)
+# TYPE memory_pools_G1_Eden_Space_used gauge
+memory_pools_G1_Eden_Space_used 1.175453696E9
+# HELP dremio_exec_cachemanager_total_datasets_targeted Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_datasets_targeted, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_datasets_targeted gauge
+dremio_exec_cachemanager_total_datasets_targeted 0.0
+# HELP rpcbit_control_current Generated from Dropwizard metric import (metric=rpcbit.control.current, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE rpcbit_control_current gauge
+rpcbit_control_current 0.0
+# HELP ZKClusterClient_supervisorProbeFailed Generated from Dropwizard metric import (metric=ZKClusterClient.supervisorProbeFailed, type=com.codahale.metrics.Counter)
+# TYPE ZKClusterClient_supervisorProbeFailed gauge
+ZKClusterClient_supervisorProbeFailed 0.0
+# HELP dremio_exec_cachemanager_request_allocator_size Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.request_allocator_size, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_request_allocator_size gauge
+dremio_exec_cachemanager_request_allocator_size 0.0
+# HELP memory_non_heap_max Generated from Dropwizard metric import (metric=memory.non-heap.max, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$62/748932694)
+# TYPE memory_non_heap_max gauge
+memory_non_heap_max -1.0
+# HELP memory_pools_Metaspace_committed Generated from Dropwizard metric import (metric=memory.pools.Metaspace.committed, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$66/1961982904)
+# TYPE memory_pools_Metaspace_committed gauge
+memory_pools_Metaspace_committed 9.4765056E7
+# HELP metadata_refresh_failed_15m Generated from Dropwizard metric import (metric=metadata_refresh.failed_15m, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$327/1137112161)
+# TYPE metadata_refresh_failed_15m gauge
+metadata_refresh_failed_15m 0.0
+# HELP memory_pools_G1_Old_Gen_used Generated from Dropwizard metric import (metric=memory.pools.G1-Old-Gen.used, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$65/481444248)
+# TYPE memory_pools_G1_Old_Gen_used gauge
+memory_pools_G1_Old_Gen_used 1.04494E7
+# HELP dremio_exec_cachemanager_avg_eviction_loop_process_ms Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.avg_eviction_loop_process_ms, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_avg_eviction_loop_process_ms gauge
+dremio_exec_cachemanager_avg_eviction_loop_process_ms 0.0
+# HELP dremio_memory_jvm_direct_current Generated from Dropwizard metric import (metric=dremio.memory.jvm_direct_current, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_memory_jvm_direct_current gauge
+dremio_memory_jvm_direct_current 3.362039E7
+# HELP gc_G1_Young_Generation_time Generated from Dropwizard metric import (metric=gc.G1-Young-Generation.time, type=com.codahale.metrics.jvm.GarbageCollectorMetricSet$$Lambda$42/33327404)
+# TYPE gc_G1_Young_Generation_time gauge
+gc_G1_Young_Generation_time 357.0
+# HELP memory_pools_G1_Survivor_Space_usage Generated from Dropwizard metric import (metric=memory.pools.G1-Survivor-Space.usage, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$3)
+# TYPE memory_pools_G1_Survivor_Space_usage gauge
+memory_pools_G1_Survivor_Space_usage 1.0
+# HELP threads_total_started_count Generated from Dropwizard metric import (metric=threads.total_started.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$73/1809700046)
+# TYPE threads_total_started_count gauge
+threads_total_started_count 105.0
+# HELP memory_total_used Generated from Dropwizard metric import (metric=memory.total.used, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$53/797087573)
+# TYPE memory_total_used gauge
+memory_total_used 1.359559928E9
+# HELP memory_pools_G1_Eden_Space_usage Generated from Dropwizard metric import (metric=memory.pools.G1-Eden-Space.usage, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$3)
+# TYPE memory_pools_G1_Eden_Space_usage gauge
+memory_pools_G1_Eden_Space_usage 0.9349457881567973
+# HELP memory_pools_G1_Old_Gen_committed Generated from Dropwizard metric import (metric=memory.pools.G1-Old-Gen.committed, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$66/1961982904)
+# TYPE memory_pools_G1_Old_Gen_committed gauge
+memory_pools_G1_Old_Gen_committed 7.66509056E8
+# HELP buffer_pool_mapped_capacity Generated from Dropwizard metric import (metric=buffer-pool.mapped.capacity, type=com.codahale.metrics.jvm.JmxAttributeGauge)
+# TYPE buffer_pool_mapped_capacity gauge
+buffer_pool_mapped_capacity 0.0
+# HELP buffer_pool_mapped_used Generated from Dropwizard metric import (metric=buffer-pool.mapped.used, type=com.codahale.metrics.jvm.JmxAttributeGauge)
+# TYPE buffer_pool_mapped_used gauge
+buffer_pool_mapped_used 0.0
+# HELP threads_blocked_count Generated from Dropwizard metric import (metric=threads.blocked.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$69/139483039)
+# TYPE threads_blocked_count gauge
+threads_blocked_count 0.0
+# HELP fragments_active Generated from Dropwizard metric import (metric=fragments.active, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE fragments_active gauge
+fragments_active 0.0
+# HELP memory_pools_G1_Old_Gen_max Generated from Dropwizard metric import (metric=memory.pools.G1-Old-Gen.max, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$64/1540342818)
+# TYPE memory_pools_G1_Old_Gen_max gauge
+memory_pools_G1_Old_Gen_max 4.294967296E9
+# HELP gc_G1_Old_Generation_count Generated from Dropwizard metric import (metric=gc.G1-Old-Generation.count, type=com.codahale.metrics.jvm.GarbageCollectorMetricSet$$Lambda$41/1846728894)
+# TYPE gc_G1_Old_Generation_count gauge
+gc_G1_Old_Generation_count 0.0
+# HELP memory_pools_Metaspace_usage Generated from Dropwizard metric import (metric=memory.pools.Metaspace.usage, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$3)
+# TYPE memory_pools_Metaspace_usage gauge
+memory_pools_Metaspace_usage 0.969623739788641
+# HELP memory_pools_Compressed_Class_Space_usage Generated from Dropwizard metric import (metric=memory.pools.Compressed-Class-Space.usage, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$3)
+# TYPE memory_pools_Compressed_Class_Space_usage gauge
+memory_pools_Compressed_Class_Space_usage 0.010865762829780579
+# HELP buffer_pool_direct_count Generated from Dropwizard metric import (metric=buffer-pool.direct.count, type=com.codahale.metrics.jvm.JmxAttributeGauge)
+# TYPE buffer_pool_direct_count gauge
+buffer_pool_direct_count 12.0
+# HELP memory_pools_G1_Survivor_Space_init Generated from Dropwizard metric import (metric=memory.pools.G1-Survivor-Space.init, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$67/1136359120)
+# TYPE memory_pools_G1_Survivor_Space_init gauge
+memory_pools_G1_Survivor_Space_init 0.0
+# HELP memory_pools_Code_Cache_init Generated from Dropwizard metric import (metric=memory.pools.Code-Cache.init, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$67/1136359120)
+# TYPE memory_pools_Code_Cache_init gauge
+memory_pools_Code_Cache_init 2555904.0
+# HELP memory_pools_Code_Cache_max Generated from Dropwizard metric import (metric=memory.pools.Code-Cache.max, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$64/1540342818)
+# TYPE memory_pools_Code_Cache_max gauge
+memory_pools_Code_Cache_max 2.5165824E8
+# HELP gc_G1_Young_Generation_count Generated from Dropwizard metric import (metric=gc.G1-Young-Generation.count, type=com.codahale.metrics.jvm.GarbageCollectorMetricSet$$Lambda$41/1846728894)
+# TYPE gc_G1_Young_Generation_count gauge
+gc_G1_Young_Generation_count 40.0
+# HELP memory_non_heap_usage Generated from Dropwizard metric import (metric=memory.non-heap.usage, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$2)
+# TYPE memory_non_heap_usage gauge
+memory_non_heap_usage -1.2437376E8
+# HELP metadata_refresh_success_15m Generated from Dropwizard metric import (metric=metadata_refresh.success_15m, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$327/1137112161)
+# TYPE metadata_refresh_success_15m gauge
+metadata_refresh_success_15m 0.0
+# HELP ZKClusterClient_supervisorExitApplication Generated from Dropwizard metric import (metric=ZKClusterClient.supervisorExitApplication, type=com.codahale.metrics.Counter)
+# TYPE ZKClusterClient_supervisorExitApplication gauge
+ZKClusterClient_supervisorExitApplication 0.0
+# HELP buffer_pool_direct_used Generated from Dropwizard metric import (metric=buffer-pool.direct.used, type=com.codahale.metrics.jvm.JmxAttributeGauge)
+# TYPE buffer_pool_direct_used gauge
+buffer_pool_direct_used 3.362039E7
+# HELP memory_non_heap_committed Generated from Dropwizard metric import (metric=memory.non-heap.committed, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$63/487280612)
+# TYPE memory_non_heap_committed gauge
+memory_non_heap_committed 1.27926272E8
+# HELP dremio_exec_cachemanager_eviction_allocator_size Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.eviction_allocator_size, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_eviction_allocator_size gauge
+dremio_exec_cachemanager_eviction_allocator_size 0.0
+# HELP threads_count Generated from Dropwizard metric import (metric=threads.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$70/927710848)
+# TYPE threads_count gauge
+threads_count 69.0
+# HELP memory_total_committed Generated from Dropwizard metric import (metric=memory.total.committed, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$55/1817851005)
+# TYPE memory_total_committed gauge
+memory_total_committed 2.200961024E9
+# HELP threads_timed_waiting_count Generated from Dropwizard metric import (metric=threads.timed_waiting.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$69/139483039)
+# TYPE threads_timed_waiting_count gauge
+threads_timed_waiting_count 20.0
+# HELP dremio_exec_cachemanager_buffer_process_avg_ms Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.buffer_process_avg_ms, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_buffer_process_avg_ms gauge
+dremio_exec_cachemanager_buffer_process_avg_ms 0.0
+# HELP memory_pools_Metaspace_used Generated from Dropwizard metric import (metric=memory.pools.Metaspace.used, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$65/481444248)
+# TYPE memory_pools_Metaspace_used gauge
+memory_pools_Metaspace_used 9.1886448E7
+# HELP dremio_exec_cachemanager_total_keys_deleted Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_keys_deleted, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_keys_deleted gauge
+dremio_exec_cachemanager_total_keys_deleted 0.0
+# HELP memory_heap_used Generated from Dropwizard metric import (metric=memory.heap.used, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$57/199346346)
+# TYPE memory_heap_used gauge
+memory_heap_used 1.235186168E9
+# HELP memory_pools_G1_Survivor_Space_committed Generated from Dropwizard metric import (metric=memory.pools.G1-Survivor-Space.committed, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$66/1961982904)
+# TYPE memory_pools_G1_Survivor_Space_committed gauge
+memory_pools_G1_Survivor_Space_committed 4.9283072E7
+# HELP memory_pools_Code_Cache_usage Generated from Dropwizard metric import (metric=memory.pools.Code-Cache.usage, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$3)
+# TYPE memory_pools_Code_Cache_usage gauge
+memory_pools_Code_Cache_usage 0.08273239135742187
+# HELP memory_pools_Compressed_Class_Space_committed Generated from Dropwizard metric import (metric=memory.pools.Compressed-Class-Space.committed, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$66/1961982904)
+# TYPE memory_pools_Compressed_Class_Space_committed gauge
+memory_pools_Compressed_Class_Space_committed 1.2189696E7
+# HELP memory_non_heap_used Generated from Dropwizard metric import (metric=memory.non-heap.used, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$61/469160522)
+# TYPE memory_non_heap_used gauge
+memory_non_heap_used 1.2437376E8
+# HELP memory_pools_Compressed_Class_Space_init Generated from Dropwizard metric import (metric=memory.pools.Compressed-Class-Space.init, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$67/1136359120)
+# TYPE memory_pools_Compressed_Class_Space_init gauge
+memory_pools_Compressed_Class_Space_init 0.0
+# HELP dremio_exec_cachemanager_total_free_buffer_waits Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_free_buffer_waits, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_free_buffer_waits gauge
+dremio_exec_cachemanager_total_free_buffer_waits 0.0
+# HELP dremio_exec_cachemanager_total_work_requests_processed Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_work_requests_processed, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_work_requests_processed gauge
+dremio_exec_cachemanager_total_work_requests_processed 0.0
+# HELP memory_pools_G1_Eden_Space_used_after_gc Generated from Dropwizard metric import (metric=memory.pools.G1-Eden-Space.used-after-gc, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$68/1727022161)
+# TYPE memory_pools_G1_Eden_Space_used_after_gc gauge
+memory_pools_G1_Eden_Space_used_after_gc 0.0
+# HELP rpc_failure_1d Generated from Dropwizard metric import (metric=rpc.failure_1d, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$327/1137112161)
+# TYPE rpc_failure_1d gauge
+rpc_failure_1d 0.0
+# HELP threads_waiting_count Generated from Dropwizard metric import (metric=threads.waiting.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$69/139483039)
+# TYPE threads_waiting_count gauge
+threads_waiting_count 42.0
+# HELP memory_pools_Code_Cache_used Generated from Dropwizard metric import (metric=memory.pools.Code-Cache.used, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$65/481444248)
+# TYPE memory_pools_Code_Cache_used gauge
+memory_pools_Code_Cache_used 2.0820288E7
+# HELP dremio_exec_cachemanager_free_buffer_wait_avg_ms Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.free_buffer_wait_avg_ms, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_free_buffer_wait_avg_ms gauge
+dremio_exec_cachemanager_free_buffer_wait_avg_ms 0.0
+# HELP memory_heap_committed Generated from Dropwizard metric import (metric=memory.heap.committed, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$59/679418543)
+# TYPE memory_heap_committed gauge
+memory_heap_committed 2.073034752E9
+# HELP FABRIC_send_durations_ms Generated from Dropwizard metric import (metric=FABRIC-send-durations-ms, type=com.codahale.metrics.Histogram)
+# TYPE FABRIC_send_durations_ms summary
+FABRIC_send_durations_ms{quantile="0.5",} 2.0
+FABRIC_send_durations_ms{quantile="0.75",} 22.0
+FABRIC_send_durations_ms{quantile="0.95",} 22.0
+FABRIC_send_durations_ms{quantile="0.98",} 22.0
+FABRIC_send_durations_ms{quantile="0.99",} 22.0
+FABRIC_send_durations_ms{quantile="0.999",} 22.0
+FABRIC_send_durations_ms_count 3.0
+# HELP threads_runnable_count Generated from Dropwizard metric import (metric=threads.runnable.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$69/139483039)
+# TYPE threads_runnable_count gauge
+threads_runnable_count 7.0
+# HELP memory_total_init Generated from Dropwizard metric import (metric=memory.total.init, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$52/1405220014)
+# TYPE memory_total_init gauge
+memory_total_init 2.080768E8
+# HELP dremio_exec_cachemanager_avg_dataset_scan_process_ms Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.avg_dataset_scan_process_ms, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_avg_dataset_scan_process_ms gauge
+dremio_exec_cachemanager_avg_dataset_scan_process_ms 0.0
+# HELP memory_pools_G1_Old_Gen_init Generated from Dropwizard metric import (metric=memory.pools.G1-Old-Gen.init, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$67/1136359120)
+# TYPE memory_pools_G1_Old_Gen_init gauge
+memory_pools_G1_Old_Gen_init 1.89792256E8
+# HELP rpcbit_control_peak Generated from Dropwizard metric import (metric=rpcbit.control.peak, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE rpcbit_control_peak gauge
+rpcbit_control_peak 0.0
+# HELP memory_pools_Metaspace_init Generated from Dropwizard metric import (metric=memory.pools.Metaspace.init, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$67/1136359120)
+# TYPE memory_pools_Metaspace_init gauge
+memory_pools_Metaspace_init 0.0
+# HELP memory_heap_usage Generated from Dropwizard metric import (metric=memory.heap.usage, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$1)
+# TYPE memory_heap_usage gauge
+memory_heap_usage 0.28758919052779675
+# HELP memory_pools_G1_Survivor_Space_used Generated from Dropwizard metric import (metric=memory.pools.G1-Survivor-Space.used, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$65/481444248)
+# TYPE memory_pools_G1_Survivor_Space_used gauge
+memory_pools_G1_Survivor_Space_used 4.9283072E7
+# HELP dremio_exec_cachemanager_total_datasets_scanned Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_datasets_scanned, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_datasets_scanned gauge
+dremio_exec_cachemanager_total_datasets_scanned 0.0
+# HELP dremio_exec_cachemanager_avg_delete_batch_process_ms Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.avg_delete_batch_process_ms, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_avg_delete_batch_process_ms gauge
+dremio_exec_cachemanager_avg_delete_batch_process_ms 0.0
+# HELP buffer_pool_direct_capacity Generated from Dropwizard metric import (metric=buffer-pool.direct.capacity, type=com.codahale.metrics.jvm.JmxAttributeGauge)
+# TYPE buffer_pool_direct_capacity gauge
+buffer_pool_direct_capacity 3.3620389E7
+# HELP memory_heap_max Generated from Dropwizard metric import (metric=memory.heap.max, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$58/364592569)
+# TYPE memory_heap_max gauge
+memory_heap_max 4.294967296E9
+# HELP memory_pools_G1_Eden_Space_max Generated from Dropwizard metric import (metric=memory.pools.G1-Eden-Space.max, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$64/1540342818)
+# TYPE memory_pools_G1_Eden_Space_max gauge
+memory_pools_G1_Eden_Space_max -1.0
+# HELP dremio_exec_cachemanager_total_inflight_key_requests Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_inflight_key_requests, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_inflight_key_requests gauge
+dremio_exec_cachemanager_total_inflight_key_requests 0.0
+# HELP memory_total_max Generated from Dropwizard metric import (metric=memory.total.max, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$54/201476319)
+# TYPE memory_total_max gauge
+memory_total_max 4.294967295E9
+# HELP memory_pools_G1_Eden_Space_init Generated from Dropwizard metric import (metric=memory.pools.G1-Eden-Space.init, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$67/1136359120)
+# TYPE memory_pools_G1_Eden_Space_init gauge
+memory_pools_G1_Eden_Space_init 1.572864E7
+# HELP memory_pools_G1_Survivor_Space_max Generated from Dropwizard metric import (metric=memory.pools.G1-Survivor-Space.max, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$64/1540342818)
+# TYPE memory_pools_G1_Survivor_Space_max gauge
+memory_pools_G1_Survivor_Space_max -1.0
+# HELP memory_pools_Compressed_Class_Space_max Generated from Dropwizard metric import (metric=memory.pools.Compressed-Class-Space.max, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$64/1540342818)
+# TYPE memory_pools_Compressed_Class_Space_max gauge
+memory_pools_Compressed_Class_Space_max 1.073741824E9
+# HELP memory_pools_G1_Old_Gen_usage Generated from Dropwizard metric import (metric=memory.pools.G1-Old-Gen.usage, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$3)
+# TYPE memory_pools_G1_Old_Gen_usage gauge
+memory_pools_G1_Old_Gen_usage 0.0024329405277967453
+# HELP dremio_exec_cachemanager_total_keys_scanned Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_keys_scanned, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_keys_scanned gauge
+dremio_exec_cachemanager_total_keys_scanned 0.0
+# HELP dremio_exec_cachemanager_total_filling_buffer_waits Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_filling_buffer_waits, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_filling_buffer_waits gauge
+dremio_exec_cachemanager_total_filling_buffer_waits 0.0
+# HELP threads_new_count Generated from Dropwizard metric import (metric=threads.new.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$69/139483039)
+# TYPE threads_new_count gauge
+threads_new_count 0.0
+# HELP rpc_failure_15m Generated from Dropwizard metric import (metric=rpc.failure_15m, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$327/1137112161)
+# TYPE rpc_failure_15m gauge
+rpc_failure_15m 0.0
+# HELP memory_pools_G1_Survivor_Space_used_after_gc Generated from Dropwizard metric import (metric=memory.pools.G1-Survivor-Space.used-after-gc, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$68/1727022161)
+# TYPE memory_pools_G1_Survivor_Space_used_after_gc gauge
+memory_pools_G1_Survivor_Space_used_after_gc 4.9283072E7
+# HELP rpc_bit_data_current Generated from Dropwizard metric import (metric=rpc.bit.data.current, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE rpc_bit_data_current gauge
+rpc_bit_data_current 0.0
+# HELP memory_non_heap_init Generated from Dropwizard metric import (metric=memory.non-heap.init, type=com.codahale.metrics.jvm.MemoryUsageGaugeSet$$Lambda$60/892453434)
+# TYPE memory_non_heap_init gauge
+memory_non_heap_init 2555904.0
+# HELP threads_peak_count Generated from Dropwizard metric import (metric=threads.peak.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$72/1631296473)
+# TYPE threads_peak_count gauge
+threads_peak_count 69.0
+# HELP dremio_exec_cachemanager_total_keys_targeted Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_keys_targeted, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_keys_targeted gauge
+dremio_exec_cachemanager_total_keys_targeted 0.0
+# HELP dremio_exec_cachemanager_total_eviction_loops_processed Generated from Dropwizard metric import (metric=dremio.exec.cachemanager.total_eviction_loops_processed, type=com.dremio.telemetry.api.metrics.Metrics$$Lambda$76/1943497629)
+# TYPE dremio_exec_cachemanager_total_eviction_loops_processed gauge
+dremio_exec_cachemanager_total_eviction_loops_processed 0.0
+# HELP threads_deadlock_count Generated from Dropwizard metric import (metric=threads.deadlock.count, type=com.codahale.metrics.jvm.ThreadStatesGaugeSet$$Lambda$74/17356939)
+# TYPE threads_deadlock_count gauge
+threads_deadlock_count 0.0
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 75.56
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.670957849453E9
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 771.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1048576.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 6.572888064E9
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 2.426884096E9
