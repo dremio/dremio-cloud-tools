@@ -1,3 +1,4 @@
+{{- if $.Values.podMonitor -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -5,8 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      role: dremio-cluster-pod
+      role: {{ $.Values.podMonitor.matchLabels.role }}
   podMetricsEndpoints:
-  - path: /metrics
-    interval: 10s
-    port: prometheus
+    {{- toYaml $.Values.podMonitor.podMetricsEndpoints | nindent 4 }}
+{{- end -}}

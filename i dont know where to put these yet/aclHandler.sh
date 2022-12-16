@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function validateInput {
     # valid actions are to 'add' or 'remove' to the deniedNodesList
 
@@ -21,7 +23,7 @@ function isConfigEmpty {
     do
         if [ $config == Null ]; then
             echo "Configuration not properly set."
-            echo "Ensure that DREMIO_URL, DREMIO_USER and DREMIO_PASSWORD are set as environment variables"
+            echo "Ensure that DREMIO_URL, DREMIO_USER, DREMIO_PASSWORD and PROMETHEUS_ENDPOINT are set as environment variables"
             exit 1
         fi
     done
@@ -85,6 +87,7 @@ function getDeniedNodesList {
     deniedNodesList=$(sendRequest $aclUrl "GET" $authToken)
     
     echo $deniedNodesList
+    
 }
 
 function updateDeniedNodesList {
@@ -103,9 +106,9 @@ function updateDeniedNodesList {
 
 function addNodeToDeniedNodesArray {
     # Add a node to the deniedNodesArray
-
-    local deniedNodesArray=$1
-    local newNode=$2
+    local newNode=$1
+    shift
+    local deniedNodesArray=("$@")
 
     # add new node to deniedNodesArray if it doesn't already exist
     if [[ ! "${deniedNodesArray[*]}" =~ "$newNode" ]]; then
@@ -119,14 +122,17 @@ function addNodeToDeniedNodesArray {
 function removeNodeFromDeniedNodesArray {
     # Remove a node from the deniedNodesArray
 
-    local deniedNodesArray=$1
-    local nodeToRemove=$2
-    local output=()
+    local nodeToRemove=$1
+    shift
+    local deniedNodesArray="($@)"
 
+    local output=()
     # build a new deniedNodesArray that excludes the nodeToRemove
     for node in ${deniedNodesArray[@]}; do
-        if [[ $node != $nodeToRemove ]]; then
-            output+=($node) 
+        # remove paranthesis
+        nodeName=$(sed -e 's/(//' -e 's/)//' <<< $node)
+        if [[ $nodeName != $nodeToRemove ]]; then
+            output+=($nodeName) 
         fi
     done
 
@@ -138,14 +144,12 @@ function arrayAsArrayToString {
     # The deniedNodesList payload that is received from the Dremio API is a string.
     # This function converts an array into a string that can be accepted by the Dremio API.
 
-    local array=("$@")
-
     # replace spaces with commas
-    local output=$(sed -e 's/ /,/g' <<< ${array[@]})
+    local inputArray=("$@")
+    local array=$(sed -e 's/ /,/g' <<< ${inputArray[@]})
+    local arrayAsString="[$array]"
 
-    local output="[$output]"
-
-    echo $output
+    echo $arrayAsString
 
 }
 
@@ -165,38 +169,67 @@ function arrayAsStringToArray {
     
 }
 
+function getActiveFragments {
+
+    local nodeLocalIp=$1:9010
+    local prometheusQueryEndpoint=$2
+    local fragmentActiveQuery="fragments_active{instance=\"$nodeLocalIp\"}"
+
+    # TODO: need error handling in case that value doesn't exist. aka no query results
+    request=$(curl -S -s -g $prometheusQueryEndpoint?query=$fragmentActiveQuery)
+    numActiveFragments=$(echo $request | sed -e 's/.*value":.//' | awk -F '"' '{print $2}')
+    echo $numActiveFragments
+
+}
+function pollPrometheusActiveFragments {
+
+    # will need to append prom ip port
+    local nodeLocalIp="$1:9010"
+    local prometheusQueryEndpoint=$2
+    # initialize numActiveFragments
+    local numActiveFragments=$(getActiveFragments $nodeLocalIp $prometheusQueryEndpoint)
+    while [ $numActiveFragments -gt 0 ]
+    do
+        numActiveFragments=$(getActiveFragments $nodeLocalIp $prometheusQueryEndpoint)
+        echo $numActiveFragments
+    done
+
+}
+
 function main {
      
     local action=$1
     local baseUrl="${DREMIO_URL:-Null}"
     local userName="${DREMIO_USER:-Null}"
     local password="${DREMIO_PASSWORD:-Null}"
-    # # TODO: doesn't work on Mac so re-enable once testing in kube
-    # local currentNodeHostname=\"$(hostname --fqdn)\"
-    local currentNodeHostname=\"dremio-executor-1.dremio-cluster-pod.dx-58905.svc.cluster.local\"
+    local prometheusEndpoint="${PROMETHEUS_ENDPOINT:-Null}"
+    local prometheusQueryEndpoint="$prometheusEndpoint/api/v1/query"
+
+    local currentNodeHostname=\"$(hostname --fqdn)\"    
+    local currentNodeLocalIp=$(hostname -I)
 
     validateInput $action
-    isConfigEmpty $baseUrl $userName $password
+    isConfigEmpty $baseUrl $userName $password $prometheusEndpoint
 
     local aclUrl="$baseUrl/api/v3/nodeCollections/blacklist"
 
     # Login to dremio and retrieve authorization token. User must be a Dremio Admin
     local authToken=$(getAuthToken $baseUrl $userName $password)
-
     local deniedNodesList=$(getDeniedNodesList $aclUrl $authToken)
-    echo $deniedNodesList
     local deniedNodesArray=$(arrayAsStringToArray $deniedNodesList)
 
-    # if [ $action == "remove" ]; then
-    #     local deniedNodesArray=$(removeNodeFromDeniedNodesArray $deniedNodesArray $currentNodeHostname)
-    # else
-    #     local deniedNodesArray=$(addNodeToDeniedNodesArray $deniedNodesArray $currentNodeHostname)
-    # fi
-
-    # local updatedDeniedNodesList=$(arrayAsArrayToString $deniedNodesArray)
-    
-    # local finalList=$(updateDeniedNodesList $aclUrl $authToken $updatedDeniedNodesList)
-    echo $finalList
+    if [ $action == "remove" ]; then
+        local deniedNodesArray=$(removeNodeFromDeniedNodesArray $currentNodeHostname ${deniedNodesArray[@]})
+        local updatedDeniedNodesList=$(arrayAsArrayToString ${deniedNodesArray[@]})
+        local finalList=$(updateDeniedNodesList $aclUrl $authToken $updatedDeniedNodesList)
+        echo $finalList
+    else
+        local deniedNodesArray=$(addNodeToDeniedNodesArray $currentNodeHostname ${deniedNodesArray[@]})
+        local updatedDeniedNodesList=$(arrayAsArrayToString ${deniedNodesArray[@]})
+        local finalList=$(updateDeniedNodesList $aclUrl $authToken $updatedDeniedNodesList)
+        echo $finalList
+        pollPrometheusActiveFragments $currentNodeLocalIp $prometheusQueryEndpoint
+    fi
 
     exit 0
 

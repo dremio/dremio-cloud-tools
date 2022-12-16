@@ -20,16 +20,16 @@ spec:
         averageValue: {{ $.Values.hpa.metric.target.value }}
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 300
+      stabilizationWindowSeconds: 90
       policies:
         - type: Pods
           value: 1
-          periodSeconds: 60
+          periodSeconds: 90
     scaleUp:
-      stabilizationWindowSeconds: 0
+      stabilizationWindowSeconds: 90
       policies:
         - type: Pods
-          value: 4
-          periodSeconds: 15
+          value: 1
+          periodSeconds: 90
       selectPolicy: Max
 {{- end -}}
