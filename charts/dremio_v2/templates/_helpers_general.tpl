@@ -11,6 +11,29 @@ imagePullSecrets:
 {{- end -}}
 
 {{/*
+Shared - Secrets
+*/}}
+{{- define "dremio.secrets" -}}
+{{- $secrets:= coalesce $.Values.secrets -}}
+{{- if $secrets -}}
+{{- toYaml $secrets -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Shared - Secrets Environment Variables
+*/}}
+{{- define "dremio.secretsEnvironmentVariables" -}}
+{{- range $secretName, $secretValue := coalesce $.Values.secrets }}
+- name: {{ $secretName }}
+  valueFrom:
+    secretKeyRef:
+      name: dremio-secrets
+      key: {{ $secretName }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Service - Annotations
 */}}
 {{- define "dremio.service.annotations" -}}
