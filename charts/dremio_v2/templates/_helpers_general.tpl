@@ -34,6 +34,19 @@ Shared - Secrets Environment Variables
 {{- end -}}
 
 {{/*
+Shared - Additional Configuration Environment Variables
+*/}}
+{{- define "dremio.additionalConfigsEnvironmentVariables" -}}
+{{- range $configName, $configValue := coalesce $.Values.additionalConfigs }}
+- name: {{ $configName }}
+  valueFrom:
+    configMapKeyRef:
+      name: dremio-addtional-configs
+      key: {{ $configName }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Service - Annotations
 */}}
 {{- define "dremio.service.annotations" -}}

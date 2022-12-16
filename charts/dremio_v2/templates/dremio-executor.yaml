@@ -74,6 +74,7 @@ spec:
         - name: AWS_SHARED_CREDENTIALS_FILE
           value: "/opt/dremio/aws/credentials"
         {{- include "dremio.secretsEnvironmentVariables" $ | nindent 8}}
+        {{- include "dremio.additionalConfigsEnvironmentVariables" $ | nindent 8}}
         command: ["/opt/dremio/bin/dremio"]
         args: ["start-fg"]
         ports:
@@ -120,5 +121,5 @@ spec:
         requests:
           storage: {{ template "dremio.executor.volumeSize" (list $ $engineName) }}
   {{- include "dremio.executor.cloudCache.volumeClaimTemplate" (list $ $engineName) | nindent 2 }}
-{{ end -}}
+{{- end -}}
 {{- end -}}
