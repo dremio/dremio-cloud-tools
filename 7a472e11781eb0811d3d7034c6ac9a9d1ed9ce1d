@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "174ff750_69ed60f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "i put in some comment mostly with respect to using naked variables and some global defaults and tight loops, \nin general you are on the right track....",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c54d496a_a64edb93",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "${action}",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b7f0344_d8e7884b",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "${action}",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc9c31f2_b5d90dfe",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "${config}",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12a20835_6d00fd8a",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "${config}\u003d\u003d\"Null\"\nor \n-n ${config} \n(are you actually comparing it to a string called \"Null\"",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "622ba61f_5c8235bc",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "not a big deal, but i would exit 2, exit 3 and so on, so each function has a different error/exit code",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48e79dfd_344c211c",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "${requestType} ${url}",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "564c8ff1_7db067c7",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "${authToken}",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b7fd633_a4a7738a",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "export DEFAULT_PORT\u003d9010 at the top and use that",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88d04fd4_fc3d9439",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "put a sleep ${DEFAULT_SLEEP} here, 5 seconds. dont want a tight loop.\nalso put a DEFAULT_MAX_RETRIES\u003d1000 and bail when exceeded.",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3230fc96_0e6eb28c",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-12-19T12:57:16Z",
+      "side": 1,
+      "message": "${prometheusEndpoint}",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
