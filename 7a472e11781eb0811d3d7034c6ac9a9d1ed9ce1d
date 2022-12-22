@@ -35,6 +35,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f7034c0_3767fc14",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c54d496a_a64edb93",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b7f0344_d8e7884b",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-12-19T12:57:16Z",
       "side": 1,
       "message": "${action}",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bec3bf1d_3d175546",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b7f0344_d8e7884b",
       "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
@@ -69,6 +105,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49c04887_b8ed7003",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc9c31f2_b5d90dfe",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12a20835_6d00fd8a",
@@ -82,6 +136,24 @@
       "writtenOn": "2022-12-19T12:57:16Z",
       "side": 1,
       "message": "${config}\u003d\u003d\"Null\"\nor \n-n ${config} \n(are you actually comparing it to a string called \"Null\"",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "527c96a7_1f7e3608",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12a20835_6d00fd8a",
       "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
@@ -103,6 +175,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad9b4b8_e4225efc",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "622ba61f_5c8235bc",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48e79dfd_344c211c",
@@ -116,6 +206,24 @@
       "writtenOn": "2022-12-19T12:57:16Z",
       "side": 1,
       "message": "${requestType} ${url}",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "343c3e68_932826f5",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48e79dfd_344c211c",
       "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
@@ -137,6 +245,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ffce469_5eabafee",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "564c8ff1_7db067c7",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b7fd633_a4a7738a",
@@ -150,6 +276,24 @@
       "writtenOn": "2022-12-19T12:57:16Z",
       "side": 1,
       "message": "export DEFAULT_PORT\u003d9010 at the top and use that",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "075a65e2_15dea1af",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b7fd633_a4a7738a",
       "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
@@ -171,6 +315,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62c9186a_3b7f1bd9",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88d04fd4_fc3d9439",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3230fc96_0e6eb28c",
@@ -184,6 +346,24 @@
       "writtenOn": "2022-12-19T12:57:16Z",
       "side": 1,
       "message": "${prometheusEndpoint}",
+      "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "629fefb7_91a2b798",
+        "filename": "charts/working_dir/autocaleHandler.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2022-12-22T15:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3230fc96_0e6eb28c",
       "revId": "7a472e11781eb0811d3d7034c6ac9a9d1ed9ce1d",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
