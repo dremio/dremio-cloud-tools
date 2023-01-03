@@ -14,7 +14,7 @@
 # automatically during redeployments and may negatively impact
 # the cluster.
 image: gcr.io/dremio-1093/dremio-ee
-imageTag: bngo-1671553323
+imageTag: bngo-2301030-1142
 
 # Annotations, labels, node selectors, and tolerations
 #
@@ -286,7 +286,7 @@ executor:
 secrets:
   DREMIO_USER: brian.ngo
   DREMIO_PASSWORD: Test!1234
-  DREMIO_URL: http://35.199.179.180:9047
+  DREMIO_URL: http://35.185.194.219:9047
 
 # Zookeeper
 zookeeper:
@@ -546,7 +546,7 @@ podMonitor:
       port: prometheus
 # If you require additional configurations, enable this option. 
 # These will be deployed as a ConfigMap name 'dremio-additional-configs'
-additionalConfigs:
+additionalConfigMap:
   PROMETHEUS_ENDPOINT: http://prometheus.dev.drem.io
   PROMETHEUS_PORT: "9010"
   PROMETHEUS_WAIT_TIME: "4"
