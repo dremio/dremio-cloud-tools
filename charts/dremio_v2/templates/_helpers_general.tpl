@@ -11,6 +11,42 @@ imagePullSecrets:
 {{- end -}}
 
 {{/*
+Shared - Secrets
+*/}}
+{{- define "dremio.secrets" -}}
+{{- $secrets:= coalesce $.Values.secrets -}}
+{{- if $secrets -}}
+{{- toYaml $secrets -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Shared - Secrets Environment Variables
+*/}}
+{{- define "dremio.secretsEnvironmentVariables" -}}
+{{- range $secretName, $secretValue := coalesce $.Values.secrets }}
+- name: {{ $secretName }}
+  valueFrom:
+    secretKeyRef:
+      name: dremio-secrets
+      key: {{ $secretName }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Shared - Additional Configuration Environment Variables
+*/}}
+{{- define "dremio.additionalConfigsEnvironmentVariables" -}}
+{{- range $configName, $configValue := coalesce $.Values.additionalConfigMap }}
+- name: {{ $configName }}
+  valueFrom:
+    configMapKeyRef:
+      name: dremio-addtional-configs
+      key: {{ $configName }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Service - Annotations
 */}}
 {{- define "dremio.service.annotations" -}}
