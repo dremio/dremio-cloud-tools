@@ -38,6 +38,7 @@ spec:
           requests:
             cpu: {{ template "dremio.executor.cpu" (list $ $engineName) }}
             memory: {{ template "dremio.executor.memory" (list $ $engineName) }}
+        {{- include "dremio.executor.lifecycle" (list $ $engineName) | nindent 8}}
         volumeMounts:
         - name: {{ template "dremio.executor.volumeClaimName" (list $ $engineName) }}
           mountPath: /opt/dremio/data
@@ -72,6 +73,8 @@ spec:
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
           value: "/opt/dremio/aws/credentials"
+        {{- include "dremio.secretsEnvironmentVariables" $ | nindent 8}}
+        {{- include "dremio.additionalConfigsEnvironmentVariables" $ | nindent 8}}
         command: ["/opt/dremio/bin/dremio"]
         args: ["start-fg"]
         ports:
@@ -79,6 +82,7 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        {{- include "dremio.executor.extraPorts" (list $ $engineName) | nindent 8}}
       initContainers:
       {{- include "dremio.executor.extraInitContainers" (list $ $engineName) | nindent 6 }}
       - name: chown-data-directory
@@ -117,5 +121,5 @@ spec:
         requests:
           storage: {{ template "dremio.executor.volumeSize" (list $ $engineName) }}
   {{- include "dremio.executor.cloudCache.volumeClaimTemplate" (list $ $engineName) | nindent 2 }}
-{{ end -}}
+{{- end -}}
 {{- end -}}
