@@ -1,0 +1,12 @@
+{{- if $.Values.podMonitor -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: dremio-pod-monitor
+spec:
+  selector:
+    matchLabels:
+      role: {{ $.Values.podMonitor.matchLabels.role }}
+  podMetricsEndpoints:
+    {{- toYaml $.Values.podMonitor.podMetricsEndpoints | nindent 4 }}
+{{- end -}}
