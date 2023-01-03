@@ -19,6 +19,15 @@ metadata:
 data:
   {{- tpl ($.Files.Glob "config/hive3/*").AsConfig . | nindent 2 }}
 ---
+{{- if $.Values.additionalConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dremio-addtional-configs
+data:
+  {{- toYaml $.Values.additionalConfigMap | nindent 2 }}
+{{- end }}
+---
 {{- $originalValues := mustDeepCopy $.Values -}}
 {{- range $engine := keys (default (dict) $.Values.executor.engineOverride) -}}
 {{- if has $engine $.Values.executor.engines -}}
