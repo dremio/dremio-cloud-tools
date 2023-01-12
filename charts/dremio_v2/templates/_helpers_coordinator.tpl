@@ -151,3 +151,13 @@ tolerations:
   {{- toYaml $coordinatorTolerations | nindent 2 }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Coordinator - Extra Networking Ports
+*/}}
+{{- define "dremio.coordinator.extraPorts" -}}
+{{- $coordinatorExtraPorts := coalesce $.Values.coordinator.extraPorts $.Values.extraPorts -}}
+{{- if $coordinatorExtraPorts -}}
+{{- toYaml $coordinatorExtraPorts }}
+{{- end -}}
+{{- end -}}
