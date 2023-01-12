@@ -148,6 +148,9 @@ executor:
   #extraStartParams: >-
   #  -DsomeKey=someValue
 
+  # Uncomment the line below to expose additional ports
+  # extraPorts: {}
+
   # Extra Init Containers
   # Uncomment the below lines to use a custom set of extra init containers for executors.
   #extraInitContainers: |
@@ -475,3 +478,11 @@ service:
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 # imagePullSecrets:
 #  - secretname
+
+# To use a Horizontal Pod Autoscaler (HPA), uncomment the below.
+# A HPA will be needed to enable auto scaling of dremio-executors
+# hpa: {}
+
+# If you are wanting to enable auto scaling via Prometheus, a PodMonitor
+# will be require to expose metrics from the Dremio Statefulsets to Prometheus
+# podMonitor: {}

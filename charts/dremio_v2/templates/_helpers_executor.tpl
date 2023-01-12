@@ -330,3 +330,16 @@ tolerations:
   {{- toYaml $engineTolerations | nindent 2 }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Executor - Extra Networking Ports
+*/}}
+{{- define "dremio.executor.extraPorts" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $engineExtraPorts := coalesce $engineConfiguration.extraPorts $context.Values.executor.extraPorts $context.Values.extraPorts -}}
+{{- if $engineExtraPorts -}}
+{{- toYaml $engineExtraPorts }}
+{{- end -}}
+{{- end -}}
