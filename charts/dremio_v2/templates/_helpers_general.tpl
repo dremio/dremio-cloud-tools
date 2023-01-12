@@ -6,7 +6,7 @@ Shared - Image Pull Secrets
 imagePullSecrets:
 {{- range $secretName := $.Values.imagePullSecrets }}
 - name: {{ $secretName }}
-{{- end}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 
@@ -28,7 +28,7 @@ annotations:
 annotations:
   {{- toYaml $serviceAnnotations | nindent 4 -}}
 {{- end -}}
-{{- end }}
+{{- end -}}
 {{- end -}}
 
 {{/*
