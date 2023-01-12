@@ -6,20 +6,7 @@ Shared - Image Pull Secrets
 imagePullSecrets:
 {{- range $secretName := $.Values.imagePullSecrets }}
 - name: {{ $secretName }}
-{{- end}}
 {{- end -}}
-{{- end -}}
-
-{{/*
-Shared - Additional Configuration Environment Variables
-*/}}
-{{- define "dremio.additionalConfigsEnvironmentVariables" -}}
-{{- range $configName, $configValue := coalesce $.Values.additionalConfigMap }}
-- name: {{ $configName }}
-  valueFrom:
-    configMapKeyRef:
-      name: dremio-addtional-configs
-      key: {{ $configName }}
 {{- end -}}
 {{- end -}}
 
@@ -41,7 +28,7 @@ annotations:
 annotations:
   {{- toYaml $serviceAnnotations | nindent 4 -}}
 {{- end -}}
-{{- end }}
+{{- end -}}
 {{- end -}}
 
 {{/*
