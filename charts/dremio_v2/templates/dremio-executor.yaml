@@ -79,6 +79,7 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        {{- include "dremio.executor.extraPorts" (list $ $engineName) | nindent 8}}
       initContainers:
       {{- include "dremio.executor.extraInitContainers" (list $ $engineName) | nindent 6 }}
       - name: chown-data-directory
@@ -117,5 +118,5 @@ spec:
         requests:
           storage: {{ template "dremio.executor.volumeSize" (list $ $engineName) }}
   {{- include "dremio.executor.cloudCache.volumeClaimTemplate" (list $ $engineName) | nindent 2 }}
-{{ end -}}
+{{- end -}}
 {{- end -}}

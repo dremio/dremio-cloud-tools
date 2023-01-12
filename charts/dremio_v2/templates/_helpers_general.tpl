@@ -11,6 +11,19 @@ imagePullSecrets:
 {{- end -}}
 
 {{/*
+Shared - Additional Configuration Environment Variables
+*/}}
+{{- define "dremio.additionalConfigsEnvironmentVariables" -}}
+{{- range $configName, $configValue := coalesce $.Values.additionalConfigMap }}
+- name: {{ $configName }}
+  valueFrom:
+    configMapKeyRef:
+      name: dremio-addtional-configs
+      key: {{ $configName }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Service - Annotations
 */}}
 {{- define "dremio.service.annotations" -}}
