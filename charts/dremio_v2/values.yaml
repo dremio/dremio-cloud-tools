@@ -33,10 +33,6 @@ podLabels: {}
 nodeSelector: {}
 tolerations: []
 
-# Secrets
-# Enable these values if you require Kubernetes Secrets as a part of your setup
-# secrets: {}
-
 # Dremio Coordinator
 coordinator:
   # CPU & Memory
@@ -154,9 +150,6 @@ executor:
 
   # Uncomment the line below to expose additional ports
   # extraPorts: {}
-
-  # Uncomment the line below to use postStart and preStop hook as a part of pod lifecycle
-  # lifecycle: {}
 
   # Extra Init Containers
   # Uncomment the below lines to use a custom set of extra init containers for executors.
@@ -493,7 +486,3 @@ service:
 # If you are wanting to enable auto scaling via Prometheus, a PodMonitor
 # will be require to expose metrics from the Dremio Statefulsets to Prometheus
 # podMonitor: {}
-
-# If you require additional configurations, enable this option.
-# These will be deployed as a ConfigMap name 'dremio-additional-configs'
-# additionalConfigMap: {}

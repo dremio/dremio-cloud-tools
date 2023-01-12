@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      role: {{ $.Values.podMonitor.matchLabels.role }}
+      role: dremio-cluster-pod
   podMetricsEndpoints:
     {{- toYaml $.Values.podMonitor.podMetricsEndpoints | nindent 4 }}
 {{- end -}}

@@ -38,7 +38,6 @@ spec:
           requests:
             cpu: {{ template "dremio.executor.cpu" (list $ $engineName) }}
             memory: {{ template "dremio.executor.memory" (list $ $engineName) }}
-        {{- include "dremio.executor.lifecycle" (list $ $engineName) | nindent 8}}
         volumeMounts:
         - name: {{ template "dremio.executor.volumeClaimName" (list $ $engineName) }}
           mountPath: /opt/dremio/data
@@ -73,8 +72,6 @@ spec:
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
           value: "/opt/dremio/aws/credentials"
-        {{- include "dremio.secretsEnvironmentVariables" $ | nindent 8}}
-        {{- include "dremio.additionalConfigsEnvironmentVariables" $ | nindent 8}}
         command: ["/opt/dremio/bin/dremio"]
         args: ["start-fg"]
         ports:

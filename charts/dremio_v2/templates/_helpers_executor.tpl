@@ -332,20 +332,6 @@ tolerations:
 {{- end -}}
 
 {{/*
-Executor - ContainerLifecycle
-*/}}
-{{- define "dremio.executor.lifecycle" -}}
-{{- $context := index . 0 -}}
-{{- $engineName := index . 1 -}}
-{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
-{{- $engineLifecycle := coalesce $engineConfiguration.lifecycle $context.Values.executor.lifecycle $context.Values.lifecycle -}}
-{{- if $engineLifecycle -}}
-lifecycle:
-  {{- toYaml $engineLifecycle | nindent 2 }}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Executor - Extra Networking Ports
 */}}
 {{- define "dremio.executor.extraPorts" -}}
