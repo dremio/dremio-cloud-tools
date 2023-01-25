@@ -2,9 +2,15 @@
 #
 # It is *highly* recommended to update the version tag to
 # the version that you are using. This will ensure that all
-# the pods are using the same version of the software.
+# the pods are using the same version of the software. If
+# you are directly consuming Dremio's images from Docker Hub,
+# when specifying which version to use, it is best to use the
+# full version tag in the form X.Y.Z (i.e. 21.1.0), as image
+# tags in the form X.Y (i.e. 21.1) are updated with the latest
+# patch version released.
 #
-# Using latest will cause Dremio to potentially upgrade versions
+# Using the image tag latest or in the form X.Y
+# will potentially cause Dremio to upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
 image: dremio/dremio-oss
@@ -248,8 +254,8 @@ executor:
 # Zookeeper
 zookeeper:
   # The Zookeeper image used in the cluster.
-  image: k8s.gcr.io/kubernetes-zookeeper
-  imageTag: 1.0-3.4.10
+  image: zookeeper
+  imageTag: 3.8.0
 
   # CPU & Memory
   # Memory allocated to each zookeeper, expressed in MB.
@@ -279,9 +285,9 @@ zookeeper:
 # Control where uploaded files are stored for Dremio.
 # For more information, see https://docs.dremio.com/deployment/distributed-storage.html
 distStorage:
-  # The supported distributed storage types are: local, aws, azure, gcp, or azureStorage.
+  # The supported distributed storage types are: local (<21.0.0 only), aws, azure, gcp, or azureStorage.
   #
-  # local: Not recommended for production use. When using local, dist-caching is disabled.
+  # local: (<21.0.0 only) Not recommended for production use. When using local, dist-caching is disabled.
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
