@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff007e5b_697a12ac",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-03-09T17:01:24Z",
+      "side": 1,
+      "message": "The startup time is pretty dependent on the machine. My local takes about 40 seconds to start up. \n\nI\u0027ve been testing this change in the dev GCP cluster. The startup time on the n1-standard-4 node type is between 25-30 seconds in my basic testing.",
+      "parentUuid": "c24b2a1e_3a764cc6",
+      "revId": "60de816bd6a624d16cce298c245c6c9b8bc1096e",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bb9437a7_79d3b324",
         "filename": "charts/dremio_v2/values.yaml",
         "patchSetId": 1
