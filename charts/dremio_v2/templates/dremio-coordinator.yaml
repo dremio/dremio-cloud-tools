@@ -80,14 +80,23 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        startupProbe:
+          httpGet:
+            path: /
+            {{- if $.Values.coordinator.web.tls.enabled }}
+            scheme: HTTPS
+            {{- end }}
+            port: web
+          failureThreshold: 10
+          periodSeconds: 5
         readinessProbe:
           httpGet:
             path: /
             {{- if $.Values.coordinator.web.tls.enabled }}
             scheme: HTTPS
             {{- end }}
-            port: 9047
-          initialDelaySeconds: 5
+            port: web
+          failureThreshold: 2
           periodSeconds: 5
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
