@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d2c8ad34_761d39ba",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000671
+      },
+      "writtenOn": "2023-03-09T18:28:07Z",
+      "side": 1,
+      "message": "Brian, should we leverage a startupProbe to do this? \n\nstartupProbe:\n  httpGet:\n      path: /\n      port: \u003csomething\u003e\n      failureThreshold: 10\n      periodSeconds: 5\n      \nThis means it will wait 5*10 in worst case, but if the pod is up sooner then we go ahead sooner. We will just have to add a http listener which just accepts conn and closes.\n\nThis will help set the stage for serverless as well.",
+      "parentUuid": "ff007e5b_697a12ac",
+      "revId": "60de816bd6a624d16cce298c245c6c9b8bc1096e",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bb9437a7_79d3b324",
         "filename": "charts/dremio_v2/values.yaml",
         "patchSetId": 1
