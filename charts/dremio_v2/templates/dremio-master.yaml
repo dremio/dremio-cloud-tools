@@ -101,8 +101,9 @@ spec:
             scheme: HTTPS
             {{- end }}
             port: 9047
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
           periodSeconds: 5
+          timeoutSeconds: 5
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
       - name: start-only-one-dremio-master
