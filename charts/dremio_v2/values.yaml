@@ -38,8 +38,8 @@ coordinator:
   # CPU & Memory
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 1
+  memory: 12288
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
@@ -87,7 +87,7 @@ coordinator:
 
   # Web UI
   web:
-    port: 9047
+    port: 80
     tls:
       # To enable TLS for the web UI, set the enabled flag to true and provide
       # the appropriate Kubernetes TLS secret.
@@ -128,14 +128,14 @@ executor:
   # CPU & Memory
   # Memory allocated to each executor, expressed in MB.
   # CPU allocated to each executor, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 1
+  memory: 12288
 
   # Engines
   # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
   # Note: The number of executor pods will be the length of the array below * count.
   engines: ["default"]
-  count: 3
+  count: 1
 
   # Executor volume size.
   volumeSize: 128Gi
@@ -292,7 +292,7 @@ distStorage:
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
-  type: "local"
+  type: "gcp"
 
   # Google Cloud Storage
   #
@@ -306,7 +306,7 @@ distStorage:
   #       has access to the GCS bucket.
   # credentials: If using serviceAccountKeys authentication, uncomment the credentials section below.
   gcp:
-    bucketName: "GCS Bucket Name"
+    bucketName: "bngo-auto-scale"
     path: "/"
     authentication: "auto"
 
