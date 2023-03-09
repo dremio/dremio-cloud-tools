@@ -58,13 +58,16 @@ spec:
           value: "{{ template "dremio.coordinator.directMemory" $ }}"
         - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
           value: >-
-            {{- include "dremio.coordinator.extraStartParams" $ | nindent 12 -}}
+            {{- include "dremio.coordinator.extraStartParams" $ | nindent 12 }}
             -Dzookeeper=zk-hs:2181
             -Dservices.coordinator.enabled=true
             -Dservices.coordinator.master.enabled=false
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
             -Dservices.conduit.port=45679
+            -Dservices.web-admin.enabled=true
+            -Dservices.web-admin.port={{- include "dremio.coordinator.webAdminPort" $ }}
+            -Dservices.web-admin.host={{- include "dremio.coordinator.webAdminHost" $ }}
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
@@ -80,14 +83,19 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        - containerPort: {{- include "dremio.coordinator.webAdminPort" $ }}
+          name: web-admin
+        startupProbe:
+          httpGet:
+            path: /live
+            port: web-admin
+          failureThreshold: 10
+          periodSeconds: 5
         readinessProbe:
           httpGet:
-            path: /
-            {{- if $.Values.coordinator.web.tls.enabled }}
-            scheme: HTTPS
-            {{- end }}
-            port: 9047
-          initialDelaySeconds: 5
+            path: /live
+            port: web-admin
+          failureThreshold: 2
           periodSeconds: 5
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}

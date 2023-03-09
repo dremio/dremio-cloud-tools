@@ -97,6 +97,11 @@ coordinator:
       # kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
       secret: dremio-tls-secret-ui
 
+  # To enable and configure web admin service, uncomment below
+  # webAdmin:
+  #   port: 9010
+  #   host: 0.0.0.0
+
   # ODBC/JDBC Client
   client:
     port: 31010
