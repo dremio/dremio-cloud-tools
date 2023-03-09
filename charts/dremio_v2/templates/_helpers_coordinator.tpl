@@ -151,3 +151,19 @@ tolerations:
   {{- toYaml $coordinatorTolerations | nindent 2 }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Web Admin Port Configuration
+*/}}
+{{- define "dremio.coordinator.webAdminPort" -}}
+{{- $port := (($.Values.coordinator.webAdmin).port) | default 9010 -}}
+{{- $port -}}
+{{- end -}}
+
+{{/*
+Web Admin Host Configuration
+*/}}
+{{- define "dremio.coordinator.webAdminHost" -}}
+{{- $host:= (($.Values.coordinator.webAdmin).host) | default "0.0.0.0" -}}
+{{- $host -}}
+{{- end -}}
