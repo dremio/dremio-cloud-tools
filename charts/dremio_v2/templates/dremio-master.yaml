@@ -76,6 +76,9 @@ spec:
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
             -Dservices.conduit.port=45679
+            -Dservices.web-admin.port=9010
+            -Dservices.web-admin.enabled=true
+            -Dservices.web-admin.host=0.0.0.0
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
@@ -94,14 +97,19 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        - containerPort: 9010
+          name: web-admin
+        startupProbe:
+          httpGet:
+            path: /live
+            port: web-admin
+          failureThreshold: 10
+          periodSeconds: 5
         readinessProbe:
           httpGet:
-            path: /
-            {{- if $.Values.coordinator.web.tls.enabled }}
-            scheme: HTTPS
-            {{- end }}
-            port: 9047
-          initialDelaySeconds: 5
+            path: /live
+            port: web-admin
+          failureThreshold: 2
           periodSeconds: 5
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
