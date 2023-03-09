@@ -87,6 +87,24 @@
       "message": "Revert the changes in this file?",
       "revId": "60de816bd6a624d16cce298c245c6c9b8bc1096e",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e516b7c0_57242af4",
+        "filename": "charts/dremio_v2/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-03-09T17:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb9437a7_79d3b324",
+      "revId": "60de816bd6a624d16cce298c245c6c9b8bc1096e",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
