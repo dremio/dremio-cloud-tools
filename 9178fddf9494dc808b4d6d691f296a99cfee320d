@@ -24,6 +24,30 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aaa7a33_de719401",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-03-13T18:03:47Z",
+      "side": 1,
+      "message": "I\u0027ve updated the comment to :\n\nIn Kubernetes versions \u003c 1.20, the timeoutSeconds parameter in probes were not being honored. This issue has been resolved in Kubernetes versions \u003e 1.20.",
+      "parentUuid": "7f37a332_a28c9f32",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "9178fddf9494dc808b4d6d691f296a99cfee320d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59d0b789_51b4c41c",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-11T00:17:29Z",
       "side": 1,
       "message": "Web is not defined for secondary coordinators as we don\u0027t serve that from secondary coordinators.",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 21
+      },
+      "revId": "9178fddf9494dc808b4d6d691f296a99cfee320d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ebd5248_99f8b794",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-03-13T18:03:47Z",
+      "side": 1,
+      "message": "Good catch. I\u0027ve set it back to port 9047",
+      "parentUuid": "59d0b789_51b4c41c",
       "range": {
         "startLine": 85,
         "startChar": 0,
