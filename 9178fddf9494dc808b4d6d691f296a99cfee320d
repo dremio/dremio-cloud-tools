@@ -189,6 +189,30 @@
       },
       "revId": "9178fddf9494dc808b4d6d691f296a99cfee320d",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21d425de_4a28185f",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-03-27T20:13:06Z",
+      "side": 1,
+      "message": "In my testing using the web-admin port (9010), the pod hits a 404 on the port. This is also confirmed when I port forward to my local machine. Is there a config value that I\u0027m missing in order to get a 200 in return? Here\u0027s what I\u0027ve done.\n\n1. I\u0027ve added the following extra start params:\nDREMIO_JAVA_SERVER_EXTRA_OPTS:     -Dservices.web-admin.port\u003d9010 -Dservices.web-admin.enabled\u003dtrue -Dservices.web-admin.host\u003d0.0.0.0\n\n2. And I\u0027ve exposed port 9010 in the Pod spec",
+      "parentUuid": "2ed9740a_6ccda551",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 21
+      },
+      "revId": "9178fddf9494dc808b4d6d691f296a99cfee320d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
