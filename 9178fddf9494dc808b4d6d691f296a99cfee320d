@@ -165,6 +165,30 @@
       },
       "revId": "9178fddf9494dc808b4d6d691f296a99cfee320d",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ed9740a_6ccda551",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-03-27T18:25:33Z",
+      "side": 1,
+      "message": "Thanks for the clarification. We\u0027ve historically used port 9047 for a health check from before my time at Dremio. Maybe we can ask Ryan for some input once he gets back into the office. In the mean time, I\u0027ll start digging around to see why we chose to use 9047 for this health check",
+      "parentUuid": "3e7c6888_92e0af66",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 21
+      },
+      "revId": "9178fddf9494dc808b4d6d691f296a99cfee320d",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
