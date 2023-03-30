@@ -22,6 +22,30 @@
       },
       "revId": "768544c5d565675741436ac610c4e2197d739d63",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2692aad_23212279",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-03-30T19:09:44Z",
+      "side": 1,
+      "message": "Good point. I\u0027ll pull these out into a helper method to set defaults for these configurable values",
+      "parentUuid": "e6ceb02b_a5a285a2",
+      "range": {
+        "startLine": 68,
+        "startChar": 38,
+        "endLine": 68,
+        "endChar": 42
+      },
+      "revId": "768544c5d565675741436ac610c4e2197d739d63",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
