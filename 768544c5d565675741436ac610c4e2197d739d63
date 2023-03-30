@@ -46,6 +46,30 @@
       },
       "revId": "768544c5d565675741436ac610c4e2197d739d63",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aa9f46e_291e1c08",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-03-30T22:15:10Z",
+      "side": 1,
+      "message": "Note: there\u0027s a bug in setting the containerPort number that I need to resolve and retest in the morning but this is the general gist to solve this problem\n\nI\u0027ve added a block to enable/configure web-admin in values.yaml\n\n```\n  # To enable and configure web admin service, uncomment below\n  # webAdmin:\n  #   port: 9010\n  #   host: 0.0.0.0\n```\n\nin the _helpers_coordinators.tpl, I\u0027m setting a default value for both port and host if it\u0027s not set in values. These values can also be configured independently \n\n\nI\u0027m not sure if there\u0027s additional docs or considerations if we take this change to values.yaml",
+      "parentUuid": "e2692aad_23212279",
+      "range": {
+        "startLine": 68,
+        "startChar": 38,
+        "endLine": 68,
+        "endChar": 42
+      },
+      "revId": "768544c5d565675741436ac610c4e2197d739d63",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
