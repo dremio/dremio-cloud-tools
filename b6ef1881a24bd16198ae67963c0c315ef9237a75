@@ -33,6 +33,23 @@
       "message": "Change looks simple enough 😊\n\nThis will need to be synced on argocd. I don\u0027t think the dremio chart is used on our test cluster so I\u0027m not sure how easy it will be to test.\n\nWe would need to make a new dremio app in the test cluster, test the change, then teardown the dremio app in the test cluster, then merge, then sync the prod cluster (I think thats the general flow if we\u0027re being perfectly strict). \n\nIf making a new dremio app in the test cluster is an excessive amount of work, we could just test this live and plan on rolling back if anything bad happens (the only impact is testresults server might break for a bit). But I think it might be easier to test in the test cluster.\n\nFeel free to poke around the argocd UI and see if you can get the test dremio app setup, you can schedule a meeting if you want an extra set of eyes while we figure this out.",
       "revId": "b6ef1881a24bd16198ae67963c0c315ef9237a75",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56fd9d20_66df47c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000622
+      },
+      "writtenOn": "2023-03-31T16:45:31Z",
+      "side": 1,
+      "message": "I just realized this is not the infra repo.... I have no idea how this is synced",
+      "revId": "b6ef1881a24bd16198ae67963c0c315ef9237a75",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
