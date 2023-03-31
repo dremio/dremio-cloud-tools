@@ -115,6 +115,6 @@ To upgrade to the official Zookeeper image set the following tags in `values.loc
 ```
 zookeeper:
   image: zookeeper
-  imageTag: 3.8.0
+  imageTag: 3.8-temurin
 ```
 
