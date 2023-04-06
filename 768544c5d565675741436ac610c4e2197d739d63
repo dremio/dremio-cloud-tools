@@ -94,6 +94,30 @@
       },
       "revId": "768544c5d565675741436ac610c4e2197d739d63",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29bc0d80_2c34c7d5",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-04-06T14:57:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c52f696_b783d6b2",
+      "range": {
+        "startLine": 68,
+        "startChar": 38,
+        "endLine": 68,
+        "endChar": 42
+      },
+      "revId": "768544c5d565675741436ac610c4e2197d739d63",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
