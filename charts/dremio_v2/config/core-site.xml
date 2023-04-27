@@ -156,11 +156,34 @@
     <description>The name of the storage account.</description>
     <value>{{required "Azure storage account name required" $.Values.distStorage.azureStorage.accountName }}</value>
   </property>
+  {{ if $.Values.distStorage.azureStorage.useOAuth2 -}}
+  <property>
+    <name>dremio.azure.credentialsType</name>
+    <description>The credentials used for authentication. Value: ACCESS_KEY or AZURE_ACTIVE_DIRECTORY</description>
+    <value>AZURE_ACTIVE_DIRECTORY</value>
+  </property>
+  <property>
+    <name>dremio.azure.clientId</name>
+    <description>The client ID of the Azure application used for Azure Active Directory</description>
+    <value>{{ required "Azure application ID required" $.Values.distStorage.azureStorage.credentials.applicationId }}</value>
+  </property>
+  <property>
+    <name>dremio.azure.tokenEndpoint</name>
+    <description>OAuth 2.0 token endpoint for Azure Active Directory(v1.0)</description>
+    <value>{{ required "Azure OAuth2 token endpoint required" $.Values.distStorage.azureStorage.credentials.oauth2Endpoint }}</value>
+  </property>
+  <property>
+    <name>dremio.azure.clientSecret</name>
+    <description>The client secret of the Azure application used for Azure Active Directory</description>
+    <value>{{ required "Azure secret value required" $.Values.distStorage.azureStorage.credentials.secret }}</value>
+  </property>
+  {{ else -}}
   <property>
     <name>dremio.azure.key</name>
     <description>The shared access key for the storage account.</description>
     <value>{{ required "Shared access key required" $.Values.distStorage.azureStorage.credentials.accessKey }}</value>
   </property>
+  {{- end -}}
   <property>
     <name>dremio.azure.mode</name>
     <description>The storage account type.</description>

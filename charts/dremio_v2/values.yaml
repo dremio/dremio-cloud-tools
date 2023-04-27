@@ -403,9 +403,13 @@ distStorage:
     accountName: "Azure Storage Account Name"
     filesystem: "Azure Storage Account Blob Container"
     path: "/"
+    useOAuth2: false
     credentials:
       accessKey: "Azure Storage Account Access Key"
-
+    # Enable properties when useOAuth2 is set to true
+    #  applicationId: "Azure Application ID"
+    #  secret: "Azure Application Secret"
+    #  oauth2Endpoint: "Azure OAuth2 Endpoint"
     # Extra Properties
     # Use the extra properties block to provide additional parameters to configure the distributed
     # storage in the generated core-site.xml file.
