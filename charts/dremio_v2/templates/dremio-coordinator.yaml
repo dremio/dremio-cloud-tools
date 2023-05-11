@@ -34,7 +34,7 @@ spec:
         resources:
           requests:
             cpu: {{ $.Values.coordinator.cpu }}
-            memory: {{ $.Values.coordinator.memory }}M
+            memory: {{ $.Values.coordinator.memory }}Mi
         volumeMounts:
         - name: dremio-config
           mountPath: /opt/dremio/conf
@@ -80,6 +80,15 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        startupProbe:
+          httpGet:
+            path: /
+            {{- if $.Values.coordinator.web.tls.enabled }}
+            scheme: HTTPS
+            {{- end }}
+            port: 9047
+          failureThreshold: 10
+          periodSeconds: 5
         readinessProbe:
           httpGet:
             path: /
@@ -87,7 +96,7 @@ spec:
             scheme: HTTPS
             {{- end }}
             port: 9047
-          initialDelaySeconds: 5
+          failureThreshold: 2
           periodSeconds: 5
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}

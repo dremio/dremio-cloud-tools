@@ -15,7 +15,7 @@
 # the cluster.
 
 image: dremio/dremio-oss
-imageTag: 22.1.1
+imageTag: 24.0.0
 
 # Annotations, labels, node selectors, and tolerations
 #
@@ -144,7 +144,7 @@ executor:
   # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
   # Note: The number of executor pods will be the length of the array below * count.
   engines: ["default"]
-  count: 2
+  count: 3
 
   # Executor volume size.
   volumeSize: 128Gi
@@ -270,8 +270,8 @@ executor:
 # Zookeeper
 zookeeper:
   # The Zookeeper image used in the cluster.
-  image: k8s.gcr.io/kubernetes-zookeeper
-  imageTag: 1.0-3.4.10
+  image: zookeeper
+  imageTag: 3.8.0
 
   # CPU & Memory
   # Memory allocated to each zookeeper, expressed in MB.
@@ -308,7 +308,7 @@ distStorage:
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
-  type: "aws"
+  type: "local"
 
   # Google Cloud Storage
   #
