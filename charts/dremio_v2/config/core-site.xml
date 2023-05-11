@@ -86,7 +86,6 @@
     <value>false</value>
   </property>
   <property>
-  <property>
     <name>fs.dremioS3.impl</name>
     <description>The FileSystem implementation. Must be set to com.dremio.plugins.s3.store.S3FileSystem</description>
     <value>com.dremio.plugins.s3.store.S3FileSystem</value>
