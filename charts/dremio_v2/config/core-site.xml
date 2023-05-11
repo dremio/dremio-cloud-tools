@@ -73,7 +73,7 @@
   <property>
     <name>fs.s3a.path.style.access</name>
     <description>Value has to be set to true.</description>
-    <value>false</value>
+    <value>true</value>
   </property>
   <property>
     <name>fs.s3a.endpoint</name>
@@ -99,12 +99,12 @@
   <property>
     <name>fs.s3a.access.key</name>
     <description>AWS access key ID.</description>
-    <value>{{ required "AWS access key required" $.Values.distStorage.aws.credentials.accessKey}}</value>
+    <value>WEWXlZLUzEDXwrSM</value>
   </property>
   <property>
     <name>fs.s3a.secret.key</name>
     <description>AWS secret key.</description>
-    <value>{{ required "AWS secret required" $.Values.distStorage.aws.credentials.secret}}</value>
+    <value>PeLZIP0oUZU8eahuL5WiIN5uNK9CwNz3</value>
   </property>
   {{ else if eq $.Values.distStorage.aws.authentication "metadata" -}}
   <property>

@@ -359,7 +359,7 @@ distStorage:
   # credentials: If using accessKeySecret authentication, uncomment the credentials section below.
   aws:
     bucketName: "dremio"
-    path: "/"
+    path: "/uploads"
     authentication: "accessKeySecret"
     # If using accessKeySecret for authentication against S3, uncomment the lines below and use the values
     # to configure the appropriate credentials.
