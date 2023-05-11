@@ -8,21 +8,21 @@ imageTag: latest
 # the coordinators and the executors.
 # The value of memory should be in MB. CPU is in no of cores.
 coordinator:
-  memory: 122880
-  cpu: 15
+  memory: 1024
+  cpu: 1
   # This count is for slave coordinators only.
   # The chart will always create one master coordinator - you are
   # not required to have more than one master coordinator.
-  count: 0
+  count: 1
   web:
     port: 9047
   client:
     port: 31010
   volumeSize: 100Gi
 executor:
-  memory: 122880
-  cpu: 15
-  count: 3
+  memory: 1024
+  cpu: 1
+  count: 2
   volumeSize: 100Gi
   cloudCache:
     # Requires Dremio version 4.0.0 or later
@@ -39,9 +39,9 @@ executor:
       # reservation.
       cache_pct: 100
 zookeeper:
-  memory: 1024
+  memory: 512
   cpu: 0.5
-  count: 3
+  count: 1
   volumeSize: 10Gi
 
 # To create a TLS secret, use the following command:
