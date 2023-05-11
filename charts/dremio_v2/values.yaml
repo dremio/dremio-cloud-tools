@@ -57,7 +57,8 @@ coordinator:
 
   # Uncomment the lines below to use a custom set of extra startup parameters for the coordinator.
   extraStartParams: >-
-    -Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE
+    -Dsaffron.default.charset=UTF-16LE
+    -Dsaffron.default.nationalcharset=UTF-16LE
   # -Dsaffron.default.collation.name=UTF-16LE\$en_US
 
   # Extra Init Containers
@@ -69,17 +70,17 @@ coordinator:
 
   # Extra Volumes
   # Uncomment below to use a custom set of extra volumes for the coordinator.
-  extraVolumes:
-  - name: timezone
-    hostPath:
-      path: /usr/share/zoneinfo/Asia/Shanghai
-
+  extraVolumes: 
+    - name: timezone
+      hostPath: 
+        path: /usr/share/zoneinfo/Asia/Shanghai
+      
 
   # Extra Volume Mounts
   # Uncomment below to use a custom set of extra volume mounts for the coordinator.
-  extraVolumeMounts:
-  - name: timezone
-    mountPath: /etc/localtime
+  extraVolumeMounts: 
+    - name: timezone
+      mountPath: /etc/localtime
 
   # Uncomment this value to use a different storage class for the coordinator.
   #storageClass:
@@ -154,7 +155,8 @@ executor:
 
   # Uncomment the lines below to use a custom set of extra startup parameters for executors.
   extraStartParams: >-
-    -Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE
+    -Dsaffron.default.charset=UTF-16LE
+    -Dsaffron.default.nationalcharset=UTF-16LE
   # -Dsaffron.default.collation.name=UTF-16LE\$en_US
 
   # Extra Init Containers
@@ -166,16 +168,16 @@ executor:
 
   # Extra Volumes
   # Uncomment below to use a custom set of extra volumes for executors.
-  extraVolumes:
-  - name: timezone
-    hostPath:
-      path: /usr/share/zoneinfo/Asia/Shanghai
+  extraVolumes: 
+    - name: timezone
+      hostPath: 
+        path: /usr/share/zoneinfo/Asia/Shanghai
 
   # Extra Volume Mounts
   # Uncomment below to use a custom set of extra volume mounts for executors.
-  extraVolumeMounts:
-  - name: timezone
-    mountPath: /etc/localtime
+  extraVolumeMounts: 
+    - name: timezone
+      mountPath: /etc/localtime
 
   # Uncomment this value to use a different storage class for executors.
   storageClass: nfs
@@ -279,21 +281,22 @@ zookeeper:
   count: 1
 
   volumeSize: 10Gi
+
   # Kubernetes Service Account
-# Uncomment below to use a custom Kubernetes service account for Zookeeper.
-#serviceAccount: ""
+  # Uncomment below to use a custom Kubernetes service account for Zookeeper.
+  #serviceAccount: ""
 
-# Uncomment this value to use a different storage class for Zookeeper.
-#storageClass:
+  # Uncomment this value to use a different storage class for Zookeeper.
+  #storageClass:
 
-# These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
-# Uncomment only if you are trying to override the chart's shared values.
-#annotations: {}
-#podAnnotations: {}
-#labels: {}
-#podLabels: {}
-#nodeSelector: {}
-#tolerations: []
+  # These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
+  # Uncomment only if you are trying to override the chart's shared values.
+  #annotations: {}
+  #podAnnotations: {}
+  #labels: {}
+  #podLabels: {}
+  #nodeSelector: {}
+  #tolerations: []
 
 # Control where uploaded files are stored for Dremio.
 # For more information, see https://docs.dremio.com/deployment/distributed-storage.html
@@ -322,26 +325,27 @@ distStorage:
     bucketName: "GCS Bucket Name"
     path: "/"
     authentication: "auto"
-    # If using serviceAccountKeys, uncomment the section below, referencing the values from
-  # the service account credentials JSON file that you generated:
-  #
-  #credentials:
-  #  projectId: GCP Project ID that the Google Cloud Storage bucket belongs to.
-  #  clientId: Client ID for the service account that has access to Google Cloud Storage bucket.
-  #  clientEmail: Email for the service account that has access to Google Cloud Storage bucket.
-  #  privateKeyId: Private key ID for the service account that has access to Google Cloud Storage bucket.
-  #  privateKey: |-
-  #    -----BEGIN PRIVATE KEY-----\n Replace me with full private key value. \n-----END PRIVATE KEY-----\n
 
-  # Extra Properties
-  # Use the extra properties block to provide additional parameters to configure the distributed
-  # storage in the generated core-site.xml file.
-  #
-  #extraProperties: |
-  #  <property>
-  #    <name></name>
-  #    <value></value>
-  #  </property>
+    # If using serviceAccountKeys, uncomment the section below, referencing the values from
+    # the service account credentials JSON file that you generated:
+    #
+    #credentials:
+    #  projectId: GCP Project ID that the Google Cloud Storage bucket belongs to.
+    #  clientId: Client ID for the service account that has access to Google Cloud Storage bucket.
+    #  clientEmail: Email for the service account that has access to Google Cloud Storage bucket.
+    #  privateKeyId: Private key ID for the service account that has access to Google Cloud Storage bucket.
+    #  privateKey: |-
+    #    -----BEGIN PRIVATE KEY-----\n Replace me with full private key value. \n-----END PRIVATE KEY-----\n
+
+    # Extra Properties
+    # Use the extra properties block to provide additional parameters to configure the distributed
+    # storage in the generated core-site.xml file.
+    #
+    #extraProperties: |
+    #  <property>
+    #    <name></name>
+    #    <value></value>
+    #  </property>
 
   # AWS S3
   # For more details of S3 configuration, see https://docs.dremio.com/deployment/dist-store-config.html#amazon-s3
@@ -364,21 +368,21 @@ distStorage:
       accessKey: "WEWXlZLUzEDXwrSM"
       secret: "PeLZIP0oUZU8eahuL5WiIN5uNK9CwNz3"
     #
-  # If using awsProfile for authentication against S3, uncomment the lines below and use the values
-  # to choose the appropriate profile.
-  #
-  #credentials:
-  #  awsProfileName: "default"
-  #
-  # Extra Properties
-  # Use the extra properties block to provide additional parameters to configure the distributed
-  # storage in the generated core-site.xml file.
-  #
-  #extraProperties: |
-  #  <property>
-  #    <name></name>
-  #    <value></value>
-  #  </property>
+    # If using awsProfile for authentication against S3, uncomment the lines below and use the values
+    # to choose the appropriate profile.
+    #
+    #credentials:
+    #  awsProfileName: "default"
+    #
+    # Extra Properties
+    # Use the extra properties block to provide additional parameters to configure the distributed
+    # storage in the generated core-site.xml file.
+    #
+    #extraProperties: |
+    #  <property>
+    #    <name></name>
+    #    <value></value>
+    #  </property>
 
   # Azure ADLS Gen 1
   # For more details of Azure ADLS Gen 1 storage configuration, see
@@ -446,38 +450,39 @@ distStorage:
 
 # Extra Volumes
 # Array to add extra volumes to all Dremio resources.
-extraVolumes:
-- name: timezone
-  hostPath:
-    path: /usr/share/zoneinfo/Asia/Shanghai
+extraVolumes: 
+    - name: timezone
+      hostPath: 
+        path: /usr/share/zoneinfo/Asia/Shanghai
 # Extra Volume Mounts
 # Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
-extraVolumeMounts:
-- name: timezone
-  mountPath: /etc/localtime
+extraVolumeMounts: 
+    - name: timezone
+      mountPath: /etc/localtime
 # Dremio Service
 # The dremio-client service exposes the service for access outside of the Kubernetes cluster.
 service:
   type: LoadBalancer
+
   # These values, when defined and not empty, override the provided shared annotations and labels.
-# Uncomment only if you are trying to override the chart's shared values.
-#annotations: {}
-#labels: {}
+  # Uncomment only if you are trying to override the chart's shared values.
+  #annotations: {}
+  #labels: {}
 
-# If the loadBalancer supports sessionAffinity and you have more than one coordinator,
-# uncomment the below line to enable session affinity.
-#sessionAffinity: ClientIP
+  # If the loadBalancer supports sessionAffinity and you have more than one coordinator,
+  # uncomment the below line to enable session affinity.
+  #sessionAffinity: ClientIP
 
-# Enable the following flag if you wish to route traffic through a shared VPC
-# for the LoadBalancer's external IP.
-# The chart is setup for internal IP support for AKS, EKS, GKE.
-# For more information, see https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
-#internalLoadBalancer: true
+  # Enable the following flag if you wish to route traffic through a shared VPC
+  # for the LoadBalancer's external IP.
+  # The chart is setup for internal IP support for AKS, EKS, GKE.
+  # For more information, see https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  #internalLoadBalancer: true
 
-# If you have a static IP allocated for your load balancer, uncomment the following
-# line and set the IP to provide the static IP used for the load balancer.
-# Note: The service type must be set to LoadBalancer for this value to be used.
-#loadBalancerIP: 0.0.0.0
+  # If you have a static IP allocated for your load balancer, uncomment the following
+  # line and set the IP to provide the static IP used for the load balancer.
+  # Note: The service type must be set to LoadBalancer for this value to be used.
+  #loadBalancerIP: 0.0.0.0
 
 # To use custom storage class, uncomment below.
 # Otherwise the default storage class configured for your K8s cluster is used.
