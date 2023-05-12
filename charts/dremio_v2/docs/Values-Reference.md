@@ -344,6 +344,40 @@ To create a secret, use the following command: `kubectl create secret tls ${TLS_
 
 More Info: See the [Creating your own Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#creating-your-own-secrets) section of the Secrets documentation for Kubernetes.
 
+#### `coordinator.startupProbe.failureThreshold`
+
+Type: Integer
+
+By default, the value is set to `300`.
+
+This value controls the maximum failures allowed before the pod is restarted.
+
+Max timeout for the startupProbe is calculated as `coordinator.startupProbe.failureThreshold` * `coordinator.startupProbe.periodSeconds`
+
+#### `coordinator.startupProbe.periodSeconds`
+
+Type: Integer
+
+By default, the value is set to `1`.
+
+This value controls the probe polling frequency expressed in seconds.
+
+#### `coordinator.readinessProbe.failureThreshold`
+
+Type: Integer
+
+By default, the value is set to `120`.
+
+This value controls the maximum failures allowed before the pod is restarted.
+
+Max timeout for the startupProbe is calculated as `coordinator.readinessProbe.failureThreshold` * `coordinator.readinessProbe.periodSeconds`
+
+#### `coordinator.readinessProbe.periodSeconds`
+
+Type: Integer
+
+By default, the value is set to `1`. This value controls the probe polling frequency expressed in seconds.
+
 ### Client (JDBC/ODBC)
 
 #### `coordinator.client.tls.enabled`
@@ -1349,7 +1383,7 @@ Type: String
 
 By default, this value has a partial snippet of a private key.
 
-For Dremio to authenticate with service account credential keys, provide the private key for the service account. Ensure this value is provided in one line. You can directly copy the value as-is from the credentials JSON file, including any special characters, but without surrounding quotes. 
+For Dremio to authenticate with service account credential keys, provide the private key for the service account. Ensure this value is provided in one line. You can directly copy the value as-is from the credentials JSON file, including any special characters, but without surrounding quotes.
 
 #### Advanced Configuration for GCP GCS
 
