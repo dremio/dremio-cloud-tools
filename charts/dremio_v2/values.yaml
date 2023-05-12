@@ -123,6 +123,22 @@ coordinator:
       # kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
       secret: dremio-tls-secret-flight
 
+  # Startup Probe
+  startupProbe:
+    # Max timeout for the probe is calculated as failureThreshold * periodSeconds
+    # failureThreshold: Maximum number of allowed failures
+    failureThreshold: 300
+    # periodSeconds: Polling frequency expressed in seconds
+    periodSeconds: 1
+
+  # Readiness Probe
+  readinessProbe:
+    # Max timeout for the probe is calculated as failureThreshold * periodSeconds
+    # failureThreshold: Maximum number of allowed failures
+    failureThreshold: 120
+    # periodSeconds: Polling frequency expressed in seconds
+    periodSeconds: 1
+
 # Dremio Executor
 executor:
   # CPU & Memory
@@ -255,7 +271,7 @@ executor:
 zookeeper:
   # The Zookeeper image used in the cluster.
   image: zookeeper
-  imageTag: 3.8.0
+  imageTag: 3.8-temurin
 
   # CPU & Memory
   # Memory allocated to each zookeeper, expressed in MB.
