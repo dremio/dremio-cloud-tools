@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52e24bc8_b2f5e557",
+        "filename": "charts/dremio_v2/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-05-16T20:02:01Z",
+      "side": 1,
+      "message": "Why in this change?",
+      "revId": "897ec26fe9ff0bd92be39576e5ab6a2148c5d4c5",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
