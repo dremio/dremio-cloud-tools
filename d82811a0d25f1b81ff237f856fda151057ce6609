@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2abdf316_81cfdd3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-05-16T22:09:55Z",
+      "side": 1,
+      "message": "LGTM. Ready for release when we have a release vehicle again for this change.",
+      "revId": "d82811a0d25f1b81ff237f856fda151057ce6609",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
