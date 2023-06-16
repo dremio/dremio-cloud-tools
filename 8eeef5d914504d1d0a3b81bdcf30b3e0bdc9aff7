@@ -16,6 +16,24 @@
       "message": "Is this well tested? Do we have any concerns of breakage with this change?",
       "revId": "8eeef5d914504d1d0a3b81bdcf30b3e0bdc9aff7",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f07039d_a424f728",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-06-16T13:30:39Z",
+      "side": 1,
+      "message": "Here\u0027s the steps I took to test this: \n\n1. fresh install with the 3.8 zookeeper docker image\n2. ran a query\n3. \"upgrade\" to 3.8-temurin\n4. ran a query\n\nI didn\u0027t notice any issues or find any errors in logs with a fresh installation or with the upgrade. Any other testing I should try out?",
+      "parentUuid": "9b81ad28_4778ba32",
+      "revId": "8eeef5d914504d1d0a3b81bdcf30b3e0bdc9aff7",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
