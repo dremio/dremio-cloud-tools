@@ -116,6 +116,10 @@ spec:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
       - name: start-only-one-dremio-master
         image: busybox
+        securityContext:
+          capabilities:
+            add:
+              - NET_RAW
         command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
       - name: wait-for-zookeeper
         image: busybox
