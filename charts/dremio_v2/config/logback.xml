@@ -16,7 +16,7 @@
     limitations under the License.
 
 -->
-<configuration>
+<configuration scan="true" scanPeriod="30 seconds">
   <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
   <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
