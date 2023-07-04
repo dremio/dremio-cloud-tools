@@ -216,7 +216,7 @@ Executor - Cloud Cache Peristent Volume Mounts
 {{- $cloudCacheConfig := coalesce $engineConfiguration.cloudCache $context.Values.executor.cloudCache -}}
 {{- if $cloudCacheConfig.enabled -}}
 - name: chown-cloudcache-directory
-  image: {{ $context.Values.image }}:{{ $context.Values.imageTag }}
+  image: {{ $context.Values.global.imageRegistry }}{{ $context.Values.image }}:{{ $context.Values.imageTag }}
   imagePullPolicy: IfNotPresent
   securityContext:
     runAsUser: 0

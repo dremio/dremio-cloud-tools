@@ -29,7 +29,7 @@ spec:
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
       containers:
       - name: dremio-coordinator
-        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         resources:
           requests:
@@ -101,11 +101,11 @@ spec:
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
       - name: wait-for-dremio-master
-        image: busybox
+        image: {{ $.Values.global.imageRegistry }}busybox
         command:  ["sh", "-c", "until nc -z dremio-client {{ $.Values.coordinator.web.port }} > /dev/null; do echo Waiting for Dremio master.; sleep 2; done;"]
       {{- if $.Values.coordinator.web.tls.enabled }}
       - name: generate-ui-keystore
-        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: dremio-tls
@@ -117,7 +117,7 @@ spec:
       {{- end }}
       {{- if $.Values.coordinator.client.tls.enabled }}
       - name: generate-client-keystore
-        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: dremio-tls
@@ -129,7 +129,7 @@ spec:
       {{- end }}
       {{- if $.Values.coordinator.flight.tls.enabled }}
       - name: generate-flight-keystore
-        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        image: {{ $.Values.global.imageRegistry }}{{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: dremio-tls
