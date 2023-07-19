@@ -30,7 +30,7 @@ spec:
   selector:
     app: zk
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: zk-pdb
@@ -94,8 +94,8 @@ spec:
         - -c
         - "start-zookeeper \
           --servers={{.Values.zookeeper.count}} \
-          --data_dir=/var/lib/zookeeper/data \
-          --data_log_dir=/var/lib/zookeeper/data/log \
+          --data_dir=/tmp/dremio/zookeeper/data \
+          --data_log_dir=/tmp/dremio/zookeeper/data/log \
           --conf_dir=/opt/zookeeper/conf \
           --client_port=2181 \
           --election_port=3888 \
