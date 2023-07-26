@@ -1,0 +1,155 @@
+{{- if not $.Values.DremioAdmin -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk-hs
+  labels:
+    app: zk
+spec:
+  ports:
+  - port: 2181
+    name: client
+  - port: 2888
+    name: server
+  - port: 3888
+    name: leader-election
+  clusterIP: None
+  selector:
+    app: zk
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk-cs
+  labels:
+    app: zk
+spec:
+  ports:
+  - port: 2181
+    name: client
+  selector:
+    app: zk
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: zk-pdb
+spec:
+  selector:
+    matchLabels:
+      app: zk
+  maxUnavailable: 1
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zk
+  {{- include "dremio.zookeeper.annotations" $ | nindent 2 }}
+  {{- include "dremio.zookeeper.labels" $ | nindent 2 }}
+spec:
+  selector:
+    matchLabels:
+      app: zk
+  serviceName: zk-hs
+  replicas: {{ $.Values.zookeeper.count }}
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app: zk
+        {{- include "dremio.zookeeper.podLabels" $ | nindent 8 }}
+      {{- include "dremio.zookeeper.podAnnotations" $ | nindent 8 }}
+    spec:
+      {{- include "dremio.zookeeper.serviceAccount" $ | nindent 6 }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - zk
+              topologyKey: "kubernetes.io/hostname"
+      {{- include "dremio.zookeeper.nodeSelector" $ | nindent 6 }}
+      {{- include "dremio.zookeeper.tolerations" $ | nindent 6 }}
+      containers:
+      - name: kubernetes-zookeeper
+        imagePullPolicy: Always
+        command:
+        - bash
+        - -ec
+        - |
+            # obtain ZOO_MY_ID based on POD hostname
+            export HOST_NUMBER="${HOSTNAME##*-}"
+            export ZOO_MY_ID="$((HOST_NUMBER + 1))"
+            [ -z "${ZOO_MY_ID}" ] && echo "Failed to get index from hostname $HOSTNAME" && exit 1
+            echo "ZOO_MY_ID=${ZOO_MY_ID}"
+
+            # construct ZOO_SERVERS based on ensemble count
+            DOMAIN="$(hostname -d)"
+            SERVERS={{ $.Values.zookeeper.count }}
+            for (( i=${SERVERS},j=i-1; i>=1; i--,j-- )); do ZOO_SERVERS="server.${i}=zk-${j}.${DOMAIN}:2888:3888;2181 ${ZOO_SERVERS}"; done
+            echo "ZOO_SERVERS=${ZOO_SERVERS}"
+            export ZOO_SERVERS
+
+            /docker-entrypoint.sh
+            zkServer.sh start-foreground
+        env:
+        - name: JVMFLAGS
+          value: "-Xmx{{ template "dremio.zookeeper.memory" $ }}m"
+        - name: ZOO_STANDALONE_ENABLED
+          value: "false"
+        - name: ZOO_4LW_COMMANDS_WHITELIST
+          value: "ruok"
+        - name: ZOO_ADMINSERVER_ENABLED
+          value: "false"
+        - name: ZOO_AUTOPURGE_PURGEINTERVAL
+          value: "12"
+        image: "{{ $.Values.zookeeper.image }}:{{ $.Values.zookeeper.imageTag }}"
+        resources:
+          requests:
+            cpu: {{ $.Values.zookeeper.cpu }}
+            memory: {{ $.Values.zookeeper.memory }}Mi
+        ports:
+        - containerPort: 2181
+          name: client
+        - containerPort: 2888
+          name: server
+        - containerPort: 3888
+          name: leader-election
+        readinessProbe:
+          exec:
+            command: ["/bin/bash", "-c", "[ \"$(echo ruok | nc 127.0.0.1 2181)\" == \"imok\" ]" ]
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command: ["/bin/bash", "-c", "[ \"$(echo ruok | nc 127.0.0.1 2181)\" == \"imok\" ]" ]
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: datadir
+          mountPath: /data
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      {{- include "dremio.imagePullSecrets" $ | nindent 6 }}
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      {{- include "dremio.zookeeper.storageClass" $ | nindent 6 }}
+      resources:
+        requests:
+          storage: {{ $.Values.zookeeper.volumeSize }}
+
+# use the official zookeeper kubernetes image
+  {{- if (eq $.Values.zookeeper.image "k8s.gcr.io/kubernetes-zookeeper") }}
+    {{- fail "\n\n** ERROR: Zookeeper image 'k8s.gcr.io/kubernetes-zookeeper' is no longer supported. Please see 'Upgrading Zookeeper' section in README.md. **\n" -}}
+  {{- end }}
+
+{{- end -}}

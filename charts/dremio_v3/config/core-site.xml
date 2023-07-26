@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<configuration>
+  <!-- If you are editing any content in this file, please remove lines with double curly braces around them -->
+{{- if and $.Values.distStorage.type (ne $.Values.distStorage.type "local") -}}
+  {{- if eq $.Values.distStorage.type "gcp" -}}
+  <!-- GCS Configuration Section -->
+  <property>
+    <name>dremio.gcs.whitelisted.buckets</name>
+    <description>GCS bucket to use for distributed storage</description>
+    <value>{{ required "GCS Bucket name required" $.Values.distStorage.gcp.bucketName }}</value>
+  </property>
+  {{- if eq $.Values.distStorage.gcp.authentication "serviceAccountKeys" -}}
+  <property>
+    <name>fs.dremiogcs.impl</name>
+    <description>The FileSystem implementation. Must be set to com.dremio.plugins.gcs.GoogleBucketFileSystem</description>
+    <value>com.dremio.plugins.gcs.GoogleBucketFileSystem</value>
+  </property>
+  <property>
+    <name>dremio.gcs.use_keyfile</name>
+    <description>Use the key file</description>
+    <value>true</value>
+  </property>
+  <property>
+    <name>dremio.gcs.projectId</name>
+    <description>GCP Project ID</description>
+    <value>{{ required "GCP Project ID required" $.Values.distStorage.gcp.credentials.projectId }}</value>
+  </property>
+  <property>
+    <name>dremio.gcs.clientId</name>
+    <description>GCP Service Account Client ID</description>
+    <value>{{ required "GCP Service Account Client ID required" $.Values.distStorage.gcp.credentials.clientId }}</value>
+  </property>
+  <property>
+    <name>dremio.gcs.clientEmail</name>
+    <description>GCP Service Account Client Email</description>
+    <value>{{ required "GCP Service Account Client Email required" $.Values.distStorage.gcp.credentials.clientEmail }}</value>
+  </property>
+  <property>
+    <name>dremio.gcs.privateKeyId</name>
+    <description>GCP Service Account Private Key ID</description>
+    <value>{{ required "GCP Service Account Private Key ID required" $.Values.distStorage.gcp.credentials.privateKeyId }}</value>
+  </property>
+  <property>
+    <name>dremio.gcs.privateKey</name>
+    <description>GCP Service Account Private Key</description>
+    <value>{{ required "GCP Service Account Private Key required" $.Values.distStorage.gcp.credentials.privateKey }}</value>
+  </property>
+  {{- else if eq $.Values.distStorage.gcp.authentication "auto" -}}
+  <property>
+    <name>fs.dremiogcs.impl</name>
+    <description>The FileSystem implementation. Must be set to com.dremio.plugins.gcs.GoogleBucketFileSystem</description>
+    <value>com.dremio.plugins.gcs.GoogleBucketFileSystem</value>
+  </property>
+  <property>
+    <name>dremio.gcs.use_keyfile</name>
+    <description>Do not use the key file</description>
+    <value>false</value>
+  </property>
+  {{- else -}}
+    {{ fail "Unrecognized GCP authentication mode." }}
+  {{- end -}}
+  {{- if $.Values.distStorage.gcp.extraProperties -}}
+  {{- $.Values.distStorage.gcp.extraProperties | nindent 4 }}
+  {{- end -}}
+  {{- end -}}
+  {{- if eq $.Values.distStorage.type "aws" }}
+  <!-- S3 Configuration Section -->
+  <property>
+    <name>fs.dremioS3.impl</name>
+    <description>The FileSystem implementation. Must be set to com.dremio.plugins.s3.store.S3FileSystem</description>
+    <value>com.dremio.plugins.s3.store.S3FileSystem</value>
+  </property>
+  {{ if eq $.Values.distStorage.aws.authentication "accessKeySecret" -}}
+  <property>
+    <name>fs.s3a.aws.credentials.provider</name>
+    <description>The credential provider type.</description>
+    <value>org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider</value>
+  </property>
+  <property>
+    <name>fs.s3a.access.key</name>
+    <description>AWS access key ID.</description>
+    <value>{{ required "AWS access key required" $.Values.distStorage.aws.credentials.accessKey}}</value>
+  </property>
+  <property>
+    <name>fs.s3a.secret.key</name>
+    <description>AWS secret key.</description>
+    <value>{{ required "AWS secret required" $.Values.distStorage.aws.credentials.secret}}</value>
+  </property>
+  {{ else if eq $.Values.distStorage.aws.authentication "metadata" -}}
+  <property>
+    <name>fs.s3a.aws.credentials.provider</name>
+    <description>The credential provider type.</description>
+    <value>com.amazonaws.auth.InstanceProfileCredentialsProvider</value>
+  </property>
+  {{ else if eq $.Values.distStorage.aws.authentication "awsProfile" -}}
+  <property>
+    <name>com.dremio.awsProfile</name>
+    <description>AWS Profile to use.</description>
+    <value>{{ required "AWS profile required" $.Values.distStorage.aws.credentials.awsProfileName}}</value>
+  </property>
+  <property>
+    <name>fs.s3a.aws.credentials.provider</name>
+    <description>The credential provider type.</description>
+    <value>com.dremio.plugins.s3.store.AWSProfileCredentialsProviderV1</value>
+  </property>
+  {{- else -}}
+    {{ fail "Unrecognized AWS authentication mode." }}
+  {{- end -}}
+  {{- if $.Values.distStorage.aws.extraProperties -}}
+  {{- $.Values.distStorage.aws.extraProperties | nindent 4 }}
+  {{- end -}}
+  {{- end -}}
+  {{- if eq $.Values.distStorage.type "azure" }}
+  <!-- ADLS Configuration Section -->
+  <!-- Please read https://docs.dremio.com/data-sources/azure-data-lake-store.html for information on setting up ADLS access. -->
+  <property>
+    <name>fs.dremioAdl.impl</name>
+    <value>com.dremio.plugins.adl.store.DremioAdlFileSystem</value>
+  </property>
+  <property>
+    <name>dfs.adls.oauth2.client.id</name>
+    <description>Application ID of the registered application under Azure Active Directory.</description>
+    <value>{{ required "Azure application ID required" $.Values.distStorage.azure.credentials.applicationId }}</value>
+  </property>
+  <property>
+    <name>dfs.adls.oauth2.credential</name>
+    <description>Generated password value for the registered application.</description>
+    <value>{{ required "Azure secret value required" $.Values.distStorage.azure.credentials.secret }}</value>
+  </property>
+  <property>
+    <name>dfs.adls.oauth2.refresh.url</name>
+    <description>Azure Active Directory OAuth 2.0 Token Endpoint for registered applications.</description>
+    <value>{{ required "Azure OAuth2 token endpoint required" $.Values.distStorage.azure.credentials.oauth2Endpoint }}</value>
+  </property>
+  <property>
+    <name>dfs.adls.oauth2.access.token.provider.type</name>
+    <value>ClientCredential</value>
+  </property>
+  <property>
+    <name>fs.adl.impl.disable.cache</name>
+    <value>false</value>
+  </property>
+  {{- if $.Values.distStorage.azure.extraProperties -}}
+  {{- $.Values.distStorage.azure.extraProperties | nindent 4 }}
+  {{- end -}}
+  {{- end }}
+  {{- if eq $.Values.distStorage.type "azureStorage" }}
+  <!-- Azure Storage v2 Configuration Section -->
+  <property>
+     <name>fs.dremioAzureStorage.impl</name>
+     <description>FileSystem implementation. Must always be com.dremio.plugins.azure.AzureStorageFileSystem</description>
+     <value>com.dremio.plugins.azure.AzureStorageFileSystem</value>
+  </property>
+  <property>
+    <name>dremio.azure.account</name>
+    <description>The name of the storage account.</description>
+    <value>{{required "Azure storage account name required" $.Values.distStorage.azureStorage.accountName }}</value>
+  </property>
+  <property>
+    <name>dremio.azure.key</name>
+    <description>The shared access key for the storage account.</description>
+    <value>{{ required "Shared access key required" $.Values.distStorage.azureStorage.credentials.accessKey }}</value>
+  </property>
+  <property>
+    <name>dremio.azure.mode</name>
+    <description>The storage account type.</description>
+    <value>STORAGE_V2</value>
+  </property>
+  <property>
+    <name>dremio.azure.secure</name>
+    <description>Boolean option to enable SSL connections.</description>
+    <value>True</value>
+  </property>
+  {{- if $.Values.distStorage.azureStorage.extraProperties -}}
+  {{- $.Values.distStorage.azureStorage.extraProperties | nindent 4 }}
+  {{- end -}}
+  {{- end }}
+{{- end}}
+</configuration>

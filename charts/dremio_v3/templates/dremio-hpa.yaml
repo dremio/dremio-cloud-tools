@@ -1,0 +1,34 @@
+{{- if and $.Values.executor.nodeLifecycleService $.Values.executor.nodeLifecycleService.enabled }}
+{{- range $engineIndex, $engineName := $.Values.executor.engines -}}
+{{- $executorName := ternary "dremio-executor" (printf "dremio-executor-%s" $engineName) (eq $engineName "default") -}}
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: dremio-executor-scaler
+spec:
+  {{- include "dremio.hpa.executorReplicaCounts" (list $ $engineName) | nindent 2}}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: {{ $executorName }}
+  metrics:
+    {{- include "dremio.hpa.scaleMetrics.defaults" (list $ $engineName) | nindent 4}}
+    {{- include "dremio.hpa.scaleMetrics.userDefined" (list $ $engineName) | nindent 4}}
+
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 90
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 90
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 600 # (i.e., scale down one pod every 10 min)
+      selectPolicy: Max
+{{ end -}}
+{{- end -}}
