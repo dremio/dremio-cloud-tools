@@ -1,0 +1,16 @@
+# Dremio telemetry configuration file
+
+# Control if this file should automatically be reloaded, and at which interval.
+auto-reload:
+  enabled: True
+  period: 90
+  unit: SECONDS
+
+
+# Tracing configuration
+tracing:
+  type: jaeger
+  serviceName: dremio
+  samplerType: const
+  samplerParam: 1
+  logSpans: true
