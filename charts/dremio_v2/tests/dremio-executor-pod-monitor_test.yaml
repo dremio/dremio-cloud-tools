@@ -1,0 +1,50 @@
+templates:
+  - dremio-executor-pod-monitor.yaml
+tests:
+  - it: pod monitor should not render if service is disabled
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: pod monitor should render if service is enabled
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PodMonitor
+  - it: pod monitor polling interval should be set to a default value if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+    asserts:
+      - equal:
+          path: spec.podMetricsEndpoints[0].interval
+          value: 10s
+  - it: pod monitor polling interval should configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            pollingIntervalSeconds: 7
+            default:
+              enabled: true
+    asserts:
+      - equal:
+          path: spec.podMetricsEndpoints[0].interval
+          value: 7s
+
