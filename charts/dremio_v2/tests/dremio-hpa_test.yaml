@@ -1,0 +1,274 @@
+templates:
+  - dremio-hpa.yaml
+tests:
+  - it: HPA for default engine should render if ExecutorNodeLifecycleService is enabled
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: dremio-executor
+      - isKind:
+          of: HorizontalPodAutoscaler
+  - it: Default minReplicas should be set if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.minReplicas
+          value: 1
+  - it: Default maxReplicas should be set if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.maxReplicas
+          value: 50
+  - it: Default Scaling Metrics based on Memory and CPU are set if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: memory
+              target:
+                type: Utilization
+                averageUtilization: 70
+  - it: CPU average utilization should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+              cpuAverageUtilization: 25
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 25
+  - it: Memory average utilization should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+              memoryAverageUtilization: 25
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: memory
+              target:
+                type: Utilization
+                averageUtilization: 25
+  - it: User defined scaling metrics are added to the scaling metrics
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+            userDefinedMetrics:
+              - pods:
+                  metric:
+                    name: threads_waiting_count
+                  target:
+                    averageValue: "20"
+                    type: AverageValue
+                type: Pods
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: memory
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - contains:
+          path: spec.metrics
+          content:
+            pods:
+              metric:
+                name: threads_waiting_count
+              target:
+                averageValue: "20"
+                type: AverageValue
+            type: Pods
+  - it: Only use User defined scaling metrics and disable default scaling metrics
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: false
+            userDefinedMetrics:
+              - pods:
+                  metric:
+                    name: threads_waiting_count
+                  target:
+                    averageValue: "20"
+                    type: AverageValue
+                type: Pods
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - notContains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: memory
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - notContains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - contains:
+          path: spec.metrics
+          content:
+            pods:
+              metric:
+                name: threads_waiting_count
+              target:
+                averageValue: "20"
+                type: AverageValue
+            type: Pods
+  # TODO: update this test
+  - it: Scale down stabilizationWindowSeconds should default if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.behavior.scaleDown.stabilizationWindowSeconds
+          value: 90

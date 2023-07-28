@@ -1,0 +1,76 @@
+templates:
+  - dremio-executor.yaml
+tests:
+  - it: default engine should render
+    set:
+      distStorage:
+        type: "gcp"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: dremio-executor
+      - isKind:
+          of: StatefulSet
+  - it: Prometheus annotations should be included if ExecutorNodeLifecycle Service is enabled
+    set:
+      distStorage:
+        type: "gcp"
+      executor:
+        nodeLifecycleService:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.template.metadata.annotations["prometheus.io/port"]
+          value: "9010"
+      - equal:
+          path: spec.template.metadata.annotations["prometheus.io/scrape"]
+          value: "true"
+      - equal:
+          path: spec.template.metadata.annotations["prometheus.io/path"]
+          value: "/metrics"
+  - it: Prometheus metrics port should be configurable
+    set:
+      distStorage:
+        type: "gcp"
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          metricsPort: 9015
+    asserts:
+      - equal:
+          path: spec.template.metadata.annotations["prometheus.io/port"]
+          value: "9015"
+  - it: Pod terminationGracePeriodSeconds should be set to a default value if not specified
+    set:
+      distStorage:
+        type: "gcp"
+    asserts:
+      - equal:
+          path: spec.template.spec.terminationGracePeriodSeconds
+          value: 720
+  - it: Pod terminationGracePeriodSeconds should configurable
+    set:
+      distStorage:
+        type: "gcp"
+      executor:
+        nodeLifecycleService:
+          terminationGracePeriodSeconds: 480
+    asserts:
+      - equal:
+          path: spec.template.spec.terminationGracePeriodSeconds
+          value: 600
+  - it: Metrics port should be exposed if ExecutorNodeLifecycle is enabled
+    set:
+      distStorage:
+        type: "gcp"
+      executor:
+        nodeLifecycleService:
+          enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: prometheus
+            containerPort: 9010
