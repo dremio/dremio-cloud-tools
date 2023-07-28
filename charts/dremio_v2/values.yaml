@@ -147,6 +147,20 @@ executor:
   cpu: 15
   memory: 122800
 
+  # TODO: WIP
+  nodeLifecycleService:
+    enabled: true
+    scalingMetrics:
+      default:
+        enabled: true
+    scalingBehavior:
+      scaleDown:
+        defaultPolicy:
+          enabled: true
+      scaleUp:
+        defaultPolicy:
+          enabled: true
+
   # Engines
   # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
   # Note: The number of executor pods will be the length of the array below * count.
