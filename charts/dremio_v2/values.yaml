@@ -153,6 +153,21 @@ executor:
   engines: ["default"]
   count: 3
 
+  # By default, the number of Engines is static. Enable the Node Lifecycle Service
+  # to enable dynamic scaling.
+  # nodeLifecycleService:
+  #   enabled: true
+  #   scalingMetrics:
+  #     default:
+  #       enabled: true
+  #   scalingBehavior:
+  #     scaleDown:
+  #       defaultPolicy:
+  #         enabled: true
+  #     scaleUp:
+  #       defaultPolicy:
+  #         enabled: true
+
   # Executor volume size.
   volumeSize: 128Gi
 
@@ -238,6 +253,19 @@ executor:
   #     podLabels: {}
   #     nodeSelector: {}
   #     tolerations: []
+  #
+  #     nodeLifecycleService:
+  #       enabled: true
+  #       scalingMetrics:
+  #         default:
+  #           enabled: true
+  #       scalingBehavior:
+  #         scaleDown:
+  #           defaultPolicy:
+  #             enabled: true
+  #         scaleUp:
+  #           defaultPolicy:
+  #             enabled: true
   #
   #     serviceAccount: ""
   #

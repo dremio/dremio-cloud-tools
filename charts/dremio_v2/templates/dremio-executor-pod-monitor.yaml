@@ -1,0 +1,15 @@
+{{- if and $.Values.executor.nodeLifecycleService $.Values.executor.nodeLifecycleService.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: dremio-pod-monitor
+spec:
+  selector:
+    matchLabels:
+      role: dremio-cluster-pod
+  podMetricsEndpoints:
+    - path: /metrics
+      interval: {{ default 10 $.Values.executor.nodeLifecycleService.scalingMetrics.pollingIntervalSeconds }}s
+      port: prometheus
+{{- end -}}
