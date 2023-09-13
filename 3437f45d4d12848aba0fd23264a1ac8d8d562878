@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21fb263a_d9976359",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-09-13T04:27:21Z",
+      "side": 1,
+      "message": "This looks good to me. Please attach a fix version to the DX and ensure that there are release notes for this. Will merge this whenever the associated fix version is being released.",
+      "revId": "3437f45d4d12848aba0fd23264a1ac8d8d562878",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
