@@ -34,6 +34,41 @@
       "parentUuid": "9b81ad28_4778ba32",
       "revId": "8eeef5d914504d1d0a3b81bdcf30b3e0bdc9aff7",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a8404ed_b670e4c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-09-13T04:30:48Z",
+      "side": 1,
+      "message": "This change requires rebasing at this point, but otherwise looks fine.",
+      "revId": "8eeef5d914504d1d0a3b81bdcf30b3e0bdc9aff7",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb0181e1_439373ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-09-13T04:30:48Z",
+      "side": 1,
+      "message": "Sorry I missed this response. If this has been tested to validate that the image will continue to work after moving to Temurin, I am good with this change. Please identify a fix version and a release note for this patch and I will merge this when the fix version goes out.",
+      "parentUuid": "0f07039d_a424f728",
+      "revId": "8eeef5d914504d1d0a3b81bdcf30b3e0bdc9aff7",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
