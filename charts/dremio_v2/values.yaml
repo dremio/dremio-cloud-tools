@@ -70,17 +70,21 @@ coordinator:
   # Extra Volumes
   # Uncomment below to use a custom set of extra volumes for the coordinator.
   extraVolumes: 
-    - name: timezone
+    - name: localtime
       hostPath: 
         path: /usr/share/zoneinfo/Asia/Shanghai
-      
+    - name: timezone
+      hostPath: 
+        path: /etc/timezone      
 
   # Extra Volume Mounts
   # Uncomment below to use a custom set of extra volume mounts for the coordinator.
   extraVolumeMounts: 
-    - name: timezone
+    - name: localtime
       mountPath: /etc/localtime
-
+    - name: timezone
+      mountPath: /etc/timezone
+      
   # Uncomment this value to use a different storage class for the coordinator.
   #storageClass:
 
@@ -184,15 +188,20 @@ executor:
   # Extra Volumes
   # Uncomment below to use a custom set of extra volumes for executors.
   extraVolumes: 
-    - name: timezone
+    - name: localtime
       hostPath: 
         path: /usr/share/zoneinfo/Asia/Shanghai
+    - name: timezone
+      hostPath: 
+        path: /etc/timezone   
 
   # Extra Volume Mounts
   # Uncomment below to use a custom set of extra volume mounts for executors.
   extraVolumeMounts: 
-    - name: timezone
+    - name: localtime
       mountPath: /etc/localtime
+    - name: timezone
+      mountPath: /etc/timezonee
 
   # Uncomment this value to use a different storage class for executors.
   storageClass: nfs
@@ -465,15 +474,22 @@ distStorage:
 
 # Extra Volumes
 # Array to add extra volumes to all Dremio resources.
-extraVolumes: 
-    - name: timezone
+  extraVolumes: 
+    - name: localtime
       hostPath: 
         path: /usr/share/zoneinfo/Asia/Shanghai
+    - name: timezone
+      hostPath: 
+        path: /etc/timezone
+
 # Extra Volume Mounts
 # Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
-extraVolumeMounts: 
-    - name: timezone
+  extraVolumeMounts: 
+    - name: localtime
       mountPath: /etc/localtime
+    - name: timezone
+      mountPath: /etc/timezone
+
 # Dremio Service
 # The dremio-client service exposes the service for access outside of the Kubernetes cluster.
 service:
