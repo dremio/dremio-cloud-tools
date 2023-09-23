@@ -65,6 +65,13 @@ coordinator:
   #    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
   #    command: ["echo", "Hello World"]
 
+  # Extra Containers
+  # Uncomment the below lines to use a custom set of extra containers for the coordinator.
+  #extraContainers: |
+  #  - name: extra-container
+  #    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+  #    command: ["echo", "Hello World"]
+
   # Extra Volumes
   # Uncomment below to use a custom set of extra volumes for the coordinator.
   #extraVolumes: []
@@ -171,6 +178,13 @@ executor:
   #    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
   #    command: ["echo", "Hello World"]
 
+  # Extra Containers
+  # Uncomment the below lines to use a custom set of extra containers for the executors.
+  #extraContainers: |
+  #  - name: extra-container
+  #    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+  #    command: ["echo", "Hello World"]
+
   # Extra Volumes
   # Uncomment below to use a custom set of extra volumes for executors.
   #extraVolumes: []
@@ -246,6 +260,11 @@ executor:
   #
   #     extraInitContainers: |
   #       - name: extra-init-container
+  #         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+  #         command: ["echo", "Hello World"]
+  #
+  #     extraContainers: |
+  #       - name: extra-container
   #         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
   #         command: ["echo", "Hello World"]
   #
@@ -441,6 +460,13 @@ distStorage:
 # Uncomment the below lines to provide extra init containers to be run first.
 #extraInitContainers: |
 #  - name: extra-init-container
+#    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+#    command: ["echo", "Hello World"]
+
+# Extra Containers
+# Uncomment the below lines to provide extra containers ("sidecars").
+#extraContainers: |
+#  - name: extra-container
 #    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
 #    command: ["echo", "Hello World"]
 

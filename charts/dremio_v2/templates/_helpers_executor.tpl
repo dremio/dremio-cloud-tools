@@ -125,6 +125,19 @@ Executor - Pod Extra Init Containers
 {{- end -}}
 
 {{/*
+Executor - Pod Extra Containers
+*/}}
+{{- define "dremio.executor.extraContainers" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $engineExtraContainers := coalesce $engineConfiguration.extraContainers $context.Values.executor.extraContainers $context.Values.extraContainers -}}
+{{- if $engineExtraContainers -}}
+{{ tpl $engineExtraContainers $context }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Executor - Pod Extra Volume Mounts
 */}}
 {{- define "dremio.executor.extraVolumeMounts" -}}

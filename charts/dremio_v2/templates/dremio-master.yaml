@@ -37,6 +37,7 @@ spec:
       {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
       containers:
+      {{- include "dremio.coordinator.extraContainers" $ | nindent 6 }}
       - name: dremio-master-coordinator
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent

@@ -59,6 +59,16 @@ Coordinator - Pod Extra Init Containers
 {{- end -}}
 
 {{/*
+Coordinator - Pod Extra Containers
+*/}}
+{{- define "dremio.coordinator.extraContainers" -}}
+{{- $coordinatorExtraContainers := coalesce $.Values.coordinator.extraContainers $.Values.extraContainers -}}
+{{- if $coordinatorExtraContainers -}}
+{{ tpl $coordinatorExtraContainers $ }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Coordinator - Pod Extra Volume Mounts
 */}}
 {{- define "dremio.coordinator.extraVolumeMounts" -}}
