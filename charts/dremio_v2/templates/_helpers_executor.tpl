@@ -33,7 +33,7 @@ Executor - Dremio Direct Memory Allocation
 {{- if le 32786 $engineMemory -}}
 {{- sub $engineMemory 8192 -}}
 {{- else if le 6144 $engineMemory -}}
-{{- sub $engineMemory 6144 -}}
+{{- sub $engineMemory 4096 -}}
 {{- else -}}
 {{- sub $engineMemory 2048 -}}
 {{- end -}}
