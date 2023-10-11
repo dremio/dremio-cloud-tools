@@ -21,6 +21,7 @@ spec:
       labels:
         app: {{ $executorName }}
         role: dremio-cluster-pod
+        diagnostics-collector-role: dremio-executor
         {{- include "dremio.executor.podLabels" (list $ $engineName) | nindent 8}}
       annotations:
         dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}

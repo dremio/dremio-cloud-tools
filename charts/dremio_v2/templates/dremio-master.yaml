@@ -17,6 +17,7 @@ spec:
       labels:
         app: dremio-coordinator
         role: dremio-cluster-pod
+        diagnostics-collector-role: dremio-coordinator
         {{- include "dremio.coordinator.podLabels" $ | nindent 8}}
       annotations:
         dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
