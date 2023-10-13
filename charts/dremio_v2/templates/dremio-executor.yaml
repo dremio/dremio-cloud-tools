@@ -69,6 +69,7 @@ spec:
             -Dservices.executor.enabled=true
             -Dservices.conduit.port=45679
             -Dservices.node-tag={{ $engineName }}
+            -Ddremio.log.path=/opt/dremio/data/log
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
