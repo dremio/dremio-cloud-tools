@@ -40,7 +40,7 @@ spec:
       containers:
       - name: dremio-master-coordinator
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: {{ $.Values.coordinator.cpu }}
@@ -63,6 +63,7 @@ spec:
           mountPath: /opt/dremio/tls
         {{- end }}
         {{- include "dremio.coordinator.extraVolumeMounts" $ | nindent 8 }}
+        {{- include "dremio.coordinator.log.volumeMount" $ | nindent 8 }}
         env:
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "dremio.coordinator.heapMemory" $ }}"
@@ -71,6 +72,7 @@ spec:
         - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
           value: >-
             {{- include "dremio.coordinator.extraStartParams" $ | nindent 12 -}}
+            {{- include "dremio.coordinator.log.path" $ | nindent 12 }}
             -Dzookeeper=zk-hs:2181
             -Dservices.coordinator.enabled=true
             -Dservices.coordinator.master.enabled=true
@@ -115,6 +117,7 @@ spec:
           periodSeconds: {{ $.Values.coordinator.readinessProbe.periodSeconds }}
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
+      {{- include "dremio.coordinator.log.volumeMountInitContainer" $ | nindent 6 }}
       - name: start-only-one-dremio-master
         image: busybox
         command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
@@ -227,6 +230,7 @@ spec:
       {{- include "dremio.coordinator.extraVolumes" $ | nindent 6 }}
       {{- include "dremio.imagePullSecrets" $ | nindent 6 }}
   volumeClaimTemplates:
+  {{- include "dremio.coordinator.log.volumeClaimTemplate" $ | nindent 2 }}
   - metadata:
       name: dremio-master-volume
     spec:
