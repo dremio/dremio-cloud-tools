@@ -151,6 +151,79 @@ Executor - Pod Extra Volume Mounts
 {{- end -}}
 
 {{/*
+Executor - Log Path
+*/}}
+{{- define "dremio.executor.log.path" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $writeLogToFile := coalesce $engineConfiguration.writeLogToFile $context.Values.executor.writeLogToFile $context.Values.writeLogToFile -}}
+{{- if $writeLogToFile -}}
+- name: DREMIO_LOG_DIR
+  value: /opt/dremio/log
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Log Volume Mount
+*/}}
+{{- define "dremio.executor.log.volumeMount" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $writeLogToFile := coalesce $engineConfiguration.writeLogToFile $context.Values.executor.writeLogToFile $context.Values.writeLogToFile -}}
+{{- if $writeLogToFile -}}
+- name: dremio-log-volume
+  mountPath: /opt/dremio/log
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Chown Log Volume Mount Init Container
+*/}}
+{{- define "dremio.executor.log.volumeMountInitContainer" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $writeLogToFile := coalesce $engineConfiguration.writeLogToFile $context.Values.executor.writeLogToFile $context.Values.writeLogToFile -}}
+{{- if $writeLogToFile -}}
+- name: chown-log-directory
+  image: {{ $context.Values.image }}:{{ $context.Values.imageTag }}
+  imagePullPolicy: IfNotPresent
+  securityContext:
+    runAsUser: 0
+  volumeMounts:
+  - name: dremio-log-volume
+    mountPath: /opt/dremio/log
+  command: ["chown"]
+  args:
+    - "dremio:dremio"
+    - "/opt/dremio/log"
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Logs Volume Claim Template
+*/}}
+{{- define "dremio.executor.log.volumeClaimTemplate" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $writeLogToFile := coalesce $engineConfiguration.writeLogToFile $context.Values.executor.writeLogToFile $context.Values.writeLogToFile -}}
+{{- $volumeSize := coalesce $engineConfiguration.volumeSize $context.Values.executor.volumeSize $context.Values.volumeSize -}}
+{{- if $writeLogToFile -}}
+- metadata:
+    name: dremio-log-volume
+  spec:
+    accessModes: ["ReadWriteOnce"]
+    {{ include "dremio.executor.log.storageClass" $ }}
+    resources:
+      requests:
+        storage: {{ $volumeSize }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Executor - Persistent Volume Storage Class
 */}}
 {{- define "dremio.executor.storageClass" -}}
@@ -160,6 +233,19 @@ Executor - Persistent Volume Storage Class
 {{- $engineStorageClass := coalesce $engineConfiguration.storageClass $context.Values.executor.storageClass $context.Values.storageClass -}}
 {{- if $engineStorageClass -}}
 storageClassName: {{ $engineStorageClass }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Logs Storage Class
+*/}}
+{{- define "dremio.executor.log.storageClass" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $logStorageClass := coalesce $engineConfiguration.logStorageClass $context.Values.executor.logStorageClass $context.Values.logStorageClass -}}
+{{- if $logStorageClass -}}
+storageClassName: {{ $logStorageClass }}
 {{- end -}}
 {{- end -}}
 
