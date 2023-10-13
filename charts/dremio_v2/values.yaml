@@ -76,6 +76,9 @@ coordinator:
   # Uncomment this value to use a different storage class for the coordinator.
   #storageClass:
 
+  # Uncomment this value to use a different storage class for the coordinator logs.
+  #logStorageClass:
+
   # These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
   # Uncomment only if you are trying to override the chart's shared values.
   #annotations: {}
@@ -519,3 +522,4 @@ service:
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 # imagePullSecrets:
 #  - secretname
+

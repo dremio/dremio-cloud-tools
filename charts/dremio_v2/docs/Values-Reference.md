@@ -556,6 +556,12 @@ Storage class has a direct impact on the performance of the Dremio cluster. On t
 
 More Info: Refer to the [`storageClass`](#storageclass) section of this reference.
 
+#### `coordinator.logStorageClass`
+
+Type: String
+
+By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `logStorageClass`.
+
 #### `coordinator.serviceAccount`
 
 Type: String
