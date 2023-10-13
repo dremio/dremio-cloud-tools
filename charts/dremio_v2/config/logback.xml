@@ -213,6 +213,7 @@
       <then>
         <appender-ref ref="text"/>
         <appender-ref ref="json"/>
+        <appender-ref ref="console"/>
       </then>
       <else>
         <appender-ref ref="console"/>
