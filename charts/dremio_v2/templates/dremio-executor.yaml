@@ -55,6 +55,7 @@ spec:
           mountPath: /opt/dremio/plugins/connectors/hive3-ee.d
         {{- include "dremio.executor.cloudCache.volumeMounts" (list $ $engineName) | nindent 8 }}
         {{- include "dremio.executor.extraVolumeMounts" (list $ $engineName) | nindent 8 }}
+        {{- include "dremio.executor.log.volumeMount" (list $ $engineName) | nindent 8 }}
         env:
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "dremio.executor.heapMemory" (list $ $engineName) }}"
@@ -75,6 +76,9 @@ spec:
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
           value: "/opt/dremio/aws/credentials"
+        - name: DREMIO_LOG_TO_CONSOLE
+          value: "true"
+        {{- include "dremio.executor.log.path" (list $ $engineName) | nindent 8 }}
         command: ["/opt/dremio/bin/dremio"]
         args: ["start-fg"]
         ports:
@@ -85,6 +89,7 @@ spec:
         {{- include "dremio.executor.metricsPort" (list $ $engineName) | nindent 8 }}
       initContainers:
       {{- include "dremio.executor.extraInitContainers" (list $ $engineName) | nindent 6 }}
+      {{- include "dremio.executor.log.volumeMountInitContainer" (list $ $engineName) | nindent 6 }}
       - name: chown-data-directory
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
@@ -112,6 +117,7 @@ spec:
       {{- include "dremio.executor.extraVolumes" (list $ $engineName) | nindent 6 }}
       {{- include "dremio.imagePullSecrets" $ | nindent 6 }}
   volumeClaimTemplates:
+  {{- include "dremio.executor.log.volumeClaimTemplate" (list $ $engineName) | nindent 2 }}
   - metadata:
       name: {{ template "dremio.executor.volumeClaimName" (list $ $engineName) }}
     spec:
