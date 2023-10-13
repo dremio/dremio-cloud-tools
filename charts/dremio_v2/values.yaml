@@ -78,6 +78,12 @@ coordinator:
   # Uncomment this value to use a different storage class for the coordinator.
   #storageClass:
 
+  # Uncomment this value to use a different storage class for the coordinator logs.
+  #logStorageClass:
+
+  # Uncomment this value to write logs to a file on disk.
+  #writeLogsToFile: true
+
   # These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
   # Uncomment only if you are trying to override the chart's shared values.
   #annotations: {}
@@ -184,6 +190,12 @@ executor:
   # Uncomment this value to use a different storage class for executors.
   #storageClass:
 
+  # Uncomment this value to use a different storage class for the coordinator logs.
+  #logStorageClass:
+
+  # Uncomment this value to write logs to a file on disk.
+  #writeLogsToFile: true
+
   # Dremio C3
   # Designed for use with NVMe storage devices, performance may be impacted when using
   # persistent volume storage that resides far from the physical node.
@@ -285,6 +297,7 @@ executor:
   #
   #     volumeSize: 50Gi
   #     storageClass: managed-premium
+  #     logStorageClass: ""
   #     volumeClaimName: dremio-default-executor-volume
   #
   #     cloudCache:
@@ -485,6 +498,9 @@ extraVolumes: []
 # Extra Volume Mounts
 # Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
 extraVolumeMounts: []
+
+# Uncomment this value to write logs to a file on disk for all Dremio resources.
+#writeLogsToFile: true
 
 # Dremio Service
 # The dremio-client service exposes the service for access outside of the Kubernetes cluster.
