@@ -48,6 +48,8 @@ spec:
         volumeMounts:
         - name: dremio-master-volume
           mountPath: /opt/dremio/data
+        - name: dremio-master-log-volume
+          mountPath: /opt/dremio/log
         - name: dremio-config
           mountPath: /opt/dremio/conf
         - name: dremio-hive2-config
@@ -77,6 +79,7 @@ spec:
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
             -Dservices.conduit.port=45679
+            -Ddremio.log.path=/opt/dremio/log
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
@@ -133,6 +136,18 @@ spec:
         args:
         - "dremio:dremio"
         - "/opt/dremio/data"
+      - name: chown-log-directory
+        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: dremio-master-log-volume
+          mountPath: /opt/dremio/log
+        command: ["chown"]
+        args:
+          - "dremio:dremio"
+          - "/opt/dremio/log"
       - name: upgrade-task
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
@@ -232,6 +247,14 @@ spec:
     spec:
       accessModes: ["ReadWriteOnce"]
       {{- include "dremio.coordinator.storageClass" $ | nindent 6 }}
+      resources:
+        requests:
+          storage: {{ $.Values.coordinator.volumeSize }}
+  - metadata:
+      name: dremio-master-log-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      {{- include "dremio.coordinator.logStorageClass" $ | nindent 6 }}
       resources:
         requests:
           storage: {{ $.Values.coordinator.volumeSize }}

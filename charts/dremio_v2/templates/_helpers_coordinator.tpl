@@ -89,6 +89,16 @@ storageClassName: {{ $coordinatorStorageClass }}
 {{- end -}}
 
 {{/*
+Coordinator - Logs Storage Class
+*/}}
+{{- define "dremio.coordinator.logStorageClass" -}}
+{{- $coordinatorLogStorageClass := coalesce $.Values.coordinator.logStorageClass $.Values.logStorageClass -}}
+{{- if $coordinatorLogStorageClass -}}
+storageClassName: {{ $coordinatorLogStorageClass }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Coordinator - StatefulSet Annotations
 */}}
 {{- define "dremio.coordinator.annotations" -}}
