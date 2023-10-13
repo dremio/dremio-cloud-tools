@@ -1,6 +1,21 @@
 {{/*
 HPA - Minimum and Maximum Number of Engines
 */}}
+{{ define "dremio.hpa.isEnabled" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService -}}
+{{ if $nodeLifecycleServiceConfig.enabled }}
+{{- true -}}
+{{ else }}
+{{- false -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+HPA - Minimum and Maximum Number of Engines
+*/}}
 {{ define "dremio.hpa.executorReplicaCounts" -}}
 {{- $context := index . 0 -}}
 {{- $engineName := index . 1 -}}
@@ -81,6 +96,18 @@ HPA - User Defined ScaleDown Policies
 {{- end -}}
 
 {{/*
+HPA - ScaledDown Stabilization Window in Seconds
+*/}}
+{{- define "dremio.hpa.behavior.scaleDown.stabilizationWindowSeconds" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService -}}
+{{- $stabilizationWindowSeconds := $nodeLifecycleServiceConfig.scalingBehavior.scaleDown.stabilizationWindowSeconds -}}
+stabilizationWindowSeconds: {{ $stabilizationWindowSeconds | default 300 }}
+{{- end -}}
+
+{{/*
 HPA - Default ScaleUp Policy
 */}}
 {{- define "dremio.hpa.behavior.scaleUp.policies.default" -}}
@@ -108,4 +135,16 @@ HPA - User Defined ScaleUp Policies
 {{ if $userDefinedPolicies }}
 {{ toYaml $userDefinedPolicies }}
 {{- end -}}
+{{- end -}}
+
+{{/*
+HPA - ScaledUp Stabilization Window in Seconds
+*/}}
+{{- define "dremio.hpa.behavior.scaleUp.stabilizationWindowSeconds" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService -}}
+{{- $stabilizationWindowSeconds := $nodeLifecycleServiceConfig.scalingBehavior.scaleUp.stabilizationWindowSeconds -}}
+stabilizationWindowSeconds: {{ $stabilizationWindowSeconds | default 300 }}
 {{- end -}}

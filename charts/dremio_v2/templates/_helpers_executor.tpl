@@ -332,20 +332,37 @@ tolerations:
 {{- end -}}
 
 {{/*
-Executor - Prometheus Metrics Port
+Executor - Prometheus Metrics Port Number
 */}}
-{{ define "dremio.executor.metricsPort" -}}
-{{- $metricsPort :=  default 9010 $.Values.executor.nodeLifecycleService.metricsPort -}}
-{{- $metricsPort }}
+{{ define "dremio.executor.metricsPortNumber" -}}
+{{- $metricsPortNumber := 9010 -}}
+{{- $metricsPortNumber }}
+{{- end -}}
+
+{{/*
+Executor - Prometheus Executor Metrics Port
+*/}}
+{{- define "dremio.executor.metricsPort" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
+{{- if $nodeLifecycleServiceConfig.enabled -}}
+- containerPort: {{ include "dremio.executor.metricsPortNumber" $ }}
+  name: prometheus
+{{- end -}}
 {{- end -}}
 
 {{/*
 Executor - Prometheus Pod Annotations
 */}}
 {{- define "dremio.executor.prometheusAnnotations" -}}
-{{- $nodeLifecycleServiceConfig := $.Values.executor.nodeLifecycleService -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
 {{- if $nodeLifecycleServiceConfig.enabled -}}
-prometheus.io/port: {{ include "dremio.executor.metricsPort" $ | quote }}
+prometheus.io/port: {{ include "dremio.executor.metricsPortNumber" $ | quote }}
 prometheus.io/scrape: "true"
 prometheus.io/path: "/metrics"
 {{- end -}}
@@ -356,7 +373,10 @@ Executor - Kubernetes Termination Graceful Period Based on
            Dremio Graceful Termination Period
 */}}
 {{- define "dremio.executor.kubernetes.terminationGracePeriodSeconds" -}}
-{{- $nodeLifecycleServiceConfig := $.Values.executor.nodeLifecycleService | default dict -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
 {{- $dremioTerminationGracePeriodSeconds := default 600 $nodeLifecycleServiceConfig.terminationGracePeriodSeconds }}
 {{- $kubernetesTerminationGracePeriodSeconds := add $dremioTerminationGracePeriodSeconds 120 -}}
 terminationGracePeriodSeconds: {{ $kubernetesTerminationGracePeriodSeconds }}
@@ -366,11 +386,13 @@ terminationGracePeriodSeconds: {{ $kubernetesTerminationGracePeriodSeconds }}
 Executor - Dremio JVM Graceful Shutdown Parameters
 */}}
 {{- define "dremio.executor.gracefulShutdownParams" -}}
-{{- $nodeLifecycleServiceConfig := $.Values.executor.nodeLifecycleService -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
 {{- if $nodeLifecycleServiceConfig.enabled -}}
-{{- $dremioTerminationGracePeriodSeconds := default 600 $.Values.executor.nodeLifecycleService.terminationGracePeriodSeconds }}
+{{- $dremioTerminationGracePeriodSeconds := default 600 $nodeLifecycleServiceConfig.terminationGracePeriodSeconds }}
 -Ddremio.termination_grace_period_seconds={{ $dremioTerminationGracePeriodSeconds }}
--Dservices.web-admin.port={{ include "dremio.executor.metricsPort" $ }}
 -Dservices.web-admin.host=0.0.0.0
 -Dservices.executor.node_lifecycle_service_enabled=true
 {{- end -}}
