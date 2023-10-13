@@ -64,6 +64,7 @@ spec:
           value: >-
             {{- include "dremio.executor.extraStartParams" (list $ $engineName) | nindent 12 -}}
             {{- include "dremio.executor.gracefulShutdownParams" $ | nindent 12 }}
+            {{- include "dremio.executor.log.path" (list $ $engineName) | nindent 12 }}
             -Dzookeeper=zk-hs:2181
             -Dservices.coordinator.enabled=false
             -Dservices.coordinator.master.enabled=false
