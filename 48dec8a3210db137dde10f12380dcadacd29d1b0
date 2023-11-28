@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d562823f_86141b81",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-11-28T20:23:40Z",
+      "side": 1,
+      "message": "I don\u0027t see how the current change allows it to log to console as well? I believe the default logbook config pushes logs to the logging file only if the log path is set.",
+      "range": {
+        "startLine": 7,
+        "startChar": 47,
+        "endLine": 7,
+        "endChar": 61
+      },
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "209e42ed_ae250f3e",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-11-28T20:23:40Z",
+      "side": 1,
+      "message": "Missing log volume mount.",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f547946b_6618a298",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-11-28T20:23:40Z",
+      "side": 1,
+      "message": "This would be a breaking change to organizations that directly log from the pod\u0027s stdout to a logging service and must be behind a flag.",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d67f22f1_882c9a2b",
+        "filename": "charts/dremio_v2/templates/dremio-executor.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-11-28T20:23:40Z",
+      "side": 1,
+      "message": "Missing log volume mount.",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd6ceffd_9901d055",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-11-28T20:23:40Z",
+      "side": 1,
+      "message": "Should the storage class of the logging be the same as the coordinator\u0027s storage class?",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
