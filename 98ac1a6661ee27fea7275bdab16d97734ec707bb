@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dbc69b0_c9c6876b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2023-11-28T20:25:26Z",
+      "side": 1,
+      "message": "What happened to the master coordinator?",
+      "revId": "98ac1a6661ee27fea7275bdab16d97734ec707bb",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
