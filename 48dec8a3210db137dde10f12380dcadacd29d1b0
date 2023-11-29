@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c0881456_6b301941",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-11-29T13:39:46Z",
+      "side": 1,
+      "message": "Originally, we only wanted to the logging directory to be on a separate PV on the master node so that we don\u0027t share disk space with the RocksDB. Should we put the logging directory on it\u0027s own PV for all of the pods?",
+      "parentUuid": "209e42ed_ae250f3e",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f547946b_6618a298",
         "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
         "patchSetId": 4
@@ -54,6 +72,24 @@
       "writtenOn": "2023-11-28T20:23:40Z",
       "side": 1,
       "message": "This would be a breaking change to organizations that directly log from the pod\u0027s stdout to a logging service and must be behind a flag.",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9542d199_0355f909",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-11-29T13:39:46Z",
+      "side": 1,
+      "message": "As far as I can tell, enabling this flag writes to disk and writes to console. Checking in the GCP logging console, it appears that logs are coming from stdout based on the logName field. Does that look right to you, Ryan? Here\u0027s an example of the log payload taken from the GCP logging console:\n\n{\ninsertId: \"dhpc3umosmjj5zq7\"\nlabels: {4}\nlogName: \"projects/dremio-1093/logs/stdout\"\nreceiveTimestamp: \"2023-11-29T13:24:25.669789756Z\"\nresource: {2}\nseverity: \"INFO\"\ntextPayload: \"2023-11-29 13:24:24,113 [myid:] - INFO  [NIOWorkerThread-7:o.a.z.s.NIOServerCnxn@522] - Processing ruok command from /127.0.0.1:50058\"\ntimestamp: \"2023-11-29T13:24:24.113955175Z\"\n}",
+      "parentUuid": "f547946b_6618a298",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
@@ -77,6 +113,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ee892f6_81e4a6cc",
+        "filename": "charts/dremio_v2/templates/dremio-executor.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-11-29T13:39:46Z",
+      "side": 1,
+      "message": "See similar comment in dremio-coordinator.yaml",
+      "parentUuid": "d67f22f1_882c9a2b",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd6ceffd_9901d055",
         "filename": "charts/dremio_v2/templates/dremio-master.yaml",
         "patchSetId": 4
@@ -88,6 +142,24 @@
       "writtenOn": "2023-11-28T20:23:40Z",
       "side": 1,
       "message": "Should the storage class of the logging be the same as the coordinator\u0027s storage class?",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef6199e9_b2cdedb1",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-11-29T13:39:46Z",
+      "side": 1,
+      "message": "The current dremio-master-volume uses re-uses the coordinator\u0027s storage class. Should we use something different for the logging director?",
+      "parentUuid": "dd6ceffd_9901d055",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
