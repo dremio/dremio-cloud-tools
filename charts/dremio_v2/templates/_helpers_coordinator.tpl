@@ -14,7 +14,7 @@ Coordinator - Dremio Heap Memory allocation
 {{- end -}}
 
 {{/*
-Coordiantor - Dremio Direct Memory Allocation
+Coordinator - Dremio Direct Memory Allocation
 */}}
 {{- define "dremio.coordinator.directMemory" -}}
 {{- $coordinatorMemory := int $.Values.coordinator.memory -}}
@@ -29,13 +29,12 @@ Coordiantor - Dremio Direct Memory Allocation
 {{- end -}}
 
 {{/*
-Coordinator - Service Account
+Coordinator - Service Account Name
 */}}
-{{- define "dremio.coordinator.serviceAccount" -}}
+{{- define "dremio.coordinator.serviceAccountName" -}}
 {{- $coordinatorServiceAccount := coalesce $.Values.coordinator.serviceAccount $.Values.serviceAccount -}}
-{{- if $coordinatorServiceAccount -}}
-serviceAccountName: {{ $coordinatorServiceAccount }}
-{{- end -}}
+{{- $coordinatorServiceAccountName :=  default "dremio-coordinator-sa" $coordinatorServiceAccount -}}
+{{- $coordinatorServiceAccountName }}
 {{- end -}}
 
 {{/*
@@ -55,6 +54,66 @@ Coordinator - Pod Extra Init Containers
 {{- $coordinatorExtraInitContainers := coalesce $.Values.coordinator.extraInitContainers $.Values.extraInitContainers -}}
 {{- if $coordinatorExtraInitContainers -}}
 {{ tpl $coordinatorExtraInitContainers $ }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Coordinator - Log Path
+*/}}
+{{- define "dremio.coordinator.log.path" -}}
+{{- $writeLogToFile := coalesce $.Values.coordinator.writeLogToFile $.Values.writeLogToFile -}}
+{{- if $writeLogToFile -}}
+-Ddremio.log.path=/opt/dremio/log
+{{- end -}}
+{{- end -}}
+
+{{/*
+Coordinator - Log Volume Mount
+*/}}
+{{- define "dremio.coordinator.log.volumeMount" -}}
+{{- $writeLogToFile := coalesce $.Values.coordinator.writeLogToFile $.Values.writeLogToFile -}}
+{{- if $writeLogToFile -}}
+- name: dremio-master-log-volume
+  mountPath: /opt/dremio/log
+{{- end -}}
+{{- end -}}
+
+{{/*
+Coordinator - Chown Log Volume Mount Init Container
+*/}}
+{{- define "dremio.coordinator.log.volumeMountInitContainer" -}}
+{{- $writeLogToFile := coalesce $.Values.coordinator.writeLogToFile $.Values.writeLogToFile -}}
+{{- if $writeLogToFile -}}
+- name: chown-log-directory
+  image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+  imagePullPolicy: IfNotPresent
+  securityContext:
+    runAsUser: 0
+  volumeMounts:
+  - name: dremio-master-log-volume
+    mountPath: /opt/dremio/log
+  command: ["chown"]
+  args:
+    - "dremio:dremio"
+    - "/opt/dremio/log"
+{{- end -}}
+{{- end -}}
+
+{{/*
+Coordinator - Logs Volume Claim Template
+*/}}
+{{- define "dremio.coordinator.log.volumeClaimTemplate" -}}
+{{- $coordinatorLogStorageClass := coalesce $.Values.coordinator.logStorageClass $.Values.logStorageClass -}}
+{{- $writeLogToFile := coalesce $.Values.coordinator.writeLogToFile $.Values.writeLogToFile -}}
+{{- if $writeLogToFile -}}
+- metadata:
+    name: dremio-master-log-volume
+  spec:
+    accessModes: ["ReadWriteOnce"]
+    {{ include "dremio.coordinator.log.storageClass" $ }}
+    resources:
+      requests:
+        storage: {{ $.Values.coordinator.volumeSize }}
 {{- end -}}
 {{- end -}}
 
@@ -85,6 +144,16 @@ Coordinator - Storage Class
 {{- $coordinatorStorageClass := coalesce $.Values.coordinator.storageClass $.Values.storageClass -}}
 {{- if $coordinatorStorageClass -}}
 storageClassName: {{ $coordinatorStorageClass }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Coordinator - Logs Storage Class
+*/}}
+{{- define "dremio.coordinator.log.storageClass" -}}
+{{- $coordinatorLogStorageClass := $.Values.coordinator.logStorageClass -}}
+{{- if $coordinatorLogStorageClass -}}
+storageClassName: {{ $coordinatorLogStorageClass }}
 {{- end -}}
 {{- end -}}
 

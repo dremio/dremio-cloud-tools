@@ -151,6 +151,19 @@ Executor - Pod Extra Volume Mounts
 {{- end -}}
 
 {{/*
+Executor - Log Path
+*/}}
+{{- define "dremio.executor.log.path" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $writeLogToFile := coalesce $engineConfiguration.writeLogToFile $context.Values.executor.writeLogToFile $context.Values.writeLogToFile -}}
+{{- if $writeLogToFile -}}
+-Ddremio.log.path=/opt/dremio/log
+{{- end -}}
+{{- end -}}
+
+{{/*
 Executor - Persistent Volume Storage Class
 */}}
 {{- define "dremio.executor.storageClass" -}}

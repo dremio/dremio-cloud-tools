@@ -33,6 +33,11 @@ podLabels: {}
 nodeSelector: {}
 tolerations: []
 
+# Dremio Master Coordinator
+#masterCoordinator:
+#  automatedBackups:
+#    schedule: "0 2 * * *"
+
 # Dremio Coordinator
 coordinator:
   # CPU & Memory
@@ -75,6 +80,13 @@ coordinator:
 
   # Uncomment this value to use a different storage class for the coordinator.
   #storageClass:
+
+  # Uncomment this value to use a different storage class for the coordinator logs.
+  #logStorageClass:
+
+  # Uncomment this value to write logs to a file on disk.
+  # Note: Logs can be written to a file OR to stdout (not both simultaneously).
+  #writeLogToFile: true
 
   # These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
   # Uncomment only if you are trying to override the chart's shared values.
@@ -181,6 +193,10 @@ executor:
 
   # Uncomment this value to use a different storage class for executors.
   #storageClass:
+
+  # Uncomment this value to write logs to a file on disk.
+  # Note: Logs can be written to a file OR to stdout (not both simultaneously).
+  #writeLogToFile: true
 
   # Dremio C3
   # Designed for use with NVMe storage devices, performance may be impacted when using
@@ -334,7 +350,7 @@ distStorage:
   # local: (<21.0.0 only) Not recommended for production use. When using local, dist-caching is disabled.
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
-  # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
+  # azureStorage: Azure Storage Gen2, additional parameters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
   type: "local"
 
@@ -346,7 +362,7 @@ distStorage:
   #   - When using "auto" authentication, Dremio uses Google Application Default Credentials to
   #     authenticate. This is platform dependent and may not be available in all Kubernetes clusters.
   #   - Note: When using a GCS bucket on GKE, we recommend enabling Workload Identity and configuring
-  #       a Kubernetes Service Accountfor Dremio with an associated workload identity that
+  #       a Kubernetes Service Account for Dremio with an associated workload identity that
   #       has access to the GCS bucket.
   # credentials: If using serviceAccountKeys authentication, uncomment the credentials section below.
   gcp:
@@ -484,6 +500,10 @@ extraVolumes: []
 # Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
 extraVolumeMounts: []
 
+# Uncomment this value to write logs to a file on disk for all Dremio resources.
+# Note: Logs can be written to a file OR to stdout (not both simultaneously).
+#writeLogToFile: true
+
 # Dremio Service
 # The dremio-client service exposes the service for access outside of the Kubernetes cluster.
 service:
@@ -519,3 +539,7 @@ service:
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 # imagePullSecrets:
 #  - secretname
+
+# To enable regularly scheduled backups, uncomment the following line.
+# backups:
+#   schedule: "0 2 * * *"
