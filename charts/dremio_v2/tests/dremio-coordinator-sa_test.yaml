@@ -1,0 +1,66 @@
+templates:
+  - dremio-coordinator-sa.yaml
+tests:
+  - it: should render if 'masterCoordinator.automatedBackups.schedule' is set
+    set:
+      masterCoordinator:
+        automatedBackups:
+          schedule: "* * * * *"
+    asserts:
+      - hasDocuments:
+          count: 1
+  - it: should not render by default
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should use the default coordinator service account name if backups are enabled
+    set:
+      masterCoordinator:
+        automatedBackups:
+          schedule: "* * * * *"
+    asserts:
+      - equal:
+          path: metadata.name
+          value: "dremio-coordinator-sa"
+  - it: should use specified coordinator service account name
+    set:
+      coordinator:
+        serviceAccount: "test-coordinator-sa"
+    asserts:
+      - equal:
+          path: metadata.name
+          value: "test-coordinator-sa"
+  - it: should not attach GCP annotations when not using GCP
+    set:
+      masterCoordinator:
+        automatedBackups:
+          schedule: "* * * * *"
+      distStorage:
+        type: "aws"
+    asserts:
+      - notExists:
+          path: metadata.annotations["iam.gke.io/gcp-service-account"]
+  - it: should not attach GCP annotations unless a clientEmail is specified
+    set:
+      masterCoordinator:
+        automatedBackups:
+          schedule: "* * * * *"
+      distStorage:
+        type: "gcp"
+    asserts:
+      - notExists:
+          path: metadata.annotations["iam.gke.io/gcp-service-account"]
+  - it: should attach GCP annotations when a clientEmail is specified
+    set:
+      masterCoordinator:
+        automatedBackups:
+          schedule: "* * * * *"
+      distStorage:
+        type: "gcp"
+        gcp:
+          credentials:
+            clientEmail: "test@dremio.com"
+    asserts:
+      - equal:
+          path: metadata.annotations["iam.gke.io/gcp-service-account"]
+          value: "test@dremio.com"
