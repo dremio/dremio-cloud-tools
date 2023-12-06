@@ -165,6 +165,22 @@ tolerations:
 
 More Info: See the [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) documentation for Kubernetes.
 
+###  Write Logs to a File
+
+#### `writeLogToFile`
+
+Type: Boolean
+
+By default, logs are written to stdout. To write logs to a file on disk, set this value to true.
+
+***Note***: Logs can be written to a file OR to stdout (not both simultaneously).
+
+For example, to write logs to a file:
+
+```yaml
+writeLogToFile: true
+```
+
 ### Dremio Configuration
 
 #### `coordinator`
@@ -269,6 +285,18 @@ extraVolumeMounts:
   mountPath: "/additional-files"
 [...]
 ```
+## Master Coordinator Values
+
+### Automated Backups
+
+#### `masterCoordinator.automatedBackups.schedule`
+
+Type: String
+
+By default, automated backups are disabled. Dremio metadata and user uploaded files can be backed up on a schedule.
+The backup does not include the contents of the distributed cache such as acceleration cache, downloaded files and query results.
+
+More Info: Refer to the [Automated Backups Readme](setup/Automated-Backups.md)
 
 ## Coordinator Values
 
@@ -556,6 +584,18 @@ Storage class has a direct impact on the performance of the Dremio cluster. On t
 
 More Info: Refer to the [`storageClass`](#storageclass) section of this reference.
 
+#### `coordinator.logStorageClass`
+
+Type: String
+
+By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `logStorageClass`.
+
+### `coordinator.writeLogToFile`
+
+By default, logs are written to stdout. To write logs to a file on disk, set this value to true. If this value is omitted or set to an empty string, this value will be inherited from the top level `writeLogToFile`.
+
+***Note***: Logs can be written to a file OR to stdout (not both simultaneously).
+
 #### `coordinator.serviceAccount`
 
 Type: String
@@ -834,6 +874,13 @@ Type: String
 By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `storageClass`. This value can be set on a **per-engine basis**, see the [Per-Engine Configuration](#per-engine-configuration) section.
 
 More Info: Refer to the [`storageClass`](#storageclass) section of this reference.
+
+### `executor.writeLogToFile`
+
+By default, logs are written to stdout. To write logs to a file on disk, set this value to true. If this value is omitted or set to an empty string, this value will be inherited from the top level `writeLogToFile`.
+This value can be set on a **per-engine basis**, see the [Per-Engine Configuration](#per-engine-configuration) section.
+
+***Note***: Logs can be written to a file OR to stdout (not both simultaneously).
 
 #### `executor.serviceAccount`
 
