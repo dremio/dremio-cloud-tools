@@ -1649,3 +1649,13 @@ Type: String
 By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `serviceAccount`.
 
 More Info: Refer to the [`serviceAccount`](#serviceaccount) section of this reference.
+
+### Automated Backups
+### `backups.schedule`
+
+Type: String
+
+By default, automated backups are disabled. Dremio metadata and user uploaded files can be backed up on a schedule. 
+The backup does not include the contents of the distributed cache such as acceleration cache, downloaded files and query results.
+
+More Info: Refer to the [Automated Backups Readme](setup/Automated-Backups.md)
