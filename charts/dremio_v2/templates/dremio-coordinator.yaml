@@ -23,7 +23,7 @@ spec:
         dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
         {{- include "dremio.coordinator.podAnnotations" $ | nindent 8 }}
     spec:
-      {{- include "dremio.coordinator.serviceAccount" $ | nindent 6 }}
+      serviceAccountName: "{{- template "dremio.coordinator.serviceAccountName" $ }}"
       terminationGracePeriodSeconds: 120
       {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
