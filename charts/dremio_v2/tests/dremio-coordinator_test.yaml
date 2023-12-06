@@ -1,0 +1,22 @@
+templates:
+  - dremio-coordinator.yaml
+tests:
+  - it: should use default coordinator service account if one is not specified
+    set:
+      distStorage:
+        type: aws
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: "dremio-coordinator-sa"
+  - it: should use coordinator.serviceAccount
+    set:
+      coordinator:
+        serviceAccount: "test-coordinator-sa"
+      distStorage:
+        type: aws
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: "test-coordinator-sa"
+
