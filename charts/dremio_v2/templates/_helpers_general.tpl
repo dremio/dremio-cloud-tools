@@ -89,8 +89,5 @@ tolerations:
 Admin - Service Account
 */}}
 {{- define "dremio.admin.serviceAccount" -}}
-{{- $adminServiceAccount := $.Values.coordinator.serviceAccount -}}
-{{- if $adminServiceAccount -}}
-serviceAccount: {{ $adminServiceAccount }}
-{{- end -}}
+serviceAccount: {{ include "dremio.coordinator.serviceAccountName" $ }}
 {{- end -}}
