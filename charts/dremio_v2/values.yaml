@@ -33,6 +33,11 @@ podLabels: {}
 nodeSelector: {}
 tolerations: []
 
+# Dremio Master Coordinator
+#masterCoordinator:
+#  automatedBackups:
+#    schedule: "0 2 * * *"
+
 # Dremio Coordinator
 coordinator:
   # CPU & Memory
@@ -334,7 +339,7 @@ distStorage:
   # local: (<21.0.0 only) Not recommended for production use. When using local, dist-caching is disabled.
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
-  # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
+  # azureStorage: Azure Storage Gen2, additional parameters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
   type: "local"
 
@@ -346,7 +351,7 @@ distStorage:
   #   - When using "auto" authentication, Dremio uses Google Application Default Credentials to
   #     authenticate. This is platform dependent and may not be available in all Kubernetes clusters.
   #   - Note: When using a GCS bucket on GKE, we recommend enabling Workload Identity and configuring
-  #       a Kubernetes Service Accountfor Dremio with an associated workload identity that
+  #       a Kubernetes Service Account for Dremio with an associated workload identity that
   #       has access to the GCS bucket.
   # credentials: If using serviceAccountKeys authentication, uncomment the credentials section below.
   gcp:

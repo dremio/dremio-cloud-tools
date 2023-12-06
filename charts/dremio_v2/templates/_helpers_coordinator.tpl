@@ -14,7 +14,7 @@ Coordinator - Dremio Heap Memory allocation
 {{- end -}}
 
 {{/*
-Coordiantor - Dremio Direct Memory Allocation
+Coordinator - Dremio Direct Memory Allocation
 */}}
 {{- define "dremio.coordinator.directMemory" -}}
 {{- $coordinatorMemory := int $.Values.coordinator.memory -}}
@@ -29,12 +29,21 @@ Coordiantor - Dremio Direct Memory Allocation
 {{- end -}}
 
 {{/*
+Coordinator - Service Account Name
+*/}}
+{{- define "dremio.coordinator.serviceAccountName" -}}
+{{- $coordinatorServiceAccount := coalesce $.Values.coordinator.serviceAccount $.Values.serviceAccount -}}
+{{- $coordinatorServiceAccountName :=  default "dremio-coordinator-sa" $coordinatorServiceAccount -}}
+{{- $coordinatorServiceAccountName }}
+{{- end -}}
+
+{{/*
 Coordinator - Service Account
 */}}
 {{- define "dremio.coordinator.serviceAccount" -}}
-{{- $coordinatorServiceAccount := coalesce $.Values.coordinator.serviceAccount $.Values.serviceAccount -}}
-{{- if $coordinatorServiceAccount -}}
-serviceAccountName: {{ $coordinatorServiceAccount }}
+{{- $serviceAccountEnabled := coalesce $.Values.coordinator.serviceAccount $.Values.serviceAccount ((($.Values).masterCoordinator).automatedBackups) -}}
+{{- if $serviceAccountEnabled -}}
+serviceAccountName: {{ include "dremio.coordinator.serviceAccountName" $ }}
 {{- end -}}
 {{- end -}}
 

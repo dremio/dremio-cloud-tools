@@ -1,0 +1,8 @@
+{{- if or ($.Values.coordinator).serviceAccount ((($.Values).masterCoordinator).automatedBackups) -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "{{- template "dremio.coordinator.serviceAccountName" $ }}"
+  namespace: "{{- .Release.Namespace }}"
+  {{- include "dremio.coordinator.serviceAccount.annotations" $ | trim | nindent 2 }}
+{{- end -}}
