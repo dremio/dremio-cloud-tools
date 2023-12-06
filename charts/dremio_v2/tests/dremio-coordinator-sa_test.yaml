@@ -1,0 +1,29 @@
+templates:
+  - dremio-coordinator-sa.yaml
+tests:
+  - it: should not render in admin mode
+    set:
+      DremioAdmin: true
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should render if backups is enabled
+    set:
+      backups:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+  - it: should use the default coordinator service account name
+    asserts:
+      - equal:
+          path: metadata.name
+          value: "dremio-coordinator-sa"
+  - it: should use specified coordinator service account name
+    set:
+      coordinator:
+        serviceAccount: "test-coordinator-sa"
+    asserts:
+      - equal:
+          path: metadata.name
+          value: "test-coordinator-sa"

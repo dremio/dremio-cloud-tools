@@ -1,0 +1,32 @@
+{{- if $.Values.backups.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dremio-automated-backups
+spec:
+  schedule: "{{ $.Values.backups.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: "{{- template "dremio.coordinator.serviceAccountName" $ }}"
+          automountServiceAccountToken: true
+          containers:
+            - name: dremio-automated-backups
+              image:  bitnami/kubectl:latest
+              imagePullPolicy: IfNotPresent
+              command: [
+                "kubectl",
+                "exec",
+                "dremio-master-0",
+                "--container",
+                "dremio-master-coordinator",
+                "--",
+                "/opt/dremio/bin/dremio-admin",
+                "backup",
+                "-l",
+                "-d",
+                "{{- template "dremio.backups.distStorage" $ }}",
+              ]
+          restartPolicy: OnFailure
+{{- end -}}
