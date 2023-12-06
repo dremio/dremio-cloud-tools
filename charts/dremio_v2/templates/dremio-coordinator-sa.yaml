@@ -1,0 +1,6 @@
+{{- if not $.Values.DremioAdmin -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "{{- template "dremio.coordinator.serviceAccountName" $ }}"
+{{- end -}}
