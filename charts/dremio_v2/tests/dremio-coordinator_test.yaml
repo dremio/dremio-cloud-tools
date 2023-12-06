@@ -1,0 +1,31 @@
+templates:
+  - dremio-coordinator.yaml
+tests:
+  - it:  serviceAccount should not be attached to the pod by default
+    set:
+      coordinator:
+        backups:
+          enabled: false
+    asserts:
+      - notExists:
+          path: spec.template.spec.serviceAccountName
+  - it: serviceAccount should be attached by setting coordinator.serviceAccount
+    set:
+      coordinator:
+        serviceAccount: "test-sa"
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: "test-sa"
+  - it: >
+      the service account attached to the coordinator should default
+      to dremio-admin-sa with coordinator.serviceAccount omitted and
+      coordinator.backups.enabled set to true
+    set:
+      coordinator:
+        backups:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: "dremio-coordinator-sa"
