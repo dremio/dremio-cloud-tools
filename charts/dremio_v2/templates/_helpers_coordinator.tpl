@@ -33,8 +33,8 @@ Coordinator - Service Account
 */}}
 {{- define "dremio.coordinator.serviceAccount" -}}
 {{- $coordinatorServiceAccount := coalesce $.Values.coordinator.serviceAccount $.Values.serviceAccount -}}
-{{- if $coordinatorServiceAccount -}}
-serviceAccountName: {{ $coordinatorServiceAccount }}
+{{- if or ($coordinatorServiceAccount) (and (hasKey $.Values.coordinator "backups") (eq $.Values.coordinator.backups.enabled true)) -}}
+serviceAccountName: {{ default "dremio-coordinator-sa" $coordinatorServiceAccount }}
 {{- end -}}
 {{- end -}}
 
