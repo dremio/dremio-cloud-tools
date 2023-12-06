@@ -1,0 +1,15 @@
+templates:
+  - dremio-coordinator-sa-role.yaml
+tests:
+  - it: should not render if backups is disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should render if backups is enabled
+    set:
+      backups:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 2
+
