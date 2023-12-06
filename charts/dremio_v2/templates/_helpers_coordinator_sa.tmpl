@@ -1,0 +1,9 @@
+{{/*
+Coordinator Service Account - Annotations
+*/}}
+{{- define "dremio.coordinator.serviceAccount.annotations" -}}
+{{ if and (eq $.Values.distStorage.type "gcp") (hasKey (($.Values.distStorage.gcp).credentials) "clientEmail")  }}
+annotations:
+    iam.gke.io/gcp-service-account: {{ $.Values.distStorage.gcp.credentials.clientEmail }}
+{{- end -}}
+{{- end -}}

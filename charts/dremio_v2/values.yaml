@@ -346,7 +346,7 @@ distStorage:
   #   - When using "auto" authentication, Dremio uses Google Application Default Credentials to
   #     authenticate. This is platform dependent and may not be available in all Kubernetes clusters.
   #   - Note: When using a GCS bucket on GKE, we recommend enabling Workload Identity and configuring
-  #       a Kubernetes Service Accountfor Dremio with an associated workload identity that
+  #       a Kubernetes Service Account for Dremio with an associated workload identity that
   #       has access to the GCS bucket.
   # credentials: If using serviceAccountKeys authentication, uncomment the credentials section below.
   gcp:
@@ -519,3 +519,7 @@ service:
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 # imagePullSecrets:
 #  - secretname
+
+# To enable regularly scheduled backups, uncomment the following line.
+# backups:
+#   schedule: "0 2 * * *"
