@@ -1,0 +1,117 @@
+templates:
+  - dremio-automated-backups.yaml
+tests:
+  - it: template should not render if backups are disabled
+    set:
+      backups:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: template should render if backups are enabled
+    set:
+      backups:
+        enabled: true
+      distStorage:
+        type: aws
+    asserts:
+      - hasDocuments:
+          count: 1
+  - it: backup.schedule should be configurable
+    set:
+      backups:
+        enabled: true
+        schedule: "0 22 * * 1-5"
+      distStorage:
+        type: aws
+    asserts:
+      - equal:
+          path: spec.schedule
+          value: "0 22 * * 1-5"
+  - it: distStorage should be configurable for AWS
+    set:
+      backups:
+        enabled: true
+      distStorage:
+        type: "aws"
+        aws:
+          bucketName: "test-aws-bucket"
+    asserts:
+      - contains:
+          path: spec.jobTemplate.spec.template.spec.containers
+          content:
+            name: dremio-automated-backups
+            image: bitnami/kubectl:latest
+            imagePullPolicy: IfNotPresent
+            command: [
+              "kubectl",
+              "exec",
+              "dremio-master-0",
+              "--container",
+              "dremio-master-coordinator",
+              "--",
+              "/opt/dremio/bin/dremio-admin",
+              "backup",
+              "-l",
+              "-d",
+              "dremioS3:///test-aws-bucket/backups",
+            ]
+          restartPolicy: OnFailure
+  - it: distStorage should be configurable for GCP
+    set:
+      backups:
+        enabled: true
+      distStorage:
+        type: "gcp"
+        gcp:
+          bucketName: "test-gcp-bucket"
+    asserts:
+      - contains:
+          path: spec.jobTemplate.spec.template.spec.containers
+          content:
+            name: dremio-automated-backups
+            image: bitnami/kubectl:latest
+            imagePullPolicy: IfNotPresent
+            command: [
+              "kubectl",
+              "exec",
+              "dremio-master-0",
+              "--container",
+              "dremio-master-coordinator",
+              "--",
+              "/opt/dremio/bin/dremio-admin",
+              "backup",
+              "-l",
+              "-d",
+              "dremiogcs:///test-gcp-bucket/backups",
+            ]
+          restartPolicy: OnFailure
+  - it: distStorage should be configurable for Azure
+    set:
+      backups:
+        enabled: true
+      distStorage:
+        type: "azure"
+        azure:
+          datalakeStoreName: "test-azure-adls"
+    asserts:
+      - contains:
+          path: spec.jobTemplate.spec.template.spec.containers
+          content:
+            name: dremio-automated-backups
+            image: bitnami/kubectl:latest
+            imagePullPolicy: IfNotPresent
+            command: [
+              "kubectl",
+              "exec",
+              "dremio-master-0",
+              "--container",
+              "dremio-master-coordinator",
+              "--",
+              "/opt/dremio/bin/dremio-admin",
+              "backup",
+              "-l",
+              "-d",
+              "dremioAzureStorage:///test-azure-adls/backups",
+            ]
+          restartPolicy: OnFailure
