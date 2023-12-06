@@ -270,6 +270,27 @@ extraVolumeMounts:
 [...]
 ```
 
+## Master Coordinator Values
+
+### Automated Backups
+
+#### `masterCoordinator.automatedBackups.schedule`
+
+Type: String
+
+By default, automated backups are disabled. Dremio metadata and user uploaded files can be backed up on a schedule.
+The backup does not include the contents of the distributed cache such as acceleration cache, downloaded files and query results.
+
+More Info: Refer to the [Automated Backups Readme](setup/Automated-Backups.md)
+
+#### `masterCoordinator.automatedBackups.heapMemory`
+
+Type: Int
+
+By default, the value is `4096` (MB).
+
+The value of `memory` specified here is used to set allocation of heap memory used by the automated backup process.
+
 ## Coordinator Values
 
 ### General Configuration
