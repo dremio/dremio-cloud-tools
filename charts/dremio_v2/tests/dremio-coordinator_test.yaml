@@ -1,0 +1,32 @@
+templates:
+  - dremio-coordinator.yaml
+tests:
+  - it: serviceAccount should not be included by default
+    set:
+      distStorage:
+        type: aws
+    asserts:
+      - notExists:
+          path: spec.template.spec.serviceAccountName
+  - it: should use coordinator.serviceAccount
+    set:
+      coordinator:
+        serviceAccount: "test-coordinator-sa"
+      distStorage:
+        type: aws
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: "test-coordinator-sa"
+  - it: should use default coordinator service account if backups are enabled
+      and a service account is not specified
+    set:
+      masterCoordinator:
+        automatedBackups:
+          schedule: "* * * * *"
+      distStorage:
+        type: aws
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: "dremio-coordinator-sa"

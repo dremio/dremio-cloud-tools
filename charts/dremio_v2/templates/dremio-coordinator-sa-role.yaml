@@ -1,0 +1,30 @@
+{{- if and ((($.Values).masterCoordinator).automatedBackups) (not $.Values.DremioAdmin) -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "{{- template "dremio.coordinator.serviceAccountName" $ }}"
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/exec"]
+    verbs: ["get", "list", "watch", "create"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames: ["kube-root-ca.crt"]
+    verbs: ["get"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "{{- template "dremio.coordinator.serviceAccountName" $ }}"
+  namespace: "{{- .Release.Namespace }}"
+subjects:
+  - kind: ServiceAccount
+    name: "{{- template "dremio.coordinator.serviceAccountName" $ }}"
+    namespace: "{{- .Release.Namespace }}"
+roleRef:
+  kind: Role
+  name: "{{- template "dremio.coordinator.serviceAccountName" $ }}"
+  apiGroup: rbac.authorization.k8s.io
+{{- end -}}
