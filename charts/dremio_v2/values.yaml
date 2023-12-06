@@ -491,3 +491,8 @@ service:
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 # imagePullSecrets:
 #  - secretname
+
+# To enable regularly scheduled backups, uncomment the following lines.
+# backups:
+#   enabled: true
+#   schedule: "0 2 * * *"
