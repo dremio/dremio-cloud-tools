@@ -61,6 +61,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79777e18_331cb40f",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2023-12-07T13:24:38Z",
+      "side": 1,
+      "message": "The startup script sets this system property. Probably preferable to set the `DREMIO_LOG_DIR` env var instead.\n\nhttps://github.com/dremio/dremio/blob/3034dd82d195c261ebf30941cea9d57424ddf900/oss/distribution/resources/src/main/resources/bin/dremio#L111",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f547946b_6618a298",
         "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
         "patchSetId": 4
