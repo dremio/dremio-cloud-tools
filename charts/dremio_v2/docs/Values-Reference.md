@@ -296,7 +296,7 @@ Increasing this number controls the *secondary* coordinators that are launched a
 
 Type: String
 
-By default, the value is set to `128Gi`.
+By default, the value is set to `512Gi`.
 
 The coordinator volume is used to store the RocksDB KV store and requires a performant disk. In most hosted Kubernetes environments, disk performance is determined by the size of the volume.
 

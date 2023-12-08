@@ -48,7 +48,7 @@ coordinator:
   # Coordinator data volume size (applies to the master coordinator only).
   # In most managed Kubernetes environments (AKS, GKE, etc.), the size of the disk has a direct impact on
   # the provisioned and maximum performance of the disk.
-  volumeSize: 128Gi
+  volumeSize: 512Gi
 
   # Kubernetes Service Account
   # Uncomment below to use a custom Kubernetes service account for the coordinator.
