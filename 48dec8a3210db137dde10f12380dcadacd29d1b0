@@ -112,6 +112,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92079946_c978fd57",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2023-12-08T15:28:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5b318375_088a6d02",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f547946b_6618a298",
@@ -143,6 +161,24 @@
       "side": 1,
       "message": "As far as I can tell, enabling this flag writes to disk and writes to console. Checking in the GCP logging console, it appears that logs are coming from stdout based on the logName field. Does that look right to you, Ryan? Here\u0027s an example of the log payload taken from the GCP logging console:\n\n{\ninsertId: \"dhpc3umosmjj5zq7\"\nlabels: {4}\nlogName: \"projects/dremio-1093/logs/stdout\"\nreceiveTimestamp: \"2023-11-29T13:24:25.669789756Z\"\nresource: {2}\nseverity: \"INFO\"\ntextPayload: \"2023-11-29 13:24:24,113 [myid:] - INFO  [NIOWorkerThread-7:o.a.z.s.NIOServerCnxn@522] - Processing ruok command from /127.0.0.1:50058\"\ntimestamp: \"2023-11-29T13:24:24.113955175Z\"\n}",
       "parentUuid": "f547946b_6618a298",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b6634b3_282a5f13",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2023-12-08T15:28:45Z",
+      "side": 1,
+      "message": "Even if logging to stdout is still active, it will mean that users will suddenly get a new PVC and PV that they didn\u0027t have before that they may not expect",
+      "parentUuid": "9542d199_0355f909",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
@@ -184,6 +220,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "39264fe3_20b35058",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2023-12-08T15:28:45Z",
+      "side": 1,
+      "message": "If we use a separate mount perhaps don\u0027t put the path in the mount path for the other PV to avoid any potential confusion - `/opt/dremio/log`?",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7bce240_0d4c59bf",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2023-12-08T15:28:45Z",
+      "side": 1,
+      "message": "nit: keep the formatting consistent with what\u0027s already there. For lists it\u0027s not indenting the `-`\n\nThe style is using:\n```\nlist:\n- a\n- b\n```\n\nnot:\n```\nlist:\n  - a\n  - b\n```",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd6ceffd_9901d055",
         "filename": "charts/dremio_v2/templates/dremio-master.yaml",
         "patchSetId": 4
@@ -213,6 +283,24 @@
       "side": 1,
       "message": "The current dremio-master-volume uses re-uses the coordinator\u0027s storage class. Should we use something different for the logging director?",
       "parentUuid": "dd6ceffd_9901d055",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "147588d7_a3d0bb54",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2023-12-08T15:28:45Z",
+      "side": 1,
+      "message": "From the users perspective, they may want to use different storage classes for data and for logs.",
+      "parentUuid": "ef6199e9_b2cdedb1",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
