@@ -78,6 +78,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fcf2c3f6_1224af3a",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-12-08T13:41:10Z",
+      "side": 1,
+      "message": "This `dremio.log.path` is set if `DREMIO_LOG_TO_CONSOLE` !\u003d0. However, we are setting `DREMIO_LOG_TO_CONSOLE` to `1` since we\u0027re running Dremio in a container in this context \n\nhttps://github.com/dremio/dremio/blob/3034dd82d195c261ebf30941cea9d57424ddf900/oss/distribution/resources/src/main/resources/bin/dremio#L42",
+      "parentUuid": "79777e18_331cb40f",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f547946b_6618a298",
         "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
         "patchSetId": 4
