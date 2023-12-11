@@ -185,6 +185,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b1fa613_e717fde4",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-12-11T15:58:02Z",
+      "side": 1,
+      "message": "Is the main issue with a new PVC/PV the additional cost of storage? Are there any other affects that the customer might experience? @dave.maughan - do you have a suggestion on how to better handle this?",
+      "parentUuid": "8b6634b3_282a5f13",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d67f22f1_882c9a2b",
         "filename": "charts/dremio_v2/templates/dremio-executor.yaml",
         "patchSetId": 4
@@ -235,6 +253,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e1d0ca6_0620206a",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-12-11T15:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39264fe3_20b35058",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7bce240_0d4c59bf",
@@ -248,6 +284,24 @@
       "writtenOn": "2023-12-08T15:28:45Z",
       "side": 1,
       "message": "nit: keep the formatting consistent with what\u0027s already there. For lists it\u0027s not indenting the `-`\n\nThe style is using:\n```\nlist:\n- a\n- b\n```\n\nnot:\n```\nlist:\n  - a\n  - b\n```",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3591c44c_5ed697bb",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-12-11T15:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7bce240_0d4c59bf",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
@@ -301,6 +355,24 @@
       "side": 1,
       "message": "From the users perspective, they may want to use different storage classes for data and for logs.",
       "parentUuid": "ef6199e9_b2cdedb1",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16287e21_1dcc49f0",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2023-12-11T15:58:02Z",
+      "side": 1,
+      "message": "I\u0027ve separated the storage classes for data and logs",
+      "parentUuid": "147588d7_a3d0bb54",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
