@@ -43,6 +43,8 @@ coordinator:
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
+  # If this is greater than zero then the client and flight ports on the master
+  # will be deactivated to steer these requests away from the master node.
   count: 0
 
   # Coordinator data volume size (applies to the master coordinator only).
