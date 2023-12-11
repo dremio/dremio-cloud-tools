@@ -87,10 +87,12 @@ spec:
         ports:
         - containerPort: 9047
           name: web
+        {{- if (le (int .Values.coordinator.count) 0) }}
         - containerPort: 31010
           name: client
         - containerPort: 32010
           name: flight
+        {{- end }}
         - containerPort: 45678
           name: server-fabric
         - containerPort: 45679
