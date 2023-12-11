@@ -7,7 +7,7 @@ metadata:
   {{- include "dremio.coordinator.labels" $ | nindent 2 }}
 spec:
   serviceName: "dremio-cluster-pod"
-  replicas: {{ $.Values.coordinator.count }}
+  replicas: {{ template "dremio.coordinator.replicas" $ }}
   podManagementPolicy: "Parallel"
   revisionHistoryLimit: 1
   selector:

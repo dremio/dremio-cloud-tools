@@ -39,6 +39,18 @@ serviceAccountName: {{ $coordinatorServiceAccount }}
 {{- end -}}
 
 {{/*
+Coordinator - Replicas
+*/}}
+{{- define "dremio.coordinator.replicas" -}}
+{{- $coordinatorReplicas := int $.Values.coordinator.count -}}
+{{- if gt $coordinatorReplicas 0 -}}
+{{ $coordinatorReplicas }}
+{{- else -}}
+{{ fail "coordinator.count must greater than 0" }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Coordinator - Dremio Start Parameters
 */}}
 {{- define "dremio.coordinator.extraStartParams" -}}

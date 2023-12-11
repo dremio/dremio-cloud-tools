@@ -43,7 +43,8 @@ coordinator:
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
-  count: 0
+  # There must be at least one secondary coordinator in addition to the master coordinator.
+  count: 1
 
   # Coordinator data volume size (applies to the master coordinator only).
   # In most managed Kubernetes environments (AKS, GKE, etc.), the size of the disk has a direct impact on
