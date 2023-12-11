@@ -288,9 +288,9 @@ The values for `cpu` and `memory` control the amount of CPU and memory in MB bei
 
 Type: Integer
 
-By default, the value is set to `0`.
+By default, the value is set to `1`.
 
-Increasing this number controls the *secondary* coordinators that are launched as part of the deployment. Regardless of this value, at minimum one master coordinator is launched as part of the deployment. The total number of coordinator instances launched will always be `coordinator.count + 1`.
+Increasing this number controls the *secondary* coordinators that are launched as part of the deployment. Regardless of this value, at minimum one master coordinator is launched as part of the deployment. The total number of coordinator instances launched will always be `coordinator.count + 1`. There must be at least one secondary coordinator in addition to the master coordinator.
 
 #### `coordinator.volumeSize`
 
