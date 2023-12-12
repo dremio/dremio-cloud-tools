@@ -16,6 +16,24 @@
       "message": "Where are we setting the flag to make one the master and the other the non-master.\n\n(also, where are the ports for JDBC/ODBC being excluded)",
       "revId": "04a00e3ef8beac7c1894c72ba7ff69d6d10dfa07",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36ee6db7_31ba0afc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2023-12-12T14:06:46Z",
+      "side": 1,
+      "message": "\u003e Where are we setting the flag to make one the master and the other the non-master.\n\nThis changeset only deals with enforcing at least 1 scale-out coordinator. Adding a standby master coordinator will be added separately - if we do indeed do that - My understanding is that is predicated on the decision of DX-85112.\n \n\u003e (also, where are the ports for JDBC/ODBC being excluded)\n\nThat is in a subsequent changeset - https://gerrit.drem.io/gerrit/c/dremio-cloud-tools/+/58389 which depends on this changeset.",
+      "parentUuid": "2e65a269_5e0cbb6d",
+      "revId": "04a00e3ef8beac7c1894c72ba7ff69d6d10dfa07",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
