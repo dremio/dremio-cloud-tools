@@ -52,6 +52,24 @@
       "parentUuid": "36ee6db7_31ba0afc",
       "revId": "04a00e3ef8beac7c1894c72ba7ff69d6d10dfa07",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e61e06f_74d64a1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2023-12-12T15:08:22Z",
+      "side": 1,
+      "message": "(sorry was not clear)\ni mean combine the \"port steering\" and \"scale-out\".\n(NOT combine \"stand by\" and \"scale-out\")",
+      "parentUuid": "779c3de0_fb65b9a3",
+      "revId": "04a00e3ef8beac7c1894c72ba7ff69d6d10dfa07",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
