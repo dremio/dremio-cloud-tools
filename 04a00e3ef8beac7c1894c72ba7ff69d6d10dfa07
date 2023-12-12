@@ -34,6 +34,24 @@
       "parentUuid": "2e65a269_5e0cbb6d",
       "revId": "04a00e3ef8beac7c1894c72ba7ff69d6d10dfa07",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "779c3de0_fb65b9a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2023-12-12T15:06:50Z",
+      "side": 1,
+      "message": "\"stand by\" does not require any steering (IIUC). yes, stand-by is a predicated on DX-85112 \n\n\"scale out\" requires steering away JDBC queries away from master. (I think we can combine the two as they go together - will be easier to test. (but will leave that upto you). Also where is the config for master/scale-out being set?\n```services.coordinator.master.enabled: false```\n\n https://dremio.atlassian.net/wiki/spaces/PS/pages/1703313461/Enabling+Scale+Out+Coordinator+in+AWSEa",
+      "parentUuid": "36ee6db7_31ba0afc",
+      "revId": "04a00e3ef8beac7c1894c72ba7ff69d6d10dfa07",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
