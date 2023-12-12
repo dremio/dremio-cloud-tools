@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e65a269_5e0cbb6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2023-12-12T13:14:31Z",
+      "side": 1,
+      "message": "Where are we setting the flag to make one the master and the other the non-master.\n\n(also, where are the ports for JDBC/ODBC being excluded)",
+      "revId": "04a00e3ef8beac7c1894c72ba7ff69d6d10dfa07",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
