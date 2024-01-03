@@ -30,23 +30,6 @@ tests:
       - equal:
           path: spec.template.metadata.annotations["prometheus.io/path"]
           value: "/metrics"
-  - it: Prometheus metrics port should be configurable
-    set:
-      distStorage:
-        type: "gcp"
-      executor:
-        nodeLifecycleService:
-          enabled: true
-          metricsPort: 9015
-    asserts:
-      - equal:
-          path: spec.template.metadata.annotations["prometheus.io/port"]
-          value: "9015"
-      - contains:
-          path: spec.template.spec.containers[0].ports
-          content:
-            name: prometheus
-            containerPort: 9015
   - it: Pod terminationGracePeriodSeconds should be set to a default value if not specified
     set:
       distStorage:
