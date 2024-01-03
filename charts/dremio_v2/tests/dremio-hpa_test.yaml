@@ -1,6 +1,10 @@
 templates:
   - dremio-hpa.yaml
 tests:
+  - it: HPA template should not render by default
+    asserts:
+      - hasDocuments:
+          count: 0
   - it: HPA for default engine should render if ExecutorNodeLifecycleService is enabled
     set:
       executor:
@@ -24,6 +28,32 @@ tests:
           value: dremio-executor
       - isKind:
           of: HorizontalPodAutoscaler
+  - it: HPA for default engine should not render but HPA for additional engine should render
+    set:
+      executor:
+        engines: ["default", "test-engine"]
+        engineOverride:
+          test-engine:
+            nodeLifecycleService:
+              enabled: true
+              scalingMetrics:
+                default:
+                  enabled: true
+              scalingBehavior:
+                scaleDown:
+                  defaultPolicy:
+                    enabled: true
+                scaleUp:
+                  defaultPolicy:
+                    enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: dremio-executor-test-engine
+      - isKind:
+          of: HorizontalPodAutoscaler
   - it: Default minReplicas should be set if not specified
     set:
       executor:
@@ -42,7 +72,7 @@ tests:
     asserts:
       - equal:
           path: spec.minReplicas
-          value: 1
+          value: 3
   - it: Default maxReplicas should be set if not specified
     set:
       executor:
@@ -65,9 +95,9 @@ tests:
   - it: Minimum count of engines should be configurable
     set:
       executor:
+        count: 30
         nodeLifecycleService:
           enabled: true
-          minEngines: 30
           scalingMetrics:
             default:
               enabled: true

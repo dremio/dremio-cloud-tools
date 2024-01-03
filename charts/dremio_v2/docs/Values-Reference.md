@@ -1090,6 +1090,12 @@ executor:
           type: Pods
   [...]
 ```
+`executor.nodeLifecycleService.scalingBehavior.scaleDown.stabilizationWindowSeconds`
+
+Type: Int
+
+By default, this is set to `300` seconds. This value indicates the amount of time the HPA controller should consider 
+previous recommendations to prevent flapping of the number of replicas
 
 `executor.nodeLifecycleService.scalingBehavior.scaleDown.defaultPolicy.enabled`
 
@@ -1160,6 +1166,13 @@ executor:
     [...]
   [...]
 ```
+
+`executor.nodeLifecycleService.scalingBehavior.scaleUp.stabilizationWindowSeconds`
+
+Type: Int
+
+By default, this is set to `300` seconds. This value indicates the amount of time the HPA controller should consider
+previous recommendations to prevent flapping of the number of replicas
 
 `executor.nodeLifecycleService.scalingBehavior.scaleUp.defaultPolicy.enabled`
 
