@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5feab5ab_4a8613d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2024-01-08T22:00:24Z",
+      "side": 1,
+      "message": "Ddremio -\u003e Dremio?",
+      "revId": "4b187e539dea2a091dab62b5fd34cc35e15005bf",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
