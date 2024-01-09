@@ -16,6 +16,24 @@
       "message": "Ddremio -\u003e Dremio?",
       "revId": "4b187e539dea2a091dab62b5fd34cc35e15005bf",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70d54f8d_44c46fc9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-01-09T12:43:55Z",
+      "side": 1,
+      "message": "\"Ddremio\" is taken from the JVM here: https://gerrit.drem.io/gerrit/c/dremio-cloud-tools/+/58881/6/charts/dremio_v2/templates/_helpers_executor.tpl#395\n\nI\u0027ve updated the commit message to be more clear",
+      "parentUuid": "5feab5ab_4a8613d8",
+      "revId": "4b187e539dea2a091dab62b5fd34cc35e15005bf",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
