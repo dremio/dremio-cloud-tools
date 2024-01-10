@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "55111900_062ae316",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-01-10T13:20:22Z",
+      "side": 1,
+      "message": "@ryan@dremio.com - you are correct. Logs can only be written to disk OR to stdout (not both). I\u0027ve added a `writeLogToFile` in `values.yaml` that can be configured per resource or at the global level. I\u0027ve added a comment stating that logs can be written to disk or stdout and not both. Please see the latest changeset",
+      "parentUuid": "f80d24be_34cd0562",
+      "range": {
+        "startLine": 7,
+        "startChar": 47,
+        "endLine": 7,
+        "endChar": 61
+      },
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "209e42ed_ae250f3e",
         "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
         "patchSetId": 4
@@ -103,6 +127,24 @@
       "side": 1,
       "message": "Originally, we only wanted to the logging directory to be on a separate PV on the master node so that we don\u0027t share disk space with the RocksDB. Should we put the logging directory on it\u0027s own PV for all of the pods?",
       "parentUuid": "209e42ed_ae250f3e",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e3fff8e_1b01073e",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-01-10T13:20:22Z",
+      "side": 1,
+      "message": "@ryan@dremio.com - any additional thoughts on this comment?",
+      "parentUuid": "c0881456_6b301941",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
@@ -251,6 +293,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fdd0ad5e_1a4cc76c",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-01-10T13:20:22Z",
+      "side": 1,
+      "message": "@dave.maughan@dremio.com - any additional thoughts on this comment?",
+      "parentUuid": "7b1fa613_e717fde4",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d67f22f1_882c9a2b",
         "filename": "charts/dremio_v2/templates/dremio-executor.yaml",
         "patchSetId": 4
@@ -280,6 +340,24 @@
       "side": 1,
       "message": "See similar comment in dremio-coordinator.yaml",
       "parentUuid": "d67f22f1_882c9a2b",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d07d0d5_727de247",
+        "filename": "charts/dremio_v2/templates/dremio-executor.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-01-10T13:20:22Z",
+      "side": 1,
+      "message": "@ryan@dremio.com - any additional thoughts on this comment?",
+      "parentUuid": "7ee892f6_81e4a6cc",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
