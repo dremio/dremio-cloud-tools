@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed881bb6_83970168",
+        "filename": "charts/dremio_v2/docs/setup/Dynamic-Executor-Auto-Scaling.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000260
+      },
+      "writtenOn": "2024-01-12T15:26:32Z",
+      "side": 1,
+      "message": "Could we include which Dremio version this feature is available from?\neg\nFrom Dremio version 24.3, we can enable ...",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 3
+      },
+      "revId": "03ebedf30f3608ef0dead21ad9bd43824932a9f3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85f5ad7b_0448a7e5",
+        "filename": "charts/dremio_v2/docs/setup/Dynamic-Executor-Auto-Scaling.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000260
+      },
+      "writtenOn": "2024-01-12T15:26:32Z",
+      "side": 1,
+      "message": "This should be an actual example namespace instead of the syntax variable:\neg \nelm install prometheus-adapter prometheus-community/prometheus-adapter -n my-monitoring-ns --set prometheus.port\u003d9090 --set prometheus.url\u003dhttp://prometheus-operated.my-monitoring-ns.svc",
+      "range": {
+        "startLine": 42,
+        "startChar": 167,
+        "endLine": 42,
+        "endChar": 189
+      },
+      "revId": "03ebedf30f3608ef0dead21ad9bd43824932a9f3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
