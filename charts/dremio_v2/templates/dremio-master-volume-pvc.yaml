@@ -1,0 +1,14 @@
+{{- if and (not $.Values.DremioAdmin) (($.Values).masterCoordinator).persistentStorage -}}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dremio-master-volume-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: dremio-sc
+  resources:
+    requests:
+      storage: {{ $.Values.coordinator.volumeSize }}
+{{- end -}}

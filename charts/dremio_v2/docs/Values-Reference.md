@@ -167,6 +167,12 @@ More Info: See the [Taints and Tolerations](https://kubernetes.io/docs/concepts/
 
 ### Dremio Configuration
 
+#### `masterCoordinator`
+
+Type: Dictionary
+
+This section controls the deployment of the master coordinator instance(s). See the [Master Coordinator Values](#master-coordinator-values) section.
+
 #### `coordinator`
 
 Type: Dictionary
@@ -269,6 +275,33 @@ extraVolumeMounts:
   mountPath: "/additional-files"
 [...]
 ```
+
+## Master Coordinator Values
+
+### High Availability
+
+#### `masterCoordinator.highAvailability.enabled`
+
+Type: Boolean
+
+By default, this value is not set. Dremio clusters can be made highly available by
+configuring one active and one backup coordinator nodes (configured with the master-coordinator role) as a standby.
+
+More Info: [Master Coordinator High Availability](https://github.com/dremio/dremio-cloud-tools/blob/master/charts/dremio_v2/docs/setup/Master-Coordinator-High-Availability.md)
+
+### Persistent Storage
+
+#### `masterCoordinator.persistentStorage.Provider`
+
+By default, this value is not set. Set this value to use persistent storage provided by a cloud vendor.
+
+More Info: [Master Coordinator Persistent Storage](https://github.com/dremio/dremio-cloud-tools/blob/master/charts/dremio_v2/docs/setup/Master-Coordinator-Persistent-Storage.md)
+
+#### `masterCoordinator.persistentStorage.parameters`
+
+By default, this value is not set.
+
+More Info: [Master Coordinator Persistent Storage](https://github.com/dremio/dremio-cloud-tools/blob/master/charts/dremio_v2/docs/setup/Master-Coordinator-Persistent-Storage.md)
 
 ## Coordinator Values
 
