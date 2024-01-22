@@ -1,0 +1,13 @@
+{{- if and (not $.Values.DremioAdmin) (($.Values).masterCoordinator).persistentStorage -}}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: dremio-master-sc
+# TODO
+provisioner: {{ include "dremio.storageClass.provisioner" $ }}
+volumeBindingMode: WaitForFirstConsumer
+{{ include "dremio.storageClass.mountOptions" $ }}
+parameters:
+  {{ include "dremio.storageClass.params" $ |indent 2 }}
+{{- end -}}
