@@ -1,0 +1,10 @@
+{{- if (($.Values).masterCoordinator).persistentStorage -}}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: dremio-sc
+provisioner: {{ include "dremio.storageClass.provisioner" $ }}
+parameters:
+  {{- include "dremio.storageClass.params" $ | indent 2 -}}
+{{- end -}}
