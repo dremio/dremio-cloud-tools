@@ -1,0 +1,85 @@
+templates:
+  - dremio-sc.yaml
+tests:
+  - it: dremio-master-sc should be included when
+        'masterCoordinator.persistentStorage.provider' is set
+    set:
+      masterCoordinator:
+        persistentStorage:
+          provider: azure
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: dremio-sc
+      - isKind:
+          of: StorageClass
+  - it: provisioner should be set to 'file.csi.azure.com'
+        when using Azure
+    set:
+      masterCoordinator:
+        persistentStorage:
+          provider: azure
+    asserts:
+      - equal:
+          path: provisioner
+          value: file.csi.azure.com
+  - it: provisioner should be set to 'filestore.csi.storage.gke.io'
+        when using GCP
+    set:
+      masterCoordinator:
+        persistentStorage:
+          provider: gcp
+    asserts:
+      - equal:
+          path: provisioner
+          value: filestore.csi.storage.gke.io
+# TODO: this might not be needed
+#  - it: parameters should be included when
+#        'masterCoordinator.persistentStorage.parameters' is set
+#    set:
+#      masterCoordinator:
+#        persistentStorage:
+#          provider: test
+#          parameters:
+#            testKey: testValue
+#    asserts:
+#      - equal:
+#          path: parameters.testKey
+#          value: testValue
+  - it: mountOptions should be included when
+        'masterCoordinator.persistentStorage.mountOptions' is set
+    set:
+      masterCoordinator:
+        persistentStorage:
+          provider: azure
+          mountOptions:
+            - test-1
+            - test-2
+    asserts:
+      - equal:
+          path: mountOptions
+          value: ["test-1", "test-2"]
+  - it: nfs protocol should be set when
+        'masterCoordinator.persistentStorage.provider' is set to azure
+    set:
+      masterCoordinator:
+        persistentStorage:
+          provider: azure
+    asserts:
+      - equal:
+          path: parameters.protocol
+          value: nfs
+  - it: fileSystemId should be set in parameters when
+        'masterCoordinator.persistentStorage.provider' is set to aws
+    set:
+      masterCoordinator:
+        persistentStorage:
+          provider: aws
+          parameters:
+            fileSystemId: fs-test
+    asserts:
+      - equal:
+          path: parameters.fileSystemId
+          value: fs-test
