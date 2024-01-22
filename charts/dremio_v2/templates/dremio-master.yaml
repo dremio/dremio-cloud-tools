@@ -3,12 +3,12 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: dremio-master
-  {{- include "dremio.coordinator.annotations" $ | nindent 2}}
-  {{- include "dremio.coordinator.labels" $ | nindent 2}}
+  {{- include "dremio.coordinator.annotations" $ | nindent 2 }}
+  {{- include "dremio.coordinator.labels" $ | nindent 2 }}
 spec:
   serviceName: "dremio-cluster-pod"
-  podManagementPolicy: "Parallel"
-  replicas: 1
+  podManagementPolicy: "OrderedReady"
+  {{- include "dremio.masterCoordinator.replicaCount" $ | nindent 2 }}
   selector:
     matchLabels:
       app: dremio-coordinator
@@ -18,10 +18,10 @@ spec:
         app: dremio-coordinator
         role: dremio-cluster-pod
         diagnostics-collector-role: dremio-coordinator
-        {{- include "dremio.coordinator.podLabels" $ | nindent 8}}
+        {{- include "dremio.coordinator.podLabels" $ | nindent 8 }}
       annotations:
         dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
-        {{- include "dremio.coordinator.podAnnotations" $ | nindent 8}}
+        {{- include "dremio.coordinator.podAnnotations" $ | nindent 8 }}
     spec:
       {{- include "dremio.coordinator.serviceAccount" $ | nindent 6 }}
       affinity:
@@ -95,29 +95,11 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
-        startupProbe:
-          httpGet:
-            path: /
-            {{- if $.Values.coordinator.web.tls.enabled }}
-            scheme: HTTPS
-            {{- end }}
-            port: web
-          failureThreshold: {{ $.Values.coordinator.startupProbe.failureThreshold }}
-          periodSeconds: {{ $.Values.coordinator.startupProbe.periodSeconds }}
-        readinessProbe:
-          httpGet:
-            path: /
-            {{- if $.Values.coordinator.web.tls.enabled }}
-            scheme: HTTPS
-            {{- end }}
-            port: web
-          failureThreshold: {{ $.Values.coordinator.readinessProbe.failureThreshold }}
-          periodSeconds: {{ $.Values.coordinator.readinessProbe.periodSeconds }}
+      {{- include "dremio.masterCoordinator.container.startupProbe" $ | nindent 8 }}
+      {{- include "dremio.masterCoordinator.container.readinessProbe" $ | nindent 8 }}
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
-      - name: start-only-one-dremio-master
-        image: busybox
-        command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
+      {{- include "dremio.masterCoordinator.initContainers.startOnlyOneMaster" $ | nindent 6 }}
       - name: wait-for-zookeeper
         image: busybox
         command:  ["sh", "-c", "until nc zk-hs 2181 -w1 > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;"]
@@ -126,6 +108,7 @@ spec:
         imagePullPolicy: IfNotPresent
         securityContext:
           runAsUser: 0
+
         volumeMounts:
         - name: dremio-master-volume
           mountPath: /opt/dremio/data
@@ -133,17 +116,7 @@ spec:
         args:
         - "dremio:dremio"
         - "/opt/dremio/data"
-      - name: upgrade-task
-        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-        - name: dremio-master-volume
-          mountPath: /opt/dremio/data
-        - name: dremio-config
-          mountPath: /opt/dremio/conf
-        command: ["/opt/dremio/bin/dremio-admin"]
-        args:
-        - "upgrade"
+      {{- include "dremio.masterCoordinator.initContainers.upgradeTask" $ | nindent 6 }}
       {{- if $.Values.coordinator.web.tls.enabled }}
       - name: generate-ui-keystore
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
@@ -181,6 +154,7 @@ spec:
         args: ["pkcs12", "-export", "-inkey", "/dremio-tls-secret/tls.key", "-in", "/dremio-tls-secret/tls.crt", "-out", "/opt/dremio/tls/flight.pkcs12", "-passout", "pass:"]
       {{- end }}
       volumes:
+      {{- include "dremio.masterCoordinator.volumes.masterVolume" $ | nindent 6 }}
       - name: dremio-config
         configMap:
           name: dremio-config
@@ -226,13 +200,5 @@ spec:
       {{- end }}
       {{- include "dremio.coordinator.extraVolumes" $ | nindent 6 }}
       {{- include "dremio.imagePullSecrets" $ | nindent 6 }}
-  volumeClaimTemplates:
-  - metadata:
-      name: dremio-master-volume
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      {{- include "dremio.coordinator.storageClass" $ | nindent 6 }}
-      resources:
-        requests:
-          storage: {{ $.Values.coordinator.volumeSize }}
+  {{- include "dremio.masterCoordinator.volumesClaimTemplates" $ | nindent 2 }}
 {{- end -}}
