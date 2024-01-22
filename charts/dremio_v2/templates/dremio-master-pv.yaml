@@ -1,0 +1,17 @@
+{{- if eq (($.Values).masterCoordinator).persistentStorage.provider "aws" -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dremio-master-pv
+spec:
+  capacity:
+    storage: {{ $.Values.coordinator.volumeSize }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: dremio-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: {{ include "dremio.storageClass.provisioner" $ }}
+    volumeHandle: {{ $.Values.masterCoordinator.persistentStorage.parameters.fileSystemId }}
+{{- end -}}
