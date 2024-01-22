@@ -1,0 +1,18 @@
+templates:
+  - dremio-master-pv.yaml
+tests:
+  - it: should not render by default
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should render when
+        'masterCoordinator.persistentStorage.provider' is set to aws
+    set:
+      masterCoordinator:
+        persistentStorage:
+          provider: aws
+          parameters:
+            fileSystemId: fs-test
+    asserts:
+      - hasDocuments:
+          count: 1
