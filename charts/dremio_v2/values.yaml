@@ -33,6 +33,17 @@ podLabels: {}
 nodeSelector: {}
 tolerations: []
 
+# Dremio Master Coordinator
+#masterCoordinator:
+# To enable high availability for the master coordinator, set the enabled flag to true
+#  highAvailability:
+#    enabled: true
+
+#  To use persistent storage from your cloud vendor, set the provider to your cloud vendor
+#  persistentStorage:
+#    Options are: gcp, aws, azure
+#    provider: ""
+
 # Dremio Coordinator
 coordinator:
   # CPU & Memory
