@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "34de94e1_6bd13420",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2024-01-22T17:58:25Z",
+      "side": 1,
+      "message": "I think the goal would be to ensure that both are written. I would suggest modifying the logback.xml to support that.",
+      "parentUuid": "55111900_062ae316",
+      "range": {
+        "startLine": 7,
+        "startChar": 47,
+        "endLine": 7,
+        "endChar": 61
+      },
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "209e42ed_ae250f3e",
         "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
         "patchSetId": 4
@@ -145,6 +169,24 @@
       "side": 1,
       "message": "@ryan@dremio.com - any additional thoughts on this comment?",
       "parentUuid": "c0881456_6b301941",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af3aea3b_1ff0e134",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2024-01-22T17:58:25Z",
+      "side": 1,
+      "message": "So, the logs become ephemeral on the secondary coordinator? That seems like an unexpected behavior.",
+      "parentUuid": "9e3fff8e_1b01073e",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },

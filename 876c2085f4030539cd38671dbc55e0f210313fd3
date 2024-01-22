@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "090ed1a2_a4260815",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2024-01-22T17:58:25Z",
+      "side": 1,
+      "message": "@brian.ngo@dremio.com: Apologies, I apparently left these comments in draft mode.",
+      "revId": "876c2085f4030539cd38671dbc55e0f210313fd3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
