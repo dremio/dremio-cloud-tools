@@ -1,0 +1,12 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dremio-master-volume
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: dremio-master-sc
+  resources:
+    requests:
+      storage: 2Gi

@@ -1,0 +1,12 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: dremio-master-sc
+provisioner: filestore.csi.storage.gke.io
+# TODO
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+# TODO param this
+parameters:
+  network: primary

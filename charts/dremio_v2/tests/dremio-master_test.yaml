@@ -1,0 +1,194 @@
+templates:
+  - dremio-master.yaml
+tests:
+  - it: replica count should default to 1 if 'masterCoordinator' key is omitted from values.yaml
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 1
+  - it: replica count should default to 1 if 'masterCoordinator.highAvailability' key is omitted from values.yaml
+    set:
+      masterCoordinator:
+        persistentStorageProvider: test
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 1
+  - it: replica count should be set to 2 if high availability is enabled
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled:
+            true
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 2
+  - it: dremio-master-coordinator container should include startupProbe by default
+    asserts:
+      - exists:
+          path: spec.template.spec.containers[0].startupProbe
+  - it: dremio-master-coordinator container should include startupProbe when
+        'master.coordinator.highAvailability.enabled' is set to false
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: false
+    asserts:
+      - exists:
+          path: spec.template.spec.containers[0].startupProbe
+  - it: dremio-master-coordinator container should exclude startupProbe when
+        'master.coordinator.highAvailability.enabled' is set to true
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: true
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+  - it: dremio-master-coordinator container readinessProbe should include
+        failureThreshold by default
+    asserts:
+      - exists:
+          path: spec.template.spec.containers[0].readinessProbe.failureThreshold
+  - it: dremio-master-coordinator container readinessProbe should include
+      failureThreshold when 'master.coordinator.highAvailability.enabled' is set to false
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: false
+    asserts:
+      - exists:
+          path: spec.template.spec.containers[0].readinessProbe.failureThreshold
+  - it: dremio-master-coordinator container readinessProbe should be excluded
+        failureThreshold when 'master.coordinator.highAvailability.enabled' is set to true
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: true
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].readinessProbe.failureThreshold
+  - it: start-only-one-dremio-master init container should be included by default
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: start-only-one-dremio-master
+  - it: start-only-one-dremio-master init container should be included
+        when 'master.coordinator.highAvailability.enabled' is set to false
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: false
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: start-only-one-dremio-master
+  - it: start-only-one-dremio-master init container should be included
+        when 'master.coordinator.highAvailability.enabled' is set to false
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: false
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: start-only-one-dremio-master
+  - it: start-only-one-dremio-master init container should be excluded
+        when 'master.coordinator.highAvailability.enabled' is set to true
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: true
+    asserts:
+      - notEqual:
+          path: spec.template.spec.initContainers[0].name
+          value: start-only-one-dremio-master
+  - it: upgrade-task init container should be included by default
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[3].name
+          value: upgrade-task
+  - it: upgrade-task init container should be included
+        when 'master.coordinator.highAvailability.enabled' is set to false
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: false
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[3].name
+          value: upgrade-task
+  - it: upgrade-task init container should be included
+        when 'master.coordinator.highAvailability.enabled' is set to false
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: false
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[3].name
+          value: upgrade-task
+  - it: upgrade-task init container should be excluded
+        when 'master.coordinator.highAvailability.enabled' is set to true
+    set:
+      masterCoordinator:
+        highAvailability:
+          enabled: true
+    asserts:
+      - notExists:
+          path: spec.template.spec.initContainers[3].name
+  - it: dremio-master-volume persistent volume should be excluded by default
+    asserts:
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: dremio-master-volume
+            persistentVolumeClaim:
+              claimName: dremio-master-volume
+  - it: dremio-master-volume persistent volume should be included when
+        'masterCoordinator.persistentStorageProvider' is set
+    set:
+      masterCoordinator:
+        persistentStorageProvider: gcp
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: dremio-master-volume
+            persistentVolumeClaim:
+              claimName: dremio-master-volume
+  - it: volumeClaimTemplates should be included by default
+    asserts:
+      - equal:
+          path: spec.volumeClaimTemplates[0].metadata.name
+          value: dremio-master-volume
+  - it: volumeClaimTemplates should be excluded
+        when 'masterCoordinator.persistentStorageProvider' is set
+    set:
+      masterCoordinator:
+        persistentStorageProvider: gcp
+    asserts:
+      - notExists:
+          path: spec.volumeClaimTemplates
+  - it: dremio-master-volume persistent volume should be 
+        excluded by default
+    asserts:
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: dremio-master-volume
+            persistentVolumeClaim:
+              claimName: dremio-master-volume
+  - it: dremio-master-volume persistent volume should be
+        included 'masterCoordinator.persistentStorageProvider' is set
+    set:
+      masterCoordinator:
+        persistentStorageProvider: test
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: dremio-master-volume
+            persistentVolumeClaim:
+              claimName: dremio-master-volume
