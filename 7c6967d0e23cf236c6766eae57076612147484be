@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58eea2e7_ed253a56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2024-01-23T19:37:20Z",
+      "side": 1,
+      "message": "I would personally prefer if the service account didn\u0027t become required if not using the backup strategy provided here.",
+      "revId": "7c6967d0e23cf236c6766eae57076612147484be",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9a10635_f4788c79",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 23
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2024-01-23T19:37:20Z",
+      "side": 1,
+      "message": "Why did this become mandatory?",
+      "revId": "7c6967d0e23cf236c6766eae57076612147484be",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
