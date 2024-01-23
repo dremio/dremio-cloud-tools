@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d026f61a_2a5daad8",
+        "filename": "charts/dremio_v2/templates/_helpers_coordinator.tpl",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2024-01-23T19:41:56Z",
+      "side": 1,
+      "message": "Is this not a breaking change? if the user upgrades their chart, now they must have more than one coordinator?",
+      "revId": "3bb9389851d49c48ab054bfd677de3a18a6f8c89",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
