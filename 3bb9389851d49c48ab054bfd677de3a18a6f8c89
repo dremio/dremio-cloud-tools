@@ -34,6 +34,24 @@
       "parentUuid": "d026f61a_2a5daad8",
       "revId": "3bb9389851d49c48ab054bfd677de3a18a6f8c89",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6d8a6db_18de2ef4",
+        "filename": "charts/dremio_v2/templates/_helpers_coordinator.tpl",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2024-01-23T19:50:45Z",
+      "side": 1,
+      "message": "I do agree some customers are not going to be happy about this change.",
+      "parentUuid": "7d22708a_4d18420d",
+      "revId": "3bb9389851d49c48ab054bfd677de3a18a6f8c89",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
