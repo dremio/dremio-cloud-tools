@@ -69,6 +69,24 @@
       "parentUuid": "371db185_eef7b381",
       "revId": "7c6967d0e23cf236c6766eae57076612147484be",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a298eed_bb772a8e",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 23
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2024-01-26T16:54:15Z",
+      "side": 1,
+      "message": "What field did in order to unblock a customer requirement is very different than what we build directly into our chart and present as a production-ready/engineering-built solution. Engineering needs to hold itself to a higher standard/bar than what field has delivered since engineering has the power to build this functionality into the product.\n\nAs you further point out, the binding is asking to be able to exec into neighboring pods. That\u0027s a heightened security risk as the same SA is bound to the coordinator pod, meaning a compromise of the coordinator allows for potential lateral movement by executing arbitrary additional pods.",
+      "parentUuid": "688350b2_ca908f9b",
+      "revId": "7c6967d0e23cf236c6766eae57076612147484be",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
