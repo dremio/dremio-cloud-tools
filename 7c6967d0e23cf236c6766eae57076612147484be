@@ -51,6 +51,24 @@
       "parentUuid": "e9a10635_f4788c79",
       "revId": "7c6967d0e23cf236c6766eae57076612147484be",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "688350b2_ca908f9b",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 23
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-01-26T16:44:50Z",
+      "side": 1,
+      "message": "A kube service account is also required to run dremio-admin backup. When the cronjob is triggered, a pod will spawn and \u0027exec\u0027 into dremio-master pod to run the back up. The cron job pod will need enough permission to \u0027exec\u0027 into the master pod: https://gerrit.drem.io/gerrit/c/dremio-cloud-tools/+/58264/23/charts/dremio_v2/templates/dremio-coordinator-sa-role.yaml",
+      "parentUuid": "371db185_eef7b381",
+      "revId": "7c6967d0e23cf236c6766eae57076612147484be",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
