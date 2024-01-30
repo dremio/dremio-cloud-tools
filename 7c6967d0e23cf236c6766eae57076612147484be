@@ -18,6 +18,23 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d31f46d8_ce2f17cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2024-01-30T17:51:00Z",
+      "side": 1,
+      "message": "What testing was done when the master coordinator is under load and we try to invoke a backup? In the DX, there was discussion from Carsten on potential issues with coordinator crashes due to additional load added by this backup.",
+      "revId": "7c6967d0e23cf236c6766eae57076612147484be",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9a10635_f4788c79",
