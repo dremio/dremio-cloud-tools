@@ -22,6 +22,30 @@
       },
       "revId": "13b8494605688864b240654a4701761d48ef3de3",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61005a9e_7e5310f3",
+        "filename": "charts/dremio_v2/templates/dremio-automated-backups.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-01-31T13:52:07Z",
+      "side": 1,
+      "message": "Thanks for mentioning this. My latest patch set resolves this. I\u0027ve confirmed by check the JVM arguments when a backup is running",
+      "parentUuid": "5a484db5_6034604a",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 31
+      },
+      "revId": "13b8494605688864b240654a4701761d48ef3de3",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
