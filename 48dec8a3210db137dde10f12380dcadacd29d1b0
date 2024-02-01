@@ -120,6 +120,30 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7761d4f1_16357463",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-02-01T20:12:59Z",
+      "side": 1,
+      "message": "Thanks for the tip, Ryan. It ended up being an easy change in logback.xml.",
+      "parentUuid": "34de94e1_6bd13420",
+      "range": {
+        "startLine": 7,
+        "startChar": 47,
+        "endLine": 7,
+        "endChar": 61
+      },
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "209e42ed_ae250f3e",
@@ -187,6 +211,24 @@
       "side": 1,
       "message": "So, the logs become ephemeral on the secondary coordinator? That seems like an unexpected behavior.",
       "parentUuid": "9e3fff8e_1b01073e",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a58e7905_2c100df0",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-02-01T20:12:59Z",
+      "side": 1,
+      "message": "I\u0027ve add a volumeClaimTemplate to the coordinator yaml for logs",
+      "parentUuid": "af3aea3b_1ff0e134",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
@@ -351,6 +393,24 @@
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2d98a47_0d8cad20",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-02-01T20:12:59Z",
+      "side": 1,
+      "message": "For my latest changeset, I\u0027ve attached logs and a screenshot to the ticket showing that I got logs writing to disk and to stdout",
+      "parentUuid": "fdd0ad5e_1a4cc76c",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d67f22f1_882c9a2b",
@@ -400,6 +460,24 @@
       "side": 1,
       "message": "@ryan@dremio.com - any additional thoughts on this comment?",
       "parentUuid": "7ee892f6_81e4a6cc",
+      "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e3e46e3_15505123",
+        "filename": "charts/dremio_v2/templates/dremio-executor.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-02-01T20:12:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d07d0d5_727de247",
       "revId": "48dec8a3210db137dde10f12380dcadacd29d1b0",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     },
