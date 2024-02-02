@@ -104,6 +104,24 @@
       "parentUuid": "688350b2_ca908f9b",
       "revId": "7c6967d0e23cf236c6766eae57076612147484be",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e99d8c61_8c5137d1",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 23
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000667
+      },
+      "writtenOn": "2024-02-02T15:51:46Z",
+      "side": 1,
+      "message": "I\u0027ve updated this so that a kube service account is only created and attached if a service account is specified in values.yaml or if automated backups are enabled\n\nhttps://gerrit.drem.io/gerrit/c/dremio-cloud-tools/+/58264/41/charts/dremio_v2/templates/dremio-coordinator-sa.yaml#1",
+      "parentUuid": "9a298eed_bb772a8e",
+      "revId": "7c6967d0e23cf236c6766eae57076612147484be",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
