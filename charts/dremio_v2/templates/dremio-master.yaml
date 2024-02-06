@@ -39,6 +39,13 @@ spec:
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
       containers:
       - name: dremio-master-coordinator
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - "jmap"
+                - "-dump:format=b,file=/opt/dremio/data/heap.hprof"
+                - "1"
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         resources:
