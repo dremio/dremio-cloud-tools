@@ -7,9 +7,9 @@ Coordinator - Dremio Heap Memory allocation
 {{ fail "Dremio's minimum memory requirement is 4 GB." }}
 {{- end -}}
 {{- if le 18432 $coordinatorMemory -}}
-16384
+12288
 {{- else -}}
-{{- sub $coordinatorMemory 2048}}
+{{- sub $coordinatorMemory 1024}}
 {{- end -}}
 {{- end -}}
 
@@ -22,9 +22,9 @@ Coordiantor - Dremio Direct Memory Allocation
 {{ fail "Dremio's minimum memory requirement is 4 GB." }}
 {{- end -}}
 {{- if le 18432 $coordinatorMemory -}}
-{{- sub $coordinatorMemory 16384 -}}
+{{- sub $coordinatorMemory 12288 -}}
 {{- else -}}
-2048
+1024
 {{- end -}}
 {{- end -}}
 
