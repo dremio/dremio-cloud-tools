@@ -3,13 +3,14 @@ Coordinator - Dremio Heap Memory allocation
 */}}
 {{- define "dremio.coordinator.heapMemory" -}}
 {{- $coordinatorMemory := int $.Values.coordinator.memory -}}
+{{- $availableMemory := int (mulf $coordinatorMemory 0.75) }}
 {{- if gt 4096 $coordinatorMemory -}}
 {{ fail "Dremio's minimum memory requirement is 4 GB." }}
 {{- end -}}
-{{- if le 18432 $coordinatorMemory -}}
+{{- if le 18432 $availableMemory -}}
 16384
 {{- else -}}
-{{- sub $coordinatorMemory 2048}}
+{{- sub $availableMemory 2048}}
 {{- end -}}
 {{- end -}}
 
@@ -18,11 +19,12 @@ Coordiantor - Dremio Direct Memory Allocation
 */}}
 {{- define "dremio.coordinator.directMemory" -}}
 {{- $coordinatorMemory := int $.Values.coordinator.memory -}}
+{{- $availableMemory := int (mulf $coordinatorMemory 0.75) }}
 {{- if gt 4096 $coordinatorMemory -}}
 {{ fail "Dremio's minimum memory requirement is 4 GB." }}
 {{- end -}}
-{{- if le 18432 $coordinatorMemory -}}
-{{- sub $coordinatorMemory 16384 -}}
+{{- if le 18432 $availableMemory -}}
+{{- sub $availableMemory 16384 -}}
 {{- else -}}
 2048
 {{- end -}}
