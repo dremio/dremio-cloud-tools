@@ -122,6 +122,24 @@
       "parentUuid": "9a298eed_bb772a8e",
       "revId": "7c6967d0e23cf236c6766eae57076612147484be",
       "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d2e5fd5_e93e4110",
+        "filename": "charts/dremio_v2/templates/dremio-coordinator.yaml",
+        "patchSetId": 23
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2024-02-13T01:34:19Z",
+      "side": 1,
+      "message": "@ryan@dremio.com : this is now an opt-in, so this risk only arises if a customer chooses to use this functionality",
+      "parentUuid": "e99d8c61_8c5137d1",
+      "revId": "7c6967d0e23cf236c6766eae57076612147484be",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
     }
   ]
 }
