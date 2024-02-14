@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluent-bit-config
+data:
+  fluent-bit.conf: |
+    [INPUT]
+        name              tail
+        tag               server.log
+        path              /opt/dremio/log/server.log
+
+    [OUTPUT]
+        name              s3
+        match             server.log
+        region            us-west-2
+        use_put_object    On
+        bucket            dremio-cloud-tools-dev
+        # not sure if this is needed
+        role_arn          ""
+        s3_key_format     /logs/%Y/%m/%d/%H%M%S-$UUID

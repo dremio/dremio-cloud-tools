@@ -38,6 +38,21 @@ spec:
       {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
       containers:
+      - name: fluentbit-sidecar
+        image: fluent/fluent-bit:2.1.10
+        env:
+          - name: AWS_DEFAULT_REGION
+            value: us-west-2
+          - name: AWS_ACCESS_KEY_ID
+            value: ""
+          - name: AWS_SECRET_ACCESS_KEY
+            value: ""
+        volumeMounts:
+          - name: dremio-log-volume
+            mountPath: /opt/dremio/log
+          - name: fluent-bit-config
+            mountPath: /fluent-bit/etc/fluent-bit.conf
+            subPath: fluent-bit.conf
       - name: dremio-master-coordinator
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
@@ -63,7 +78,13 @@ spec:
           mountPath: /opt/dremio/tls
         {{- end }}
         {{- include "dremio.coordinator.extraVolumeMounts" $ | nindent 8 }}
+        - name: dremio-log-volume
+          mountPath: /opt/dremio/log
         env:
+        - name: DREMIO_LOG_TO_CONSOLE
+          value: "0"
+        - name: DREMIO_LOG_DIR
+          value: /opt/dremio/log
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "dremio.coordinator.heapMemory" $ }}"
         - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
@@ -115,6 +136,18 @@ spec:
           periodSeconds: {{ $.Values.coordinator.readinessProbe.periodSeconds }}
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
+      - name: chown-log-directory
+        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - name: dremio-log-volume
+            mountPath: /opt/dremio/log
+        command: [ "chown" ]
+        args:
+          - "dremio:dremio"
+          - "/opt/dremio/log"
       - name: start-only-one-dremio-master
         image: busybox
         command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
@@ -181,6 +214,9 @@ spec:
         args: ["pkcs12", "-export", "-inkey", "/dremio-tls-secret/tls.key", "-in", "/dremio-tls-secret/tls.crt", "-out", "/opt/dremio/tls/flight.pkcs12", "-passout", "pass:"]
       {{- end }}
       volumes:
+      - name: fluent-bit-config
+        configMap:
+          name: fluent-bit-config
       - name: dremio-config
         configMap:
           name: dremio-config
@@ -227,6 +263,13 @@ spec:
       {{- include "dremio.coordinator.extraVolumes" $ | nindent 6 }}
       {{- include "dremio.imagePullSecrets" $ | nindent 6 }}
   volumeClaimTemplates:
+  - metadata:
+      name: dremio-log-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: {{ $.Values.coordinator.volumeSize }}
   - metadata:
       name: dremio-master-volume
     spec:
