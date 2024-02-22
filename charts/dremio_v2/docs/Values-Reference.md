@@ -1040,6 +1040,7 @@ Type: Boolean
 To enable dynamic scaling, this key must be present and set to `true`.
 
 `executor.nodeLifecycleService.metricsPort`
+
 Type: Integer
 
 By default, this value is set to 9010. This is the port where the `/metrics` endpoint is available for a pod.

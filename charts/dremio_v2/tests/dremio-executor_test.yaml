@@ -62,3 +62,17 @@ tests:
           content:
             name: prometheus
             containerPort: 9010
+  - it: Metrics port should be configurable
+    set:
+      distStorage:
+        type: "gcp"
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          metricsPort: 777
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: prometheus
+            containerPort: 777

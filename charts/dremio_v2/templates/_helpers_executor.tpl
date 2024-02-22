@@ -421,8 +421,14 @@ tolerations:
 Executor - Prometheus Metrics Port Number
 */}}
 {{ define "dremio.executor.metricsPortNumber" -}}
-{{- $metricsPortNumber := 9010 -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
+{{- if $nodeLifecycleServiceConfig.enabled -}}
+{{- $metricsPortNumber := default 9010 $nodeLifecycleServiceConfig.metricsPort -}}
 {{- $metricsPortNumber }}
+{{- end -}}
 {{- end -}}
 
 {{/*
