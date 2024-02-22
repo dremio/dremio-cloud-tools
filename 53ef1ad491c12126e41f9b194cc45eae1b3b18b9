@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f477755_5dc03825",
+        "filename": "charts/dremio_v2/docs/setup/Master-Coordinator-High-Availability.md",
+        "patchSetId": 23
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2024-02-22T17:22:13Z",
+      "side": 1,
+      "message": "Should we standardize on some terminology here? We have potentially multiple master coordinators, only one of which is leader/active the other being backup/standby and we also have potentially multiple scale-out coordinators. Should we also avoid the word master?\n\nactive leader coordinator (avoid the word master)\nstandby leader coordinator (avoid the word backup)\nscale-out coordinator\n?\n\nMaybe not the PR for this, so can address separately.",
+      "revId": "53ef1ad491c12126e41f9b194cc45eae1b3b18b9",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aea3bc7c_768d8931",
+        "filename": "charts/dremio_v2/docs/setup/Master-Coordinator-High-Availability.md",
+        "patchSetId": 23
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2024-02-22T17:22:13Z",
+      "side": 1,
+      "message": "Might be useful to give examples of how a customer can find out what these values are (name-of-network, fs-id etc)",
+      "revId": "53ef1ad491c12126e41f9b194cc45eae1b3b18b9",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35755fa9_9b0c0a54",
+        "filename": "charts/dremio_v2/docs/setup/Master-Coordinator-Persistent-Storage.md",
+        "patchSetId": 23
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2024-02-22T17:22:13Z",
+      "side": 1,
+      "message": "Try and write in 3rd person - avoid we, you etc",
+      "revId": "53ef1ad491c12126e41f9b194cc45eae1b3b18b9",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57938550_640ae069",
+        "filename": "charts/dremio_v2/templates/dremio-master.yaml",
+        "patchSetId": 23
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000743
+      },
+      "writtenOn": "2024-02-22T17:22:13Z",
+      "side": 1,
+      "message": "`OrderedReady` is the default, can this line just be removed?",
+      "revId": "53ef1ad491c12126e41f9b194cc45eae1b3b18b9",
+      "serverId": "8ca9cf2d-83f4-421d-8552-b009c9e056de"
+    }
+  ]
+}
