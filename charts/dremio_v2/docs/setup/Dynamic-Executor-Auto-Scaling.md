@@ -12,6 +12,13 @@ to gather metrics from the Kubernetes cluster to determine if the number of Exec
 
 ### Required Setup
 
+#### Cluster Node Autoscaling
+To maximize this feature, the nodes within the Kubernetes Cluster must be able to auto scale. When using GCP or Azure,
+a Cluster Autoscaler is installed by default. Other node auto scaling options include
+[Auto Scaling Groups](https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-groups.html),
+a [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler), or
+[Karpenter](https://karpenter.sh/).
+
 #### Create a Namespace for Prometheus
 Create a Namespace for monitoring
 
