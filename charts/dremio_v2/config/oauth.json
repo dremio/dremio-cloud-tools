@@ -1,0 +1,11 @@
+{{- if $.Values.coordinator.web.oauth.enabled }}
+{
+    "clientId": {{ required "OAuth 2.0 Client ID required" $.Values.coordinator.web.oauth.clientId | quote }},
+    "clientSecret": {{ required "OAuth 2.0 Client Secret required" $.Values.coordinator.web.oauth.clientSecret | quote }},
+    "redirectUrl": {{ required "OAuth 2.0 Redirect URL required" $.Values.coordinator.web.oauth.redirectUrl | quote }},
+    "authorityUrl": {{ required "OAuth 2.0 Authority URL required" $.Values.coordinator.web.oauth.authorityUrl | quote }},
+    "scope": {{ required "OAuth 2.0 Scopes required" $.Values.coordinator.web.oauth.scope | join " " | quote }},
+    "jwtClaims": {{ $.Values.coordinator.web.oauth.jwtClaims | default dict | toJson }},
+    "parameters": {{ $.Values.coordinator.web.oauth.parameters | default list | toJson }}
+}
+{{- end }}
