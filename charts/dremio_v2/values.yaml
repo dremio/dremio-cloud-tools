@@ -404,6 +404,12 @@ distStorage:
     bucketName: "AWS Bucket Name"
     path: "/"
     authentication: "metadata"
+    backup:
+      path: "backup/daily/"
+      host: "https://s3.amazonaws.com"
+      region: "eu-central-01"
+      numberDaysMaxToKeep: "30" #define how backup cleanup should behaive
+      numberBackupsToKeep: "56" #56 represents a week of Dremio backups that runs every 3 hours
     # If using accessKeySecret for authentication against S3, uncomment the lines below and use the values
     # to configure the appropriate credentials.
     #
