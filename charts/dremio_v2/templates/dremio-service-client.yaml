@@ -17,6 +17,7 @@ spec:
   - port: {{ $.Values.coordinator.flight.port | default 32010 }}
     targetPort: flight
     name: flight
+    appProtocol: http2
   selector:
     app: dremio-coordinator
   type: {{ $.Values.service.type }}
