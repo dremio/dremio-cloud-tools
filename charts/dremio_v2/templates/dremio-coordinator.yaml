@@ -54,10 +54,8 @@ spec:
         {{- include "dremio.coordinator.extraVolumeMounts" $ | nindent 8 }}
         {{- include "dremio.coordinator.log.volumeMount" $ | nindent 8 }}
         env:
-        - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
-          value: "{{ template "dremio.coordinator.heapMemory" $ }}"
-        - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
-          value: "{{ template "dremio.coordinator.directMemory" $ }}"
+        - name: DREMIO_MAX_MEMORY_SIZE_MB
+          value: "{{ $.Values.coordinator.memory }}"
         - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
           value: >-
             {{- include "dremio.coordinator.extraStartParams" $ | nindent 12 -}}
