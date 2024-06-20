@@ -21,7 +21,7 @@ MAINTAINER Dremio
 LABEL org.label-schema.name='dremio/dremio-oss'
 LABEL org.label-schema.description='Dremio OSS.'
 
-ARG DOWNLOAD_URL=https://download.dremio.com/community-server/3.0.1-201811132128360291-804fe82/dremio-community-3.0.1-201811132128360291-804fe82.tar.gz
+ARG DOWNLOAD_URL= https://download.dremio.com/community-server/4.1.4-202001240912140359-a90eb503/dremio-community-4.1.4-202001240912140359-a90eb503.tar.gz
 RUN \
   mkdir -p /opt/dremio \
   && mkdir -p /var/lib/dremio \
