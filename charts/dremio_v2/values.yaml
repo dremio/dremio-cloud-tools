@@ -537,3 +537,11 @@ service:
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 # imagePullSecrets:
 #  - secretname
+
+
+# values.yaml
+nats:
+  config:
+    # Enable JetStream
+    jetstream:
+      enabled: true
