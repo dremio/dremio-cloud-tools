@@ -13,8 +13,8 @@
 # will potentially cause Dremio to upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
-image: dremio/dremio-oss
-imageTag: latest
+image: gcr.io/dremio-1093/dremio-ee
+imageTag: dremio-pull-requests-PR-2704-latest
 
 # Annotations, labels, node selectors, and tolerations
 #
@@ -38,8 +38,8 @@ coordinator:
   # CPU & Memory
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 1
+  memory: 4100
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
@@ -152,17 +152,17 @@ executor:
   # CPU & Memory
   # Memory allocated to each executor, expressed in MB.
   # CPU allocated to each executor, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 0.5
+  memory: 4100
 
   # Engines
   # Engine names be 47 characters or less and be lowercase alphanumber characters or '-'.
   # Note: The number of executor pods will be the length of the array below * count.
   engines: ["default"]
-  count: 3
+  count: 1
 
   # Executor volume size.
-  volumeSize: 128Gi
+  volumeSize: 10Gi
 
   # Kubernetes Service Account
   # Uncomment below to use a custom Kubernetes service account for executors.
@@ -319,9 +319,9 @@ zookeeper:
   # CPU & Memory
   # Memory allocated to each zookeeper, expressed in MB.
   # CPU allocated to each zookeeper, expressed in CPU cores.
-  cpu: 0.5
+  cpu: 0.1
   memory: 1024
-  count: 3
+  count: 1
 
   volumeSize: 10Gi
 
@@ -351,7 +351,7 @@ distStorage:
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
   # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
-  type: "local"
+  type: "gcp"
 
   # Google Cloud Storage
   #
@@ -365,7 +365,7 @@ distStorage:
   #       has access to the GCS bucket.
   # credentials: If using serviceAccountKeys authentication, uncomment the credentials section below.
   gcp:
-    bucketName: "GCS Bucket Name"
+    bucketName: "t-lelek-test-bucket"
     path: "/"
     authentication: "auto"
 
@@ -402,7 +402,7 @@ distStorage:
   # credentials: If using accessKeySecret authentication, uncomment the credentials section below.
   aws:
     bucketName: "AWS Bucket Name"
-    path: "/"
+    path: "tlelek-test-bucket"
     authentication: "metadata"
     # If using accessKeySecret for authentication against S3, uncomment the lines below and use the values
     # to configure the appropriate credentials.
@@ -493,11 +493,17 @@ distStorage:
 
 # Extra Volumes
 # Array to add extra volumes to all Dremio resources.
-extraVolumes: []
+extraVolumes:
+  - name: google-cloud-credentials
+    secret:
+      secretName: google-cloud-credentials
 
 # Extra Volume Mounts
 # Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
-extraVolumeMounts: []
+extraVolumeMounts:
+  - name: google-cloud-credentials
+    mountPath: /var/secrets/google
+    readOnly: true
 
 # Uncomment this value to write logs to a file on disk for all Dremio resources.
 #writeLogsToFile: true
@@ -522,26 +528,13 @@ service:
   # For more information, see https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
   #internalLoadBalancer: true
 
-  # If you have a static IP allocated for your load balancer, uncomment the following
-  # line and set the IP to provide the static IP used for the load balancer.
-  # Note: The service type must be set to LoadBalancer for this value to be used.
-  #loadBalancerIP: 0.0.0.0
-
-# To use custom storage class, uncomment below.
-# Otherwise the default storage class configured for your K8s cluster is used.
-#storageClass: managed-premium
-
-# For private and protected docker image repository, you should store
-# the credentials in a kubernetes secret and provide the secret name
-# here.  For more information, see
-# https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-# imagePullSecrets:
-#  - secretname
-
-
 # values.yaml
 nats:
   config:
     # Enable JetStream
     jetstream:
       enabled: true
+    cluster:
+      enabled: true
+      replicas: 3
+
