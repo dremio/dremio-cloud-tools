@@ -314,7 +314,7 @@ executor:
 zookeeper:
   # The Zookeeper image used in the cluster.
   image: zookeeper
-  imageTag: 3.8.3-jre-17
+  imageTag: 3.8.4-jre-17
 
   # CPU & Memory
   # Memory allocated to each zookeeper, expressed in MB.
