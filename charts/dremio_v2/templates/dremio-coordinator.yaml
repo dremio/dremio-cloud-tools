@@ -103,7 +103,6 @@ spec:
           periodSeconds: {{ $.Values.coordinator.readinessProbe.periodSeconds }}
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
-      {{- include "dremio.coordinator.log.volumeMountInitContainer" $ | nindent 6 }}
       - name: wait-for-dremio-master
         image: busybox
         command:  ["sh", "-c", "until nc -z dremio-client {{ $.Values.coordinator.web.port }} > /dev/null; do echo Waiting for Dremio master.; sleep 2; done;"]

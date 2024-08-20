@@ -87,18 +87,6 @@ spec:
         {{- include "dremio.executor.metricsPort" (list $ $engineName) | nindent 8 }}
       initContainers:
       {{- include "dremio.executor.extraInitContainers" (list $ $engineName) | nindent 6 }}
-      {{- include "dremio.executor.log.volumeMountInitContainer" (list $ $engineName) | nindent 6 }}
-      - name: chown-data-directory
-        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
-        imagePullPolicy: IfNotPresent
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-        - name: {{ template "dremio.executor.volumeClaimName" (list $ $engineName) }}
-          mountPath: /opt/dremio/data
-        command: ["chown"]
-        args: ["dremio:dremio", "/opt/dremio/data"]
-      {{- include "dremio.executor.cloudCache.initContainers" (list $ $engineName) | nindent 6 }}
       - name: wait-for-zookeeper
         image: busybox
         command:  ["sh", "-c", "until nc zk-hs 2181 -w1 > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;"]

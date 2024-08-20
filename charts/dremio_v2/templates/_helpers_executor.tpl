@@ -138,30 +138,6 @@ Executor - Log Volume Mount
 {{- end -}}
 
 {{/*
-Executor - Chown Log Volume Mount Init Container
-*/}}
-{{- define "dremio.executor.log.volumeMountInitContainer" -}}
-{{- $context := index . 0 -}}
-{{- $engineName := index . 1 -}}
-{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
-{{- $writeLogsToFile := coalesce $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile -}}
-{{- if $writeLogsToFile -}}
-- name: chown-log-directory
-  image: {{ $context.Values.image }}:{{ $context.Values.imageTag }}
-  imagePullPolicy: IfNotPresent
-  securityContext:
-    runAsUser: 0
-  volumeMounts:
-  - name: dremio-log-volume
-    mountPath: /opt/dremio/log
-  command: ["chown"]
-  args:
-    - "dremio:dremio"
-    - "/opt/dremio/log"
-{{- end -}}
-{{- end -}}
-
-{{/*
 Executor - Logs Volume Claim Template
 */}}
 {{- define "dremio.executor.log.volumeClaimTemplate" -}}
@@ -248,27 +224,6 @@ Executor - Cloud Cache Peristent Volume Mounts
 - name: {{ coalesce $cloudCacheVolumeConfig.name (printf "dremio-%s-executor-c3-%d" $engineName $index) }}
   mountPath: /opt/dremio/cloudcache/c{{ $index }}
 {{- end -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Executor - Cloud Cache Peristent Volume Mounts
-*/}}
-{{- define "dremio.executor.cloudCache.initContainers" -}}
-{{- $context := index . 0 -}}
-{{- $engineName := index . 1 -}}
-{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
-{{- $cloudCacheConfig := coalesce $engineConfiguration.cloudCache $context.Values.executor.cloudCache -}}
-{{- if $cloudCacheConfig.enabled -}}
-- name: chown-cloudcache-directory
-  image: {{ $context.Values.image }}:{{ $context.Values.imageTag }}
-  imagePullPolicy: IfNotPresent
-  securityContext:
-    runAsUser: 0
-  volumeMounts:
-  {{- include "dremio.executor.cloudCache.volumeMounts" (list $context $engineName) | nindent 2 }}
-  command: ["bash"]
-  args: ["-c", "chown dremio:dremio /opt/dremio/cloudcache/c*"]
 {{- end -}}
 {{- end -}}
 

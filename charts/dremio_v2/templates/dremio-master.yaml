@@ -119,25 +119,12 @@ spec:
           periodSeconds: {{ $.Values.coordinator.readinessProbe.periodSeconds }}
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
-      {{- include "dremio.coordinator.log.volumeMountInitContainer" $ | nindent 6 }}
       - name: start-only-one-dremio-master
         image: busybox
         command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
       - name: wait-for-zookeeper
         image: busybox
         command:  ["sh", "-c", "until nc zk-hs 2181 -w1 > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;"]
-      - name: chown-data-directory
-        image: {{ $.Values.image }}:{{ $.Values.imageTag }}
-        imagePullPolicy: IfNotPresent
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-        - name: dremio-master-volume
-          mountPath: /opt/dremio/data
-        command: ["chown"]
-        args:
-        - "dremio:dremio"
-        - "/opt/dremio/data"
       - name: upgrade-task
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent

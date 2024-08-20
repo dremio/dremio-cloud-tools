@@ -51,27 +51,6 @@ Coordinator - Log Volume Mount
 {{- end -}}
 
 {{/*
-Coordinator - Chown Log Volume Mount Init Container
-*/}}
-{{- define "dremio.coordinator.log.volumeMountInitContainer" -}}
-{{- $writeLogsToFile := coalesce $.Values.coordinator.writeLogsToFile $.Values.writeLogsToFile -}}
-{{- if $writeLogsToFile -}}
-- name: chown-log-directory
-  image: {{ $.Values.image }}:{{ $.Values.imageTag }}
-  imagePullPolicy: IfNotPresent
-  securityContext:
-    runAsUser: 0
-  volumeMounts:
-  - name: dremio-log-volume
-    mountPath: /opt/dremio/log
-  command: ["chown"]
-  args:
-    - "dremio:dremio"
-    - "/opt/dremio/log"
-{{- end -}}
-{{- end -}}
-
-{{/*
 Coordinator - Logs Volume Claim Template
 */}}
 {{- define "dremio.coordinator.log.volumeClaimTemplate" -}}
