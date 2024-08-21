@@ -28,8 +28,10 @@ spec:
       terminationGracePeriodSeconds: 120
       {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
+      {{- include "dremio.podSecurityContext" $ | nindent 6 }}
       containers:
       - name: dremio-coordinator
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         resources:
@@ -104,10 +106,12 @@ spec:
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
       - name: wait-for-dremio-master
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: busybox
         command:  ["sh", "-c", "until nc -z dremio-client {{ $.Values.coordinator.web.port }} > /dev/null; do echo Waiting for Dremio master.; sleep 2; done;"]
       {{- if $.Values.coordinator.web.tls.enabled }}
       - name: generate-ui-keystore
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
@@ -120,6 +124,7 @@ spec:
       {{- end }}
       {{- if $.Values.coordinator.client.tls.enabled }}
       - name: generate-client-keystore
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
@@ -132,6 +137,7 @@ spec:
       {{- end }}
       {{- if $.Values.coordinator.flight.tls.enabled }}
       - name: generate-flight-keystore
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         volumeMounts:

@@ -11,6 +11,33 @@ imagePullSecrets:
 {{- end -}}
 
 {{/*
+Shared - Pod Security Context
+*/}}
+{{- define "dremio.podSecurityContext" -}}
+securityContext:
+  fsGroup: 999
+  fsGroupChangePolicy: OnRootMismatch
+{{- end -}}
+
+{{/*
+Shared - Container Security Context
+*/}}
+{{- define "dremio.containerSecurityContext" -}}
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  privileged: false
+  readOnlyRootFilesystem: false
+  runAsGroup: 999
+  runAsNonRoot: true
+  runAsUser: 999
+  seccompProfile:
+    type: RuntimeDefault
+{{- end -}}
+
+{{/*
 Service - Annotations
 */}}
 {{- define "dremio.service.annotations" -}}

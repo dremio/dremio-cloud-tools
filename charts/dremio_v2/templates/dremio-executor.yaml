@@ -32,8 +32,10 @@ spec:
       {{- include "dremio.executor.kubernetes.terminationGracePeriodSeconds" (list $ $engineName) | nindent 6}}
       {{- include "dremio.executor.nodeSelector" (list $ $engineName) | nindent 6}}
       {{- include "dremio.executor.tolerations" (list $ $engineName) | nindent 6}}
+      {{- include "dremio.podSecurityContext" $ | nindent 6 }}
       containers:
       - name: dremio-executor
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         resources:
@@ -88,6 +90,7 @@ spec:
       initContainers:
       {{- include "dremio.executor.extraInitContainers" (list $ $engineName) | nindent 6 }}
       - name: wait-for-zookeeper
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: busybox
         command:  ["sh", "-c", "until nc zk-hs 2181 -w1 > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;"]
       volumes:
