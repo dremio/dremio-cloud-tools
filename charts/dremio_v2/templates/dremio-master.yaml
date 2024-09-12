@@ -128,7 +128,6 @@ spec:
       - name: wait-for-zookeeper
         {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: busybox
-        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         command:  ["sh", "-c", "until nc zk-hs 2181 -w1 > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;"]
       - name: upgrade-task
         {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
