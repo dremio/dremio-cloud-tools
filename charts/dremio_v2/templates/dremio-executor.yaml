@@ -59,8 +59,10 @@ spec:
         {{- include "dremio.executor.extraVolumeMounts" (list $ $engineName) | nindent 8 }}
         {{- include "dremio.executor.log.volumeMount" (list $ $engineName) | nindent 8 }}
         env:
-        - name: DREMIO_MAX_MEMORY_SIZE_MB
-          value: "{{ template "dremio.executor.memory" (list $ $engineName) }}"
+        - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
+          value: "{{ template "dremio.executor.heapMemory" (list $ $engineName) }}"
+        - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
+          value: "{{ template "dremio.executor.directMemory" (list $ $engineName) }}"
         - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
           value: >-
             {{- include "dremio.executor.extraStartParams" (list $ $engineName) | nindent 12 -}}

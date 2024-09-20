@@ -1,4 +1,56 @@
 {{/*
+Executor - Dremio Heap Memory Allocation
+*/}}
+{{- define "dremio.executor.heapMemory" -}}
+{{- $reserveMemory := 0 -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $engineMemory := int (default $context.Values.executor.memory $engineConfiguration.memory) -}}
+{{- if gt 4096 $engineMemory -}}
+{{ fail "Dremio's minimum memory requirement is 4 GB." }}
+{{- end -}}
+{{- if le 64000 $engineMemory -}}
+{{- $reserveMemory = 6000 -}}
+{{- else -}}
+{{- $reserveMemory = mulf $engineMemory .05 | int -}}
+{{- end -}}
+{{- $engineMemory = sub $engineMemory $reserveMemory}}
+{{- if le 32786 $engineMemory -}}
+8192
+{{- else if le 6144 $engineMemory -}}
+4096
+{{- else -}}
+2048
+{{- end -}}
+{{- end -}}
+{{/*
+Executor - Dremio Direct Memory Allocation
+*/}}
+{{- define "dremio.executor.directMemory" -}}
+{{- $reserveMemory := 0 -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $engineMemory := int (default $context.Values.executor.memory $engineConfiguration.memory) -}}
+{{- if gt 4096 $engineMemory -}}
+{{ fail "Dremio's minimum memory requirement is 4 GB." }}
+{{- end -}}
+{{- if le 64000 $engineMemory -}}
+{{- $reserveMemory = 6000 -}}
+{{- else -}}
+{{- $reserveMemory = mulf $engineMemory .05 | int -}}
+{{- end -}}
+{{- $engineMemory = sub $engineMemory $reserveMemory}}
+{{- if le 32786 $engineMemory -}}
+{{- sub $engineMemory 8192 -}}
+{{- else if le 6144 $engineMemory -}}
+{{- sub $engineMemory 4096 -}}
+{{- else -}}
+{{- sub $engineMemory 2048 -}}
+{{- end -}}
+{{- end -}}
+{{/*
 Executor - CPU Resource Request
 */}}
 {{- define "dremio.executor.cpu" -}}
