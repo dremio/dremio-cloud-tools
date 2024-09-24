@@ -162,6 +162,24 @@ Executor - Pod Extra Volume Mounts
 {{- end -}}
 
 {{/*
+Executor - Container Extra Environment Variables
+*/}}
+{{- define "dremio.executor.extraEnvs" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $engineExtraEnvs := coalesce $engineConfiguration.extraEnvs $context.Values.executor.extraEnvs $context.Values.extraEnvs -}}
+{{- range $index, $environmentVariable:= $engineExtraEnvs -}}
+{{- if hasPrefix "DREMIO" $environmentVariable.name -}}
+{{ fail "Environment variables cannot begin with DREMIO"}}
+{{- end -}}
+{{- end -}}
+{{- if $engineExtraEnvs -}}
+{{ toYaml $engineExtraEnvs }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Executor - Log Path
 */}}
 {{- define "dremio.executor.log.path" -}}

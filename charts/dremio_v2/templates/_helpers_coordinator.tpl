@@ -72,6 +72,21 @@ Coordinator - Pod Extra Init Containers
 {{- end -}}
 
 {{/*
+Coordinator - Container Extra Environment Variables
+*/}}
+{{- define "dremio.coordinator.extraEnvs" -}}
+{{- $coordinatorEnvironmentVariables := default (default (dict) $.Values.extraEnvs) $.Values.coordinator.extraEnvs -}}
+{{- range $index, $environmentVariable:= $coordinatorEnvironmentVariables -}}
+{{- if hasPrefix "DREMIO" $environmentVariable.name -}}
+{{ fail "Environment variables cannot begin with DREMIO"}}
+{{- end -}}
+{{- end -}}
+{{- if $coordinatorEnvironmentVariables -}}
+{{ toYaml $coordinatorEnvironmentVariables }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Coordinator - Log Path
 */}}
 {{- define "dremio.coordinator.log.path" -}}

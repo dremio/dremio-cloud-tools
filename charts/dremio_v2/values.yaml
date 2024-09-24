@@ -75,6 +75,10 @@ coordinator:
   # Uncomment below to use a custom set of extra volume mounts for the coordinator.
   #extraVolumeMounts: []
 
+  # Extra Environment Variables
+  # Uncomment below to add extra environment variables for the coordinator.
+  #extraEnvs: []
+
   # Uncomment this value to use a different storage class for the coordinator.
   #storageClass:
 
@@ -187,6 +191,10 @@ executor:
   # Uncomment below to use a custom set of extra volume mounts for executors.
   #extraVolumeMounts: []
 
+  # Extra Environment Variables
+  # Uncomment below to add extra environment variables for the executors.
+  #extraEnvs: []
+
   # Uncomment this value to use a different storage class for executors.
   #storageClass:
 
@@ -294,6 +302,7 @@ executor:
   #
   #     extraVolumes: []
   #     extraVolumeMounts: []
+  #     extraEnvs: []
   #
   #     volumeSize: 50Gi
   #     storageClass: managed-premium
@@ -498,6 +507,10 @@ extraVolumes: []
 # Extra Volume Mounts
 # Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
 extraVolumeMounts: []
+
+# Extra Environment Variables
+# Array to add extra environment variables to Dremio's pods
+extraEnvs: []
 
 # Uncomment this value to write logs to a file on disk for all Dremio resources.
 #writeLogsToFile: true

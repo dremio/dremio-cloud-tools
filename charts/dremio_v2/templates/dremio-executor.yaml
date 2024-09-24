@@ -81,6 +81,7 @@ spec:
         - name: DREMIO_LOG_TO_CONSOLE
           value: "true"
         {{- include "dremio.executor.log.path" (list $ $engineName) | nindent 8 }}
+        {{- include "dremio.executor.extraEnvs" (list $ $engineName) | nindent 8 }}
         command: ["/opt/dremio/bin/dremio"]
         args: ["start-fg"]
         ports:

@@ -249,6 +249,22 @@ extraInitContainers: |
 [...]
 ```
 
+### `extraEnvs`
+
+Type: Array
+
+By default, this value is not set.
+
+This value controls additional environment variables that are set in Dremio's pods.
+
+For example, to set environment variables:
+
+```yaml
+extraEnvs:
+  - name: EXAMPLE_ENVIRONMENT_VARIABLE
+    value: example_value
+```
+
 #### `extraVolumes`
 
 Type: Array
@@ -1321,6 +1337,10 @@ executor:
         - name: dremio-hello-world
           image: {{ $.Values.image }}:{{ $.Values.imageTag }}
           command: ["echo", "Hello World"]
+
+      extraEnvs:
+        - name: EXAMPLE_ENVIRONMENT_VARIABLE
+          value: example_value
 
       extraVolumes:
       - name: dremio-additional-files
