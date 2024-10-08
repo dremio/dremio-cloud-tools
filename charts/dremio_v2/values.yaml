@@ -370,7 +370,7 @@ distStorage:
   #   - When using "auto" authentication, Dremio uses Google Application Default Credentials to
   #     authenticate. This is platform dependent and may not be available in all Kubernetes clusters.
   #   - Note: When using a GCS bucket on GKE, we recommend enabling Workload Identity and configuring
-  #       a Kubernetes Service Accountfor Dremio with an associated workload identity that
+  #       a Kubernetes Service Account for Dremio with an associated workload identity that
   #       has access to the GCS bucket.
   # credentials: If using serviceAccountKeys authentication, uncomment the credentials section below.
   gcp:
@@ -485,7 +485,7 @@ distStorage:
     #  </property>
 
 # Dremio Start Parameters
-# Uncomment the below lines to provide extra start paramaters to be passed directly to Dremio during startup.
+# Uncomment the below lines to provide extra start parameters to be passed directly to Dremio during startup.
 #extraStartParams: >-
 #  -DsomeKey=someValue
 
@@ -505,7 +505,7 @@ distStorage:
 extraVolumes: []
 
 # Extra Volume Mounts
-# Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
+# Array to add extra volume mounts to all Dremio resources, normally used in conjunction with extraVolumes.
 extraVolumeMounts: []
 
 # Extra Environment Variables
