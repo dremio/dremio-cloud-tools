@@ -128,6 +128,24 @@
         </encoder>
       </appender>
 
+      <appender name="vacuum" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${dremio.log.path}/vacuum.json</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>${dremio.log.path}/archive/vacuum.%d{yyyy-MM-dd}.%i.json.gz</fileNamePattern>
+          <maxHistory>30</maxHistory>
+          <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>100MB</maxFileSize>
+          </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+          <providers>
+            <pattern><pattern>{"timestamp": "%date{ISO8601}"}</pattern></pattern>
+            <arguments />
+          </providers>
+        </encoder>
+      </appender>
+
     </then>
   </if>
 
@@ -177,6 +195,15 @@
     <if condition='isDefined("dremio.log.path")'>
       <then>
         <appender-ref ref="metadata_refresh"/>
+      </then>
+    </if>
+  </logger>
+
+  <logger name="VacuumLogger" additivity="false">
+    <level value="${dremio.log.level:-info}"/>
+    <if condition='isDefined("dremio.log.path")'>
+      <then>
+        <appender-ref ref="vacuum"/>
       </then>
     </if>
   </logger>
