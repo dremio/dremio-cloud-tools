@@ -19,6 +19,7 @@ Coordinator - Dremio Heap Memory allocation
 {{- sub $coordinatorMemory 2048}}
 {{- end -}}
 {{- end -}}
+
 {{/*
 Coordiantor - Dremio Direct Memory Allocation
 */}}
@@ -90,10 +91,15 @@ Coordinator - Container Extra Environment Variables
 Coordinator - Log Path
 */}}
 {{- define "dremio.coordinator.log.path" -}}
-{{- $writeLogsToFile := coalesce $.Values.coordinator.writeLogsToFile $.Values.writeLogsToFile -}}
+{{- $writeLogsToFile := include "dremio.booleanCoalesce" (list $.Values.coordinator.writeLogsToFile $.Values.writeLogsToFile nil) -}}
 {{- if $writeLogsToFile -}}
+- name: DREMIO_LOG_TO_CONSOLE
+  value: "0"
 - name: DREMIO_LOG_DIR
   value: /opt/dremio/log
+{{- else -}}
+- name: DREMIO_LOG_TO_CONSOLE
+  value: "1"
 {{- end -}}
 {{- end -}}
 
@@ -101,7 +107,7 @@ Coordinator - Log Path
 Coordinator - Log Volume Mount
 */}}
 {{- define "dremio.coordinator.log.volumeMount" -}}
-{{- $writeLogsToFile := coalesce $.Values.coordinator.writeLogsToFile $.Values.writeLogsToFile -}}
+{{- $writeLogsToFile := include "dremio.booleanCoalesce" (list $.Values.coordinator.writeLogsToFile $.Values.writeLogsToFile nil) -}}
 {{- if $writeLogsToFile -}}
 - name: dremio-log-volume
   mountPath: /opt/dremio/log
@@ -113,7 +119,7 @@ Coordinator - Logs Volume Claim Template
 */}}
 {{- define "dremio.coordinator.log.volumeClaimTemplate" -}}
 {{- $coordinatorLogStorageClass := coalesce $.Values.coordinator.logStorageClass $.Values.logStorageClass -}}
-{{- $writeLogsToFile := coalesce $.Values.coordinator.writeLogsToFile $.Values.writeLogsToFile -}}
+{{- $writeLogsToFile := include "dremio.booleanCoalesce" (list $.Values.coordinator.writeLogsToFile $.Values.writeLogsToFile nil) -}}
 {{- if $writeLogsToFile -}}
 - metadata:
     name: dremio-log-volume

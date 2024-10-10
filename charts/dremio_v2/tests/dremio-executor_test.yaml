@@ -157,3 +157,73 @@ tests:
           content:
             name: TEST_DREMIO
             value: test_value
+  - it: should write logs to console by default
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "0"
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+            value: /opt/dremio/log
+  - it: should write logs to file when global writeLogsToFile is true
+    set:
+      writeLogsToFile: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "0"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+            value: /opt/dremio/log
+  - it: should not write logs to file when global writeLogsToFile is false
+    set:
+      writeLogsToFile: false
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "1"
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+  - it: should not write logs to file when executor writeLogsToFile is false
+    set:
+      writeLogsToFile: true
+      executor:
+        writeLogsToFile: false
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "1"
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+  - it: should write logs to file when executor writeLogsToFile is true
+    set:
+      writeLogsToFile: false
+      executor:
+        writeLogsToFile: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+            value: /opt/dremio/log
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "0"

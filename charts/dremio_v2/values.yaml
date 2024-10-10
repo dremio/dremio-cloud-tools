@@ -85,7 +85,9 @@ coordinator:
   # Uncomment this value to use a different storage class for the coordinator logs.
   #logStorageClass:
 
-  # Uncomment this value to write logs to a file on disk.
+  # Whether to write coordinator logs to a file on disk. Disabled by default.
+  # When enabled, log messages are logged to the console and written to a persistent volume mounted at /opt/dremio/log.
+  # When disabled, log messages are logged to the console only.
   #writeLogsToFile: true
 
   # These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
@@ -198,10 +200,12 @@ executor:
   # Uncomment this value to use a different storage class for executors.
   #storageClass:
 
-  # Uncomment this value to use a different storage class for the coordinator logs.
+  # Uncomment this value to use a different storage class for the executor logs.
   #logStorageClass:
 
-  # Uncomment this value to write logs to a file on disk.
+  # Whether to write executor logs to a file on disk. Disabled by default.
+  # When enabled, log messages are logged to the console and written to a persistent volume mounted at /opt/dremio/log.
+  # When disabled, log messages are logged to the console only.
   #writeLogsToFile: true
 
   # Dremio C3
@@ -513,7 +517,9 @@ extraVolumeMounts: []
 # Array to add extra environment variables to Dremio's pods
 extraEnvs: []
 
-# Uncomment this value to write logs to a file on disk for all Dremio resources.
+# Whether to write logs to a file on disk for all Dremio resources. Disabled by default.
+# When enabled, log messages are logged to the console and written to a persistent volume mounted at /opt/dremio/log.
+# When disabled, log messages are logged to the console only.
 #writeLogsToFile: true
 
 # Dremio Service

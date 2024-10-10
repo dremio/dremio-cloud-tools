@@ -84,8 +84,6 @@ spec:
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
           value: "/opt/dremio/aws/credentials"
-        - name: DREMIO_LOG_TO_CONSOLE
-          value: "true"
         {{- include "dremio.coordinator.log.path" $ | nindent 8 }}
         {{- include "dremio.coordinator.extraEnvs" $ | nindent 8 }}
         command: ["/opt/dremio/bin/dremio"]

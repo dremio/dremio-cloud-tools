@@ -121,3 +121,20 @@ Admin - Service Account
 serviceAccount: {{ $adminServiceAccount }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+This helper function is used to coalesce a list of boolean values using "trilean" logic,
+i.e., returning the first non-nil value found, even if it is false.
+If a non-nil value is found and it is true, the function returns "1"; otherwise the function returns an empty string.
+This function is suitable for use in lieu of the coalesce function, which has surprising effects
+when used with boolean values. This function should not be used with non-boolean values.
+*/}}
+{{- define "dremio.booleanCoalesce" -}}
+{{- $found := false -}}
+{{- range $value := . -}}
+{{- if and (not $found) (ne $value nil) -}}
+{{- $found = true -}}
+{{- if $value -}}1{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}

@@ -186,10 +186,15 @@ Executor - Log Path
 {{- $context := index . 0 -}}
 {{- $engineName := index . 1 -}}
 {{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
-{{- $writeLogsToFile := coalesce $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile -}}
+{{- $writeLogsToFile := include "dremio.booleanCoalesce" (list $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile nil) -}}
 {{- if $writeLogsToFile -}}
+- name: DREMIO_LOG_TO_CONSOLE
+  value: "0"
 - name: DREMIO_LOG_DIR
   value: /opt/dremio/log
+{{- else -}}
+- name: DREMIO_LOG_TO_CONSOLE
+  value: "1"
 {{- end -}}
 {{- end -}}
 
@@ -200,7 +205,7 @@ Executor - Log Volume Mount
 {{- $context := index . 0 -}}
 {{- $engineName := index . 1 -}}
 {{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
-{{- $writeLogsToFile := coalesce $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile -}}
+{{- $writeLogsToFile := include "dremio.booleanCoalesce" (list $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile nil) -}}
 {{- if $writeLogsToFile -}}
 - name: dremio-log-volume
   mountPath: /opt/dremio/log
@@ -214,7 +219,7 @@ Executor - Logs Volume Claim Template
 {{- $context := index . 0 -}}
 {{- $engineName := index . 1 -}}
 {{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
-{{- $writeLogsToFile := coalesce $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile -}}
+{{- $writeLogsToFile := include "dremio.booleanCoalesce" (list $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile nil) -}}
 {{- $volumeSize := coalesce $engineConfiguration.volumeSize $context.Values.executor.volumeSize $context.Values.volumeSize -}}
 {{- if $writeLogsToFile -}}
 - metadata:
