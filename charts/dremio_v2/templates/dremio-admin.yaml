@@ -30,6 +30,12 @@ spec:
       mountPath: /opt/dremio/data
     - name: dremio-config
       mountPath: /opt/dremio/conf
+    {{- if (include "dremio.coordinator.extraStartParams" $) }}
+    env:
+    - name: DREMIO_JAVA_EXTRA_OPTS
+      value: >-
+        {{- include "dremio.coordinator.extraStartParams" $ | nindent 8 }}
+    {{- end }}
     command: ["sleep", "infinity"]
   {{- include "dremio.imagePullSecrets" $ | nindent 2 }}
   {{- include "dremio.admin.nodeSelector" $ | nindent 2 }}

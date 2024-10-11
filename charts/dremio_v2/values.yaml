@@ -485,7 +485,8 @@ distStorage:
     #  </property>
 
 # Dremio Start Parameters
-# Uncomment the below lines to provide extra start paramaters to be passed directly to Dremio during startup.
+# Uncomment the below lines to provide extra start paramaters to be passed directly to Dremio
+# applications (coordinator. executor and dremio-admin) during startup.
 #extraStartParams: >-
 #  -DsomeKey=someValue
 
