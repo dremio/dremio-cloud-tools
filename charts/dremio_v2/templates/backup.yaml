@@ -1,0 +1,54 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: dremio-jobs-role
+  namespace: {{.Release.Namespace}}
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/exec"]
+    verbs: ["get", "list", "watch", "create"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dremio-jobs
+  namespace: {{.Release.Namespace}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dremio-jobs
+  namespace: {{.Release.Namespace}}
+subjects:
+  - kind: ServiceAccount
+    name: dremio-jobs
+    namespace: {{.Release.Namespace}}
+roleRef:
+  kind: Role
+  name: dremio-jobs-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dremio-backup-s3
+  namespace: {{.Release.Namespace}}
+spec:
+  schedule: "0 */3 * * *"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: backup
+              image: bitnami/kubectl:latest
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - kubectl exec dremio-master-0 --container dremio-master-coordinator -- /opt/dremio/bin/dremio-admin backup -l -d dremioS3:///{{ $.Values.distStorage.aws.bucketName }}/backup/daily
+          restartPolicy: Never
+          serviceAccountName: dremio-jobs
