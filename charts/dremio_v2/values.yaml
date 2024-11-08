@@ -13,7 +13,7 @@
 # will potentially cause Dremio to upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
-image: dremio/dremio-oss
+image: dremio-executor
 imageTag: latest
 
 # Annotations, labels, node selectors, and tolerations
@@ -38,8 +38,8 @@ coordinator:
   # CPU & Memory
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 1
+  memory: 4100
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
@@ -334,7 +334,7 @@ zookeeper:
   # CPU allocated to each zookeeper, expressed in CPU cores.
   cpu: 0.5
   memory: 1024
-  count: 3
+  count: 1
 
   volumeSize: 10Gi
 
