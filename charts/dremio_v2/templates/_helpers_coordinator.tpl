@@ -235,3 +235,15 @@ tolerations:
   {{- toYaml $coordinatorTolerations | nindent 2 }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Coordinator - Active Processor Count
+*/}}
+{{- define "dremio.coordinator.activeProcessorCount" -}}
+{{- $coordinatorCpu := floor $.Values.coordinator.cpu | int -}}
+{{- if gt 1 $coordinatorCpu -}}
+1
+{{- else -}}
+{{- $coordinatorCpu -}}
+{{- end -}}
+{{- end -}}

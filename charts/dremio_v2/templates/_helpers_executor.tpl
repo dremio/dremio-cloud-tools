@@ -479,3 +479,17 @@ Executor - Dremio JVM Graceful Shutdown Parameters
 -Dservices.executor.node_lifecycle_service_enabled=true
 {{- end -}}
 {{- end -}}
+
+
+{{/*
+Executor - Active Processor Count
+*/}}
+{{- define "dremio.executor.activeProcessorCount" -}}
+{{- $executorCpu := include "dremio.executor.cpu" $ -}}
+{{- $executorCpu = floor $executorCpu | int -}}
+{{- if gt 1 $executorCpu -}}
+1
+{{- else -}}
+{{- $executorCpu -}}
+{{- end -}}
+{{- end -}}

@@ -80,6 +80,7 @@ spec:
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
             -Dservices.conduit.port=45679
+            -XX:ActiveProcessorCount={{- include "dremio.coordinator.activeProcessorCount" $ }}
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
