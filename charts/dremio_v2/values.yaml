@@ -13,7 +13,7 @@
 # will potentially cause Dremio to upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
-image: dremio-executor
+image: dremio-enterprise
 imageTag: latest
 
 # Annotations, labels, node selectors, and tolerations
