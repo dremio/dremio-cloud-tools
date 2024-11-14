@@ -90,6 +90,7 @@ spec:
             -Dservices.executor.enabled=false
             -Dservices.conduit.port=45679
             -Ddremio.eula.disabled=true
+            -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
@@ -101,6 +102,8 @@ spec:
         args:
         - "start-fg"
         ports:
+        - containerPort: 8000
+          name: debug
         - containerPort: 9047
           name: web
         - containerPort: 31010
