@@ -1,0 +1,140 @@
+---
+# Source: dremio/templates/dremio-coordinator.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dremio-coordinator
+  
+  
+spec:
+  serviceName: "dremio-cluster-pod"
+  replicas: 0
+  podManagementPolicy: "Parallel"
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: dremio-coordinator
+  template:
+    metadata:
+      labels:
+        app: dremio-coordinator
+        role: dremio-cluster-pod
+        diagnostics-collector-role: dremio-coordinator
+        
+      annotations:
+        dremio-configmap/checksum: 5cb54c765e825c30363bafb949a4c1c54bace564d3eda205e6181ab4ea8bd41f
+        
+    spec:
+      
+      terminationGracePeriodSeconds: 120
+      
+      
+      securityContext:
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+      - name: dremio-coordinator
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsGroup: 999
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
+        image: dremio-executor:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 1
+            memory: 4100Mi
+        volumeMounts:
+        - name: dremio-config
+          mountPath: /opt/dremio/conf
+        - name: dremio-hive2-config
+          mountPath: /opt/dremio/plugins/connectors/hive2.d
+        - name: dremio-hive2-config
+          mountPath: /opt/dremio/plugins/connectors/hive2-ee.d
+        - name: dremio-hive3-config
+          mountPath: /opt/dremio/plugins/connectors/hive3.d
+        - name: dremio-hive3-config
+          mountPath: /opt/dremio/plugins/connectors/hive3-ee.d
+        
+        
+        env:
+        - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
+          value: "1847"
+        - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
+          value: "2048"
+        - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
+          value: >-
+            -Dzookeeper=zk-hs:2181
+            -Dservices.coordinator.enabled=true
+            -Dservices.coordinator.master.enabled=false
+            -Dservices.coordinator.master.embedded-zookeeper.enabled=false
+            -Dservices.executor.enabled=false
+            -Dservices.conduit.port=45679
+        - name: AWS_CREDENTIAL_PROFILES_FILE
+          value: "/opt/dremio/aws/credentials"
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/opt/dremio/aws/credentials"
+        - name: DREMIO_LOG_TO_CONSOLE
+          value: "1"
+        
+        command: ["/opt/dremio/bin/dremio"]
+        args: ["start-fg"]
+        ports:
+        - containerPort: 31010
+          name: client
+        - containerPort: 32010
+          name: flight
+        - containerPort: 45678
+          name: server-fabric
+        - containerPort: 45679
+          name: server-conduit
+        startupProbe:
+          httpGet:
+            path: /
+            port: 9047
+          failureThreshold: 300
+          periodSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 9047
+          failureThreshold: 120
+          periodSeconds: 1
+      initContainers:
+      
+      - name: wait-for-dremio-master
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsGroup: 999
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
+        image: busybox
+        command:  ["sh", "-c", "until nc -z dremio-client 9047 > /dev/null; do echo Waiting for Dremio master.; sleep 2; done;"]
+      volumes:
+      - name: dremio-config
+        configMap:
+          name: dremio-config
+      - name: dremio-hive2-config
+        configMap:
+          name: dremio-hive2-config
+      - name: dremio-hive3-config
+        configMap:
+          name: dremio-hive3-config
+      
+      
+  volumeClaimTemplates:

@@ -1,0 +1,36 @@
+---
+# Source: dremio/templates/dremio-service-client.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: dremio-client
+  labels:
+    app: dremio-client
+    
+  
+spec:
+  ports:
+  - port: 31010
+    targetPort: client
+    name: client
+  - port: 9047
+    targetPort: web
+    name: web
+  - port: 32010
+    targetPort: flight
+    name: flight
+  selector:
+    app: dremio-coordinator
+  type: LoadBalancer
+---
+# Source: dremio/templates/dremio-service-client.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: dremio-cluster-pod
+spec:
+  ports:
+  - port: 9999
+  clusterIP: None
+  selector:
+    role: dremio-cluster-pod

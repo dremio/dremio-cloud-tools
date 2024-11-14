@@ -1,0 +1,154 @@
+---
+# Source: dremio/templates/zookeeper.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: zk-pdb
+spec:
+  selector:
+    matchLabels:
+      app: zk
+  maxUnavailable: 1
+---
+# Source: dremio/templates/zookeeper.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk-hs
+  labels:
+    app: zk
+spec:
+  ports:
+  - port: 2181
+    name: client
+  - port: 2888
+    name: server
+  - port: 3888
+    name: leader-election
+  clusterIP: None
+  selector:
+    app: zk
+---
+# Source: dremio/templates/zookeeper.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk-cs
+  labels:
+    app: zk
+spec:
+  ports:
+  - port: 2181
+    name: client
+  selector:
+    app: zk
+---
+# Source: dremio/templates/zookeeper.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zk
+  
+  
+spec:
+  selector:
+    matchLabels:
+      app: zk
+  serviceName: zk-hs
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app: zk
+        
+        
+    spec:
+      
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - zk
+              topologyKey: "kubernetes.io/hostname"
+      
+      
+      containers:
+      - name: kubernetes-zookeeper
+        imagePullPolicy: Always
+        command:
+        - bash
+        - -ec
+        - |
+            # obtain ZOO_MY_ID based on POD hostname
+            export HOST_NUMBER="${HOSTNAME##*-}"
+            export ZOO_MY_ID="$((HOST_NUMBER + 1))"
+            [ -z "${ZOO_MY_ID}" ] && echo "Failed to get index from hostname $HOSTNAME" && exit 1
+            echo "ZOO_MY_ID=${ZOO_MY_ID}"
+
+            # construct ZOO_SERVERS based on ensemble count
+            DOMAIN="$(hostname -d)"
+            SERVERS=1
+            for (( i=${SERVERS},j=i-1; i>=1; i--,j-- )); do ZOO_SERVERS="server.${i}=zk-${j}.${DOMAIN}:2888:3888;2181 ${ZOO_SERVERS}"; done
+            echo "ZOO_SERVERS=${ZOO_SERVERS}"
+            export ZOO_SERVERS
+
+            /docker-entrypoint.sh
+            zkServer.sh start-foreground
+        env:
+        - name: JVMFLAGS
+          value: "-Xmx924m"
+        - name: ZOO_STANDALONE_ENABLED
+          value: "false"
+        - name: ZOO_4LW_COMMANDS_WHITELIST
+          value: "ruok"
+        - name: ZOO_ADMINSERVER_ENABLED
+          value: "false"
+        - name: ZOO_AUTOPURGE_PURGEINTERVAL
+          value: "12"
+        image: "zookeeper:3.8.4-jre-17"
+        resources:
+          requests:
+            cpu: 0.5
+            memory: 1024Mi
+        ports:
+        - containerPort: 2181
+          name: client
+        - containerPort: 2888
+          name: server
+        - containerPort: 3888
+          name: leader-election
+        readinessProbe:
+          exec:
+            command: ["/bin/bash", "-c", "[ \"$(echo ruok | (exec 3<>/dev/tcp/127.0.0.1/2181; cat >&3; cat <&3; exec 3<&-))\" == \"imok\" ]" ]
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command: ["/bin/bash", "-c", "[ \"$(echo ruok | (exec 3<>/dev/tcp/127.0.0.1/2181; cat >&3; cat <&3; exec 3<&-))\" == \"imok\" ]" ]
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: datadir
+          mountPath: /data
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      
+      resources:
+        requests:
+          storage: 10Gi
+
+# use the official zookeeper kubernetes image

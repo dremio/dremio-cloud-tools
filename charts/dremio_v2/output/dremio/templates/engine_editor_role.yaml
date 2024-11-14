@@ -1,0 +1,44 @@
+# permissions for end users to edit engines.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: engine-editor-role
+    app.kubernetes.io/component: rbac
+  name: engine-editor-role
+rules:
+- apiGroups:
+  - dremio.com
+  resources:
+  - engines
+  - replicas
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dremio.com
+  resources:
+  - engines/status
+  - replicas/status
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: engine-editor
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: engine-editor-role
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: default
