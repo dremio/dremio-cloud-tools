@@ -1,4 +1,235 @@
 {{- if $.Values.engine.enabled -}}
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: engines.dremio.com
+spec:
+  group: dremio.com
+  names:
+    kind: DremioEngine
+    plural: dremioengines
+    singular: dremioEngine
+  scope: Namespaced
+  versions:
+    - additionalPrinterColumns:
+        - jsonPath: .spec.imageName
+          name: IMAGE_NAME
+          priority: 3
+          type: string
+        - jsonPath: .spec.maxReplicas
+          name: MAX_REPLICAS
+          priority: 2
+          type: integer
+        - jsonPath: .spec.minReplicas
+          name: MIN_REPLICAS
+          priority: 2
+          type: integer
+        - jsonPath: .spec.replicas
+          name: REPLICAS
+          priority: 1
+          type: integer
+        - jsonPath: .spec.size
+          name: SIZE
+          priority: 1
+          type: string
+        - jsonPath: .status.runningExecutors
+          name: RUNNING_EXECUTORS
+          priority: 2
+          type: integer
+        - jsonPath: .status.runningReplicas
+          name: RUNNING_REPLICAS
+          priority: 2
+          type: integer
+        - jsonPath: .status.state
+          name: STATE
+          priority: 1
+          type: string
+      name: v1
+      schema:
+        openAPIV3Schema:
+          properties:
+            spec:
+              properties:
+                imageName:
+                  description: Executor Image name
+                  type: string
+                maxReplicas:
+                  description: TODO
+                  maximum: 128.0
+                  minimum: 0.0
+                  type: integer
+                minReplicas:
+                  description: TODO
+                  maximum: 128.0
+                  minimum: 0.0
+                  type: integer
+                replicas:
+                  description: Count of replicas comprising this engine
+                  maximum: 128.0
+                  minimum: 0.0
+                  type: integer
+                size:
+                  description: "Then engine size, typically a T-shirt style name"
+                  enum:
+                    - LARGE_V1
+                    - MEDIUM_V1
+                    - SMALL_V1
+                    - XXX_LARGE_V1
+                    - XX_LARGE_V1
+                    - XX_SMALL_V1
+                    - X_LARGE_V1
+                    - X_SMALL_V1
+                  type: string
+              required:
+                - imageName
+                - maxReplicas
+                - minReplicas
+                - replicas
+                - size
+              type: object
+            status:
+              properties:
+                labelSelector:
+                  description: Label selector for the Replica scaling
+                  type: string
+                message:
+                  description: TODO
+                  type: string
+                observedGeneration:
+                  type: integer
+                reason:
+                  description: TODO
+                  type: string
+                runningExecutors:
+                  description: The status of executors that comprise the Engine
+                  type: integer
+                runningReplicas:
+                  description: Count of replicas comprising this engine
+                  type: integer
+                state:
+                  description: dTODO
+                  enum:
+                    - FAILED
+                    - RUNNING
+                    - STARTING
+                  type: string
+              required:
+                - message
+                - runningReplicas
+                - state
+              type: object
+          type: object
+      served: true
+      storage: true
+      subresources:
+        scale:
+          labelSelectorPath: .status.labelSelector
+          specReplicasPath: .spec.replicas
+          statusReplicasPath: .status.runningReplicas
+        status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: replicas.dremio.com
+spec:
+  group: dremio.com
+  names:
+    kind: DremioReplica
+    plural: dremioreplicas
+    singular: dremioReplica
+  scope: Namespaced
+  versions:
+    - additionalPrinterColumns:
+        - jsonPath: .spec.c3Storage
+          name: C3_STORAGE
+          priority: 3
+          type: string
+        - jsonPath: .spec.cpu
+          name: CPU
+          priority: 2
+          type: string
+        - jsonPath: .spec.executors
+          name: EXECUTORS
+          priority: 1
+          type: integer
+        - jsonPath: .spec.executorStorage
+          name: EXECUTOR_STORAGE
+          priority: 3
+          type: string
+        - jsonPath: .spec.imageName
+          name: IMAGE_NAME
+          priority: 2
+          type: string
+        - jsonPath: .spec.memory
+          name: MEMORY
+          priority: 2
+          type: string
+        - jsonPath: .status.state
+          name: STATE
+          priority: 1
+          type: string
+      name: v1
+      schema:
+        openAPIV3Schema:
+          properties:
+            spec:
+              properties:
+                c3Storage:
+                  description: TODO
+                  type: string
+                cpu:
+                  description: TODO
+                  type: string
+                executorStorage:
+                  description: TODO
+                  type: string
+                executors:
+                  description: TODO
+                  type: integer
+                imageName:
+                  description: Executor Image name
+                  type: string
+                memory:
+                  description: TODO
+                  type: string
+              required:
+                - c3Storage
+                - cpu
+                - executorStorage
+                - executors
+                - imageName
+                - memory
+              type: object
+            status:
+              properties:
+                message:
+                  description: TODO
+                  type: string
+                observedGeneration:
+                  type: integer
+                reason:
+                  description: TODO
+                  type: string
+                runningExecutors:
+                  type: integer
+                state:
+                  description: dTODO
+                  enum:
+                    - FAILED
+                    - RUNNING
+                    - STARTING
+                  type: string
+              required:
+                - message
+                - state
+              type: object
+          type: object
+      served: true
+      storage: true
+      subresources:
+        status: {}
+---
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
