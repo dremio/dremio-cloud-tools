@@ -28,6 +28,15 @@ rules:
   - replicas/status
   verbs:
   - get
+- apiGroups:
+  - dremio.com
+  resources:
+  - engines/scale
+  verbs:
+  - get
+  - list
+  - watch
+  - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding

@@ -1,0 +1,57 @@
+{{ if eq $.Values.watchNamespaces "JOSDK_WATCH_CURRENT" }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: replica-role-binding
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/managed-by: quarkus
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: replica-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: {{ $.Chart.Name }}
+    namespace: {{ $.Release.Namespace }}
+{{ else if eq $.Values.watchNamespaces "JOSDK_ALL_NAMESPACES" }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: replica-role-binding
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/managed-by: quarkus
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: replica-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: {{ $.Chart.Name }}
+    namespace: {{ $.Release.Namespace }}
+{{ else }}
+{{ range $anamespace := ( split "," $.Values.watchNamespaces ) }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: replica-role-binding
+  namespace: {{ $anamespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/managed-by: quarkus
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: replica-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: {{ $.Chart.Name }}
+    namespace: {{ $.Release.Namespace }}
+---
+{{- end }}
+{{- end }}
