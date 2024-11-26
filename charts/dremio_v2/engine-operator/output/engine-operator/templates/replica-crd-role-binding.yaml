@@ -1,0 +1,18 @@
+---
+# Source: engine-operator/templates/replica-crd-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: replica-role-binding
+  labels:
+    app.kubernetes.io/name: engine-operator
+    app.kubernetes.io/version: 25.3.0-SNAPSHOT
+    app.kubernetes.io/managed-by: quarkus
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: replica-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: engine-operator
+    namespace: default

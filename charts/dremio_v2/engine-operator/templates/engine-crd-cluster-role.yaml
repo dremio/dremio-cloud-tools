@@ -1,0 +1,44 @@
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "ClusterRole"
+metadata:
+  name: "engine-cluster-role"
+rules:
+- apiGroups:
+  - "dremio.com"
+  resources:
+  - "engines"
+  - "engines/status"
+  - "engines/finalizers"
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+  - "patch"
+  - "update"
+  - "create"
+  - "delete"
+- apiGroups:
+  - ""
+  resources:
+  - "configmaps"
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+  - "patch"
+  - "update"
+  - "delete"
+  - "create"
+- apiGroups:
+  - "dremio.com"
+  resources:
+  - "replicas"
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+  - "patch"
+  - "update"
+  - "delete"
+  - "create"

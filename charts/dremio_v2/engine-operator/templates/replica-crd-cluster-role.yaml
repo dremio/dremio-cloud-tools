@@ -1,0 +1,32 @@
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "ClusterRole"
+metadata:
+  name: "replica-cluster-role"
+rules:
+- apiGroups:
+  - "dremio.com"
+  resources:
+  - "replicas"
+  - "replicas/status"
+  - "replicas/finalizers"
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+  - "patch"
+  - "update"
+  - "create"
+  - "delete"
+- apiGroups:
+  - "apps"
+  resources:
+  - "statefulsets"
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+  - "patch"
+  - "update"
+  - "delete"
+  - "create"

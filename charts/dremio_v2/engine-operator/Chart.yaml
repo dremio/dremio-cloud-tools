@@ -1,0 +1,5 @@
+---
+name: "engine-operator"
+version: "25.3.0-SNAPSHOT"
+apiVersion: "v2"
+appVersion: "25.3.0-SNAPSHOT"

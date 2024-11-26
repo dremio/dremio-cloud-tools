@@ -13,7 +13,7 @@
 # will potentially cause Dremio to upgrade versions
 # automatically during redeployments and may negatively impact
 # the cluster.
-image: dremio/dremio-oss
+image: dremio-enterprise
 imageTag: latest
 
 # Annotations, labels, node selectors, and tolerations
@@ -38,8 +38,8 @@ coordinator:
   # CPU & Memory
   # Memory allocated to each coordinator, expressed in MB.
   # CPU allocated to each coordinator, expressed in CPU cores.
-  cpu: 15
-  memory: 122800
+  cpu: 1
+  memory: 4100
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
@@ -323,6 +323,38 @@ executor:
   #         size: 100Gi
   #         storageClass: ""
 
+engine:
+  # Whether to enable scalable kubernetes engines for Dremio.
+  enabled: true
+
+  # Specific configuration for the engine operator.
+  operator:
+    image: dremio/engine-operator
+    imageTag: latest
+    cpu: 0.5
+    memory: 1024
+    count: 1
+
+    # Kubernetes Service Account
+    # Uncomment below to use a custom Kubernetes service account for the operator.
+    #serviceAccount: ""
+
+    # Extra Init Containers
+    # Uncomment the below lines to use a custom set of extra init containers for the operator.
+    #extraInitContainers: |
+    #  - name: extra-init-container
+    #    image: {{ $.Values.image }}:{{ $.Values.imageTag }}
+    #    command: ["echo", "Hello World"]
+
+    # These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
+    # Uncomment only if you are trying to override the chart's shared values.
+    #annotations: {}
+    #podAnnotations: {}
+    #labels: {}
+    #podLabels: {}
+    #nodeSelector: {}
+    #tolerations: []
+
 # Zookeeper
 zookeeper:
   # The Zookeeper image used in the cluster.
@@ -334,7 +366,7 @@ zookeeper:
   # CPU allocated to each zookeeper, expressed in CPU cores.
   cpu: 0.5
   memory: 1024
-  count: 3
+  count: 1
 
   volumeSize: 10Gi
 
