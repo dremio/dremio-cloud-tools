@@ -8,7 +8,7 @@ metadata:
 spec:
   serviceName: "dremio-cluster-pod"
   podManagementPolicy: "Parallel"
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: dremio-coordinator
@@ -24,16 +24,7 @@ spec:
         {{- include "dremio.coordinator.podAnnotations" $ | nindent 8}}
     spec:
       {{- include "dremio.coordinator.serviceAccount" $ | nindent 6 }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values:
-                    - dremio-coordinator
-              topologyKey: "kubernetes.io/hostname"
+      affinity: {}
       terminationGracePeriodSeconds: 120
       {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
@@ -76,10 +67,14 @@ spec:
             {{- include "dremio.coordinator.extraStartParams" $ | nindent 12 -}}
             -Dzookeeper=zk-hs:2181
             -Dservices.coordinator.enabled=true
-            -Dservices.coordinator.master.enabled=true
+            -Dservices.coordinator.master.enabled=false
+            -Ddremio_masterless=true
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
             -Dservices.conduit.port=45679
+            -Ddremio.kvstore.type=MongoDB 
+            -Ddremio.kvstore.mongo.connection_string=mongodb://mongodb-service.{{ .Release.Namespace }}.svc.cluster.local:27017/
+            -Ddremio.kvstore.mongo.database_name=TestHudson
             -XX:ActiveProcessorCount={{- include "dremio.coordinator.activeProcessorCount" $ }}
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
@@ -123,10 +118,6 @@ spec:
           periodSeconds: {{ $.Values.coordinator.readinessProbe.periodSeconds }}
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
-      - name: start-only-one-dremio-master
-        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
-        image: busybox
-        command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
       - name: wait-for-zookeeper
         {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: busybox

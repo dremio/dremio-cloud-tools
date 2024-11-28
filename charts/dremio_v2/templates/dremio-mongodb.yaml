@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dremio-mongodb
+  labels:
+    app: dremio-mongodb
+spec:
+  replicas: 1
+  podManagementPolicy: "Parallel"
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: dremio-mongodb
+  template:
+    metadata:
+      labels:
+        app: dremio-mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:5.0
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-storage
+              mountPath: /data/db
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+      volumes:
+        - name: mongo-storage
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: dremio-mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
