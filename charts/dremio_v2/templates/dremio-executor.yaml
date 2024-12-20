@@ -34,6 +34,7 @@ spec:
       {{- include "dremio.executor.tolerations" (list $ $engineName) | nindent 6}}
       {{- include "dremio.podSecurityContext" $ | nindent 6 }}
       containers:
+      {{- include "dremio.executor.extraContainers" $ | nindent 6 }}
       - name: dremio-executor
         {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}

@@ -75,6 +75,10 @@ coordinator:
   # Uncomment below to use a custom set of extra volume mounts for the coordinator.
   #extraVolumeMounts: []
 
+  # Extra Containers
+  # Uncomment below to use a custom set of extra containers for the coordinator.
+  #extraContainers: []
+
   # Extra Environment Variables
   # Uncomment below to add extra environment variables for the coordinator.
   #extraEnvs: []
@@ -193,6 +197,10 @@ executor:
   # Uncomment below to use a custom set of extra volume mounts for executors.
   #extraVolumeMounts: []
 
+  # Extra Containers
+  # Uncomment below to use a custom set of extra containers for the coordinator.
+  #extraContainers: []
+
   # Extra Environment Variables
   # Uncomment below to add extra environment variables for the executors.
   #extraEnvs: []
@@ -306,6 +314,7 @@ executor:
   #
   #     extraVolumes: []
   #     extraVolumeMounts: []
+  #     extraContainers: []
   #     extraEnvs: []
   #
   #     volumeSize: 50Gi
@@ -512,6 +521,10 @@ extraVolumes: []
 # Extra Volume Mounts
 # Array to add extra volume mounts to all Dremio resources, normally used in conjunction wtih extraVolumes.
 extraVolumeMounts: []
+
+# Extra Containers
+# Uncomment below to use a custom set of extra containers for the coordinator.
+extraContainers: []
 
 # Extra Environment Variables
 # Array to add extra environment variables to Dremio's pods
