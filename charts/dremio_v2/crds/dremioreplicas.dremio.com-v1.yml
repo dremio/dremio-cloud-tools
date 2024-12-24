@@ -10,92 +10,99 @@ spec:
     singular: dremioreplica
   scope: Namespaced
   versions:
-    - additionalPrinterColumns:
-        - jsonPath: .spec.c3Storage
-          name: C3_STORAGE
-          priority: 3
-          type: string
-        - jsonPath: .spec.cpu
-          name: CPU
-          priority: 2
-          type: string
-        - jsonPath: .spec.executors
-          name: EXECUTORS
-          priority: 1
-          type: integer
-        - jsonPath: .spec.executorStorage
-          name: EXECUTOR_STORAGE
-          priority: 3
-          type: string
-        - jsonPath: .spec.imageName
-          name: IMAGE_NAME
-          priority: 2
-          type: string
-        - jsonPath: .spec.memory
-          name: MEMORY
-          priority: 2
-          type: string
-        - jsonPath: .status.state
-          name: STATE
-          priority: 1
-          type: string
-      name: v1
-      schema:
-        openAPIV3Schema:
-          properties:
-            spec:
-              properties:
-                c3Storage:
-                  description: TODO
-                  type: string
-                cpu:
-                  description: TODO
-                  type: string
-                executorStorage:
-                  description: TODO
-                  type: string
-                executors:
-                  description: TODO
-                  type: integer
-                imageName:
-                  description: Executor Image name
-                  type: string
-                memory:
-                  description: TODO
-                  type: string
-              required:
-                - c3Storage
-                - cpu
-                - executorStorage
-                - executors
-                - imageName
-                - memory
-              type: object
-            status:
-              properties:
-                message:
-                  description: TODO
-                  type: string
-                observedGeneration:
-                  type: integer
-                reason:
-                  description: TODO
-                  type: string
-                runningExecutors:
-                  type: integer
-                state:
-                  description: dTODO
-                  enum:
-                    - FAILED
-                    - RUNNING
-                    - STARTING
-                  type: string
-              required:
-                - message
-                - state
-              type: object
-          type: object
-      served: true
-      storage: true
-      subresources:
-        status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .spec.c3Storage
+      name: C3_STORAGE
+      priority: 3
+      type: string
+    - jsonPath: .spec.executorCpu
+      name: EXECUTOR_CPU
+      priority: 2
+      type: string
+    - jsonPath: .spec.executorMemory
+      name: EXECUTOR_MEMORY
+      priority: 2
+      type: string
+    - jsonPath: .spec.executors
+      name: EXECUTORS
+      priority: 1
+      type: integer
+    - jsonPath: .spec.imageName
+      name: IMAGE_NAME
+      priority: 2
+      type: string
+    - jsonPath: .spec.spillStorage
+      name: SPILL_STORAGE
+      priority: 3
+      type: string
+    - jsonPath: .status.state
+      name: STATE
+      priority: 1
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              c3Storage:
+                description: C3 storage request for each executor. A resource request
+                  Quantity.
+                type: string
+              executorCpu:
+                description: Cpu request for each executor. A resource request Quantity.
+                type: string
+              executorMemory:
+                description: Memory request for each executor. A resource request
+                  Quantity.
+                type: string
+              executors:
+                description: Number of executors per replica.
+                type: integer
+              imageName:
+                description: Executor image name.
+                type: string
+              javaOpts:
+                description: Optional JVM arguments string.
+                type: string
+              spillStorage:
+                description: Spill storage request for each executor. A resource request
+                  Quantity.
+                type: string
+            required:
+            - c3Storage
+            - executorCpu
+            - executorMemory
+            - executors
+            - imageName
+            - spillStorage
+            type: object
+          status:
+            properties:
+              message:
+                description: Description of the current state of the replica
+                type: string
+              observedGeneration:
+                type: integer
+              reason:
+                description: Reason for the current state of the replica
+                type: string
+              runningExecutors:
+                description: Number of executors running in the running state
+                type: integer
+              state:
+                description: Current state of the replica
+                enum:
+                - FAILED
+                - RUNNING
+                - STARTING
+                type: string
+            required:
+            - message
+            - state
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,106 @@
+#
+# Copyright (C) 2017-2019 Dremio Corporation. This file is confidential and private property.
+#
+
+# This file uses kubernetes pod nomenclature: pods, cpu, memory. Values conform to the Kubernetes
+# Quantity type:
+# https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes
+engineOptions:
+  #
+  # SIZES
+  # The number of pods to create for each engine replica, and the total memory to allocate to each
+  # executor pod in that replica. Note that the memory  allocated to each executor container, may
+  # be lower depending on the podReservations setting.
+  sizes:
+    - name: 2XSmall
+      pods: 1
+      memory: 64Gi
+    - name: XSmall
+      pods: 1
+      memory: 128Gi
+    - name: Small
+      pods: 2
+      memory: 128Gi
+  #
+  # TARGET CPU CAPACITIES
+  # The total number to CPUs to allocate to each executor pod. Note that the number of CPUs
+  # allocated to the executor container may be lower depending on the resourceAllocationOffsets setting.
+  targetCpuCapacities:
+    - name: 16C
+      cpu: 16
+    - name: 32C
+      cpu: 32
+  #
+  # RESOURCE ALLOCATION OFFSETS
+  # The amount of CPU/Memory to reserve on each pod for containers other than that of the executor.
+  # Use action "reserve" to reserve pod resources for other containers (substractive), or "over-commit"
+  # to over-commit pod resources to the executor container (additive). Keys are arbitrary, used only to
+  # identify a default offset value.
+  resourceAllocationOffsets:
+    offsets:
+      - name: reserve-0-0
+        cpu: 0
+        memory: 0Gi
+        action: reserve
+      - name: reserve-2-4
+        cpu: 2
+        memory: 4Gi
+        action: reserve
+      - name: reserve-2-8
+        cpu: 2
+        memory: 8Gi
+        action: reserve
+      - name: reserve-2-16
+        cpu: 2
+        memory: 16Gi
+        action: reserve
+    defaultOffset: reserve-2-4
+  #
+  # EXECUTOR POD STORAGE OPTIONS
+  storage:
+    spillStorageSizes:
+      - name: 100GB
+        storage: 100Gi
+      - name: 250GB
+        storage: 250Gi
+      - name: 500GB
+        storage: 500Gi
+    defaultSpillStorageSize: 100GB
+    c3StorageSizes:
+      - name: 100GB
+        storage: 100Gi
+      - name: 250GB
+        storage: 250Gi
+      - name: 500GB
+        storage: 500Gi
+    defaultC3StorageSize: 100GB
+  #
+  # IDLE TIMEOUTS
+  # Periods are expressed in the ISO8601 duration format: https://en.wikipedia.org/wiki/ISO_8601#Durations.
+  idleTimeouts:
+    durations:
+      - PT2H
+      - PT1H30M
+      - PT1H
+      - PT30M
+      - PT15M
+      - PT10M
+      - PT5M
+    defaultDuration: PT2H
+  #
+  # JAVA OPTS
+  # Safe and curated Java options that can be applied to executor JVMs.
+  javaOpts:
+    - name: "UseGCLogFileRotation"
+      pattern: "-XX:+UseGCLogFileRotation"
+      applyByDefault: true
+    - name: "NumberOfGCLogFiles"
+      pattern: "-XX:NumberOfGCLogFiles=%s"
+      defaultValue: "5"
+      valueMatcher: "^[1-9][0-9]*$"
+      applyByDefault: true
+    - name: "GCLogFileSize"
+      pattern: "-XX:GCLogFileSize=%s"
+      defaultValue: "4000k"
+      valueMatcher: "^[1-9][0-9]*[kKmMgG]$"
+      applyByDefault: true

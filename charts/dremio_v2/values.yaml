@@ -335,6 +335,8 @@ engine:
     memory: 1024
     count: 1
 
+    # NOTE: The following options relate to the engine operator pod and not the executors created by the operator.
+
     # Kubernetes Service Account
     # Uncomment below to use a custom Kubernetes service account for the operator.
     #serviceAccount: ""

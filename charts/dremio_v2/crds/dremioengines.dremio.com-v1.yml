@@ -10,119 +10,150 @@ spec:
     singular: dremioengine
   scope: Namespaced
   versions:
-    - additionalPrinterColumns:
-        - jsonPath: .spec.imageName
-          name: IMAGE_NAME
-          priority: 3
-          type: string
-        - jsonPath: .spec.maxReplicas
-          name: MAX_REPLICAS
-          priority: 2
-          type: integer
-        - jsonPath: .spec.minReplicas
-          name: MIN_REPLICAS
-          priority: 2
-          type: integer
-        - jsonPath: .spec.replicas
-          name: REPLICAS
-          priority: 1
-          type: integer
-        - jsonPath: .spec.size
-          name: SIZE
-          priority: 1
-          type: string
-        - jsonPath: .status.runningExecutors
-          name: RUNNING_EXECUTORS
-          priority: 2
-          type: integer
-        - jsonPath: .status.runningReplicas
-          name: RUNNING_REPLICAS
-          priority: 2
-          type: integer
-        - jsonPath: .status.state
-          name: STATE
-          priority: 1
-          type: string
-      name: v1
-      schema:
-        openAPIV3Schema:
-          properties:
-            spec:
-              properties:
-                imageName:
-                  description: Executor Image name
-                  type: string
-                maxReplicas:
-                  description: TODO
-                  maximum: 128.0
-                  minimum: 0.0
-                  type: integer
-                minReplicas:
-                  description: TODO
-                  maximum: 128.0
-                  minimum: 0.0
-                  type: integer
-                replicas:
-                  description: Count of replicas comprising this engine
-                  maximum: 128.0
-                  minimum: 0.0
-                  type: integer
-                size:
-                  description: "Then engine size, typically a T-shirt style name"
-                  enum:
-                    - LARGE_V1
-                    - MEDIUM_V1
-                    - SMALL_V1
-                    - XXX_LARGE_V1
-                    - XX_LARGE_V1
-                    - XX_SMALL_V1
-                    - X_LARGE_V1
-                    - X_SMALL_V1
-                  type: string
-              required:
-                - imageName
-                - maxReplicas
-                - minReplicas
-                - replicas
-                - size
-              type: object
-            status:
-              properties:
-                labelSelector:
-                  description: Label selector for the Replica scaling
-                  type: string
-                message:
-                  description: TODO
-                  type: string
-                observedGeneration:
-                  type: integer
-                reason:
-                  description: TODO
-                  type: string
-                runningExecutors:
-                  description: The status of executors that comprise the Engine
-                  type: integer
-                runningReplicas:
-                  description: Count of replicas comprising this engine
-                  type: integer
-                state:
-                  description: dTODO
-                  enum:
-                    - FAILED
-                    - RUNNING
-                    - STARTING
-                  type: string
-              required:
-                - message
-                - runningReplicas
-                - state
-              type: object
-          type: object
-      served: true
-      storage: true
-      subresources:
-        scale:
-          labelSelectorPath: .status.labelSelector
-          specReplicasPath: .spec.replicas
-          statusReplicasPath: .status.runningReplicas
-        status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .spec.c3StorageSize
+      name: C3_STORAGE_SIZE
+      priority: 2
+      type: string
+    - jsonPath: .spec.imageName
+      name: IMAGE_NAME
+      priority: 3
+      type: string
+    - jsonPath: .spec.maxReplicas
+      name: MAX_REPLICAS
+      priority: 2
+      type: integer
+    - jsonPath: .spec.minReplicas
+      name: MIN_REPLICAS
+      priority: 2
+      type: integer
+    - jsonPath: .spec.replicas
+      name: REPLICAS
+      priority: 1
+      type: integer
+    - jsonPath: .spec.resourceAllocationOffset
+      name: RESOURCE_ALLOCATION_OFFSET
+      priority: 1
+      type: string
+    - jsonPath: .spec.size
+      name: SIZE
+      priority: 1
+      type: string
+    - jsonPath: .spec.spillStorageSize
+      name: SPILL_STORAGE_SIZE
+      priority: 2
+      type: string
+    - jsonPath: .spec.targetCpuCapacity
+      name: TARGET_CPU_CAPACITY
+      priority: 1
+      type: string
+    - jsonPath: .status.runningExecutors
+      name: RUNNING_EXECUTORS
+      priority: 2
+      type: integer
+    - jsonPath: .status.runningReplicas
+      name: RUNNING_REPLICAS
+      priority: 2
+      type: integer
+    - jsonPath: .status.state
+      name: STATE
+      priority: 1
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              c3StorageSize:
+                description: C3 storage size identifier. Applies a per-executor storage
+                  request.
+                type: string
+              imageName:
+                description: Executor Image name.
+                type: string
+              javaOpts:
+                description: Optional JVM arguments.
+                items:
+                  properties:
+                    name:
+                      type: string
+                    value:
+                      type: string
+                  type: object
+                type: array
+              maxReplicas:
+                description: Maximum number of replicas that can comprise this engine.
+                maximum: 1.0
+                minimum: 0.0
+                type: integer
+              minReplicas:
+                description: Minimum number of replicas that can comprise this engine.
+                maximum: 1.0
+                minimum: 0.0
+                type: integer
+              replicas:
+                description: Count of replicas comprising this engine.
+                maximum: 1.0
+                minimum: 0.0
+                type: integer
+              resourceAllocationOffset:
+                description: Resource allocation offset identifier. Applies an executor
+                  resource request adjustment with respect to pod resource request.
+                type: string
+              size:
+                description: Engine size identifier. Applies a replica executor count
+                  and executor memory request.
+                type: string
+              spillStorageSize:
+                description: Spill storage size identifier. Applies a per-executor
+                  storage request.
+                type: string
+              targetCpuCapacity:
+                description: Executor cpu request identifier. Applies a per-pod cpu
+                  request.
+                type: string
+            required:
+            - c3StorageSize
+            - imageName
+            - maxReplicas
+            - minReplicas
+            - replicas
+            - resourceAllocationOffset
+            - size
+            - spillStorageSize
+            - targetCpuCapacity
+            type: object
+          status:
+            properties:
+              message:
+                description: Description of the current state of the engine
+                type: string
+              observedGeneration:
+                type: integer
+              reason:
+                description: Reason for the current state of the engine
+                type: string
+              runningExecutors:
+                description: The status of executors that comprise the Engine.
+                type: integer
+              runningReplicas:
+                description: Count of replicas comprising this engine.
+                type: integer
+              state:
+                description: Current state of the engine
+                enum:
+                - FAILED
+                - RUNNING
+                - STARTING
+                type: string
+            required:
+            - message
+            - runningReplicas
+            - state
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
