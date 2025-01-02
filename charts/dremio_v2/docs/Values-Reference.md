@@ -1627,13 +1627,48 @@ Dremio will write to the root path of the provided Azure Storage blob container.
 
 #### Credentials for Azure Storage Gen2
 
+##### `distStorage.azureStorage.authentication`
+
+Type: String
+
+Dremio supports authentication using an access key or Microsoft EntraID.
+
+The valid values for `distStorage.azureStorage.authentication` are `accessKey` or `entraID`.
+
+By default, this value is set to `accessKey`.
+
 ##### `distStorage.azureStorage.credentials.accessKey`
 
 Type: String
 
 By default, this value is set to `Azure Storage Account Access Key` and must be changed to a valid access key.
 
-For Dremio to authenticate to the provided Azure Storage blob container, provide a valid access key.
+For Dremio to authenticate to the provided Azure Storage blob container via access key, provide a valid access key.
+
+##### `distStorage.azureStorage.credentials.clientId`
+
+Type: String
+
+By default, this value is set to `Azure Application Client ID` and must be changed to a valid application client ID.
+
+For Dremio to authenticate to the provided Azure Storage blob container via Entra ID, provide a valid application client ID.
+
+##### `distStorage.azureStorage.credentials.tokenEndpoint`
+
+Type: String
+
+By default, this value is set to `Azure Entra ID Token Endpoint` and must be changed to a valid token endpoint.
+
+For Dremio to authenticate to the provided Azure Storage blob container via Entra ID, provide a valid token endpoint.
+
+##### `distStorage.azureStorage.credentials.clientSecret`
+
+Type: String
+
+By default, this value is set to `Azure Application Client Secret` and must be changed to a valid client secret.
+
+For Dremio to authenticate to the provided Azure Storage blob container via Entra ID, provide a valid client secret.
+
 
 #### Advanced Configuration for Azure Storage Gen2
 

@@ -362,7 +362,7 @@ distStorage:
   # local: (<21.0.0 only) Not recommended for production use. When using local, dist-caching is disabled.
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
-  # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
+  # azureStorage: Azure Storage Gen2, additional parameters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
   type: "local"
 
@@ -468,15 +468,25 @@ distStorage:
   # https://docs.dremio.com/deployment/dist-store-config.html#azure-storage
   #
   # accountName: The name of the storage account.
+  # authentication: Valid types are: accessKey or entraID
   # filesystem: The name of the blob container to use within the storage account.
   # path: The path, relative to the filesystem, to create Dremio's directories.
   # credentials:
   azureStorage:
     accountName: "Azure Storage Account Name"
+    authentication: "accessKey"
     filesystem: "Azure Storage Account Blob Container"
     path: "/"
     credentials:
-      accessKey: "Azure Storage Account Access Key"
+      # If using accessKey for authentication against Azure Storage, uncomment the lines below and use the values
+      # to configure the appropriate credentials.
+      #accessKey: "Azure Storage Account Access Key"
+
+      # If using entraID for authentication against Azure Storage, uncomment the lines below and use the values
+      # to configure the appropriate credentials.
+      #clientId: "Azure Application Client ID"
+      #tokenEndpoint: "Azure Entra ID Token Endpoint"
+      #clientSecret: "Azure Application Client Secret"
 
     # Extra Properties
     # Use the extra properties block to provide additional parameters to configure the distributed
