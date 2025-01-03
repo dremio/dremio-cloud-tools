@@ -1,0 +1,151 @@
+#
+# Copyright (C) 2017-2019 Dremio Corporation. This file is confidential and private property.
+#
+#
+# NOTE: This is NOT a concrete StatefulSet. It is a ConfigMap that contains a base StatefulSet that is used as a
+# template for replica executors.
+#
+# Based on: https://github.com/dremio/dremio-cloud-tools/blob/master/charts/dremio_v2/templates/dremio-executor.yaml
+#
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: template-dremio-executor
+spec:
+  serviceName: "dremio-cluster-pod"
+  replicas: 0
+  podManagementPolicy: "Parallel"
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: dremio-executor
+  template:
+    metadata:
+      labels:
+        role: dremio-cluster-pod
+        diagnostics-collector-role: dremio-executor
+      annotations:
+        dremio-configmap/checksum: 0
+    spec:
+      terminationGracePeriodSeconds: 720
+      securityContext:
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: dremio-executor
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 999
+            runAsNonRoot: true
+            runAsUser: 999
+            seccompProfile:
+              type: RuntimeDefault
+          image: dremio/dremio-oss:latqest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 0
+              memory: "0Gi"
+          volumeMounts:
+            - name: dremio-config
+              mountPath: /opt/dremio/conf
+            - name: dremio-hive2-config
+              mountPath: /opt/dremio/plugins/connectors/hive2.d
+            - name: dremio-hive2-config
+              mountPath: /opt/dremio/plugins/connectors/hive2-ee.d
+            - name: dremio-hive3-config
+              mountPath: /opt/dremio/plugins/connectors/hive3.d
+            - name: dremio-hive3-config
+              mountPath: /opt/dremio/plugins/connectors/hive3-ee.d
+            - name: dremio-default-executor-volume
+              mountPath: /opt/dremio/data
+            - name: dremio-default-executor-c3-0
+              mountPath: /opt/dremio/cloudcache/c0
+          env:
+            - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
+              value: "0"
+            - name: DREMIO_MAX_DIRECT_MEMORY_SIZE_MB
+              value: "0"
+            - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
+              value: >-
+                -XX:+UseG1GC
+                -XX:+AlwaysPreTouch
+                -Xms8g
+                -Xmx8g
+                -XX:HeapDumpPath=/opt/dremio/data
+                -XX:ErrorFile=/opt/dremio/data/hs_err_pid%p.log
+                -XX:MaxGCPauseMillis=500
+                -XX:InitiatingHeapOccupancyPercent=25
+                -XX:G1HeapRegionSize=32M
+                -XX:+PrintGCDetails
+                -XX:+PrintGCTimeStamps
+                -XX:+PrintGCDateStamps
+                -XX:+PrintAdaptiveSizePolicy
+                -XX:+PrintClassHistogramBeforeFullGC
+                -XX:+PrintClassHistogramAfterFullGC
+                -XX:+PrintReferenceGC                
+                -Dzookeeper=zk-hs:2181
+                -Dservices.coordinator.enabled=false
+                -Dservices.coordinator.master.enabled=false
+                -Dservices.coordinator.master.embedded-zookeeper.enabled=false
+                -Dservices.executor.enabled=true
+                -Dservices.conduit.port=45679
+            - name: AWS_CREDENTIAL_PROFILES_FILE
+              value: "/opt/dremio/aws/credentials"
+            - name: AWS_SHARED_CREDENTIALS_FILE
+              value: "/opt/dremio/aws/credentials"
+            - name: DREMIO_LOG_TO_CONSOLE
+              value: "1"
+          command: [ "/opt/dremio/bin/dremio" ]
+          args: [ "start-fg" ]
+          ports:
+            - containerPort: 45678
+              name: server-fabric
+            - containerPort: 45679
+              name: server-conduit
+      initContainers:
+        - name: wait-for-zookeeper
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 999
+            runAsNonRoot: true
+            runAsUser: 999
+            seccompProfile:
+              type: RuntimeDefault
+          image: busybox
+          command: [ "sh", "-c", "until nc zk-hs 2181 -w1 > /dev/null; do echo Waiting for Zookeeper to be ready.; sleep 2; done;" ]
+      volumes:
+        - name: dremio-config
+          configMap:
+            name: dremio-config
+        - name: dremio-hive2-config
+          configMap:
+            name: dremio-hive2-config
+        - name: dremio-hive3-config
+          configMap:
+            name: dremio-hive3-config
+  volumeClaimTemplates:
+    - metadata:
+        name: dremio-default-executor-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 128Gi
+    - metadata:
+        name: dremio-default-executor-c3-0
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 100Gi
