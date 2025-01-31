@@ -30,6 +30,7 @@ spec:
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
       {{- include "dremio.podSecurityContext" $ | nindent 6 }}
       containers:
+      {{- include "dremio.coordinator.extraContainers" $ | nindent 6 }}
       - name: dremio-coordinator
         {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
