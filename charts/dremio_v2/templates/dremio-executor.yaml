@@ -70,6 +70,7 @@ spec:
             -Dzookeeper=zk-hs:2181
             -Dservices.coordinator.enabled=false
             -Dservices.coordinator.master.enabled=false
+            -Ddremio_masterless=true
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=true
             -Dservices.conduit.port=45679
