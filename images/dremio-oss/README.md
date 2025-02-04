@@ -1,10 +1,10 @@
 # Dremio Docker Image
 ## Image Build
 
-You can build this image by identifying a Dremio download tarball download URL and then running the following command:
+You can build this image by identifying a Dremio [download tarball](https://download.dremio.com/community-server/) and then running the following command:
 
 ``` bash
-docker build --build-arg DOWNLOAD_URL=<URL> -t "dremio-oss:2.0.5" .
+docker build --build-arg DOWNLOAD_URL=<URL> -t "dremio-oss:24.3.0" .
 ```
 
 Note: This should work for both Community and Enterprise editions of Dremio.
@@ -14,7 +14,7 @@ Note: This should work for both Community and Enterprise editions of Dremio.
 ## Single Node Deployment
 
 ```bash
-docker run -p 9047:9047 -p 31010:31010 -p 45678:45678 dremio/dremio-oss
+docker run -p 9047:9047 -p 31010:31010 -p 32010:32010 -p 45678:45678 dremio/dremio-oss
 ```
 This includes a single node deployment that starts up a single daemon that includes:
 * Embedded Zookeeper
