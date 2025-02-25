@@ -1,0 +1,197 @@
+{{- if $.Values.engine.enabled -}}
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: engine-operator
+  {{- include "dremio.engine.operator.annotations" $ | nindent 2 }}
+  {{- include "dremio.engine.operator.labels" $ | nindent 2 }}
+spec:
+  replicas: {{ $.Values.engine.operator.count }}
+  selector:
+    matchLabels:
+      app: engine-operator
+  template:
+    metadata:
+      labels:
+        app: engine-operator
+        role: engine-operator-role
+        diagnostics-collector-role: engine-operator
+        {{- include "dremio.engine.operator.podLabels" $ | nindent 8 }}
+      {{- include "dremio.engine.operator.podAnnotations" $ | nindent 6 }}
+    spec:
+      {{- include "dremio.engine.operator.serviceAccount" $ | nindent 6 }}
+      {{- include "dremio.engine.operator.nodeSelector" $ | nindent 6 }}
+      {{- include "dremio.engine.operator.tolerations" $ | nindent 6 }}
+      {{- include "dremio.podSecurityContext" $ | nindent 6 }}
+      containers:
+      - name: engine-operator
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
+        image: {{ $.Values.engine.operator.image }}:{{ $.Values.engine.operator.imageTag }}
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: {{ $.Values.engine.operator.cpu }}
+            memory: {{ $.Values.engine.operator.memory }}Mi
+        env:
+        - name: "KUBERNETES_NAMESPACE"
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.namespace"
+        - name: "QUARKUS_OPERATOR_SDK_CONTROLLERS_REPLICA_NAMESPACES"
+          value: JOSDK_WATCH_CURRENT
+        - name: "QUARKUS_OPERATOR_SDK_CONTROLLERS_ENGINE_NAMESPACES"
+          value: JOSDK_WATCH_CURRENT
+        {{- include "dremio.engine.operator.extraEnvs" $ | nindent 8 }}
+        ports:
+        - containerPort: 8080
+          name: "http"
+          protocol: "TCP"
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: "/q/health/live"
+            port: 8080
+            scheme: "HTTP"
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: "/q/health/ready"
+            port: 8080
+            scheme: "HTTP"
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        startupProbe:
+          failureThreshold: 3
+          httpGet:
+            path: "/q/health/started"
+            port: 8080
+            scheme: "HTTP"
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "Role"
+metadata:
+  name: "engine-operator-role"
+rules:
+  - apiGroups:
+      - "dremio.com"
+    resources:
+      - "dremioengines"
+      - "dremioengines/status"
+      - "dremioengines/finalizers"
+      - "dremioreplicas"
+      - "dremioreplicas/status"
+      - "dremioreplicas/finalizers"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+      - "patch"
+      - "update"
+      - "create"
+      - "delete"
+  - apiGroups:
+      - ""
+    resources:
+      - "configmaps"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+      - "patch"
+      - "update"
+      - "delete"
+      - "create"
+  - apiGroups:
+      - "apps"
+    resources:
+      - "statefulsets"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+      - "patch"
+      - "update"
+      - "delete"
+      - "create"
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "RoleBinding"
+metadata:
+  name: "engine-operator-role-binding"
+  labels:
+    app: "engine-operator"
+roleRef:
+  kind: "Role"
+  apiGroup: "rbac.authorization.k8s.io"
+  name: "engine-operator-role"
+subjects:
+  - kind: "ServiceAccount"
+    name: {{ default "default" (default .Values.serviceAccount .Values.engine.operator.serviceAccount) }}
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "Role"
+metadata:
+  name: "engine-coordinator-role"
+rules:
+  - apiGroups:
+      - "dremio.com"
+    resources:
+      - "dremioengines"
+      - "dremioengines/status"
+      - "dremioreplicas"
+      - "dremioreplicas/status"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  - apiGroups:
+      - "dremio.com"
+    resources:
+      - "dremioengines"
+      - "dremioengines/scale"
+    verbs:
+      - "patch"
+      - "update"
+      - "delete"
+      - "create"
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "RoleBinding"
+metadata:
+  name: "engine-coordinator-role-binding"
+  labels:
+    app: "engine-operator"
+roleRef:
+  kind: "Role"
+  apiGroup: "rbac.authorization.k8s.io"
+  name: "engine-operator-role"
+subjects:
+  - kind: "ServiceAccount"
+    name: {{ default "default" (default .Values.serviceAccount .Values.coordinator.serviceAccount)}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: executor-statefulset-template
+data:
+  executor-statefulset-template.yml: |
+    {{ .Files.Get "config/engine/executor-statefulset-template.yml" | nindent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: engine-options
+data:
+  engine-options.yml: |
+    {{ .Files.Get "config/engine/engine-options.yml" | nindent 4 }}
+{{- end -}}
