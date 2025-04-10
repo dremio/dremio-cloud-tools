@@ -110,6 +110,43 @@ coordinator:
       # To create a TLS secret, use the following command:
       # kubectl create secret tls ${TLS_SECRET_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
       secret: dremio-tls-secret-ui
+    
+    oauth:
+      # To enable OAuth 2.0 for the web UI, set the enabled flag to true and provide
+      # the following required information
+      enabled: false
+
+      # required, it is based on the OpenID provider.
+      #clientId: ""
+      
+      # required, it is based on the OpenID provider.
+      # NOTE: In Dremio 24+, clientSecret can be encrypted using the dremio-admin encrypt CLI command.
+      #clientSecret: ""
+      
+      # required, the URL where Dremio is hosted. The URL must match the redirect url set in the OpenID Provider.
+      # typically ends with /sso (e. g. https://<dremio-url>/sso)
+      #redirectUrl: ""
+
+      # required, the location where Dremio can find the OpenID discovery document. For example, Google’s location 
+      # is https://accounts.google.com/.well-known/openid-configuration and the authorityUrl therefore to use is 
+      # https://accounts.google.com, the base location of the well-known directory.
+      #authorityUrl: ""
+      
+      # optional, it is based on the OpenID provider. openid scope is always required, other scopes can vary by provider.
+      # defaults to openid
+      scope:
+      - openid
+      
+      # optional, maps fields from the JWT token to fields Dremio requires. The only field currently required 
+      # is userName, which you should set to the field in JWT that contains the user’s username.
+      # defaults to using the email as the userName
+      jwtClaims:
+        userName: email
+      
+      # optional, any additional parameters required by the OpenID providers.
+      #parameters:
+      #- name: access_type
+      #  value: offline
 
   # ODBC/JDBC Client
   client:
