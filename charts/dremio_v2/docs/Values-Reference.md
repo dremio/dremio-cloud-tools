@@ -978,6 +978,7 @@ executor:
 ```
 
 More Info: Refer to the [`extraVolumeMounts`](#extravolumemounts) section of this reference.
+### DEPRECATION NOTICE: The nodeLifecycleService feature has been deprecated and is no longer supported.
 
 #### `executor.nodeLifecycleService`
 Type: Dictionary

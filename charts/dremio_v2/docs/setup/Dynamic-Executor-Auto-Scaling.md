@@ -1,4 +1,5 @@
 # Dynamic Executor Auto Scaling
+## DEPRECATION NOTICE: This feature has been deprecated and is no longer supported.
 
 By default, the number of Executors is static and can only be changed by modifying your Helm Release of Dremio.
 We can enable dynamic auto-scaling of the number of Executors based on CPU and memory utilization or JMX metrics.
