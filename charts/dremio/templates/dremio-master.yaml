@@ -89,7 +89,7 @@ spec:
         command: ["sh", "-c", "INDEX=${HOSTNAME##*-}; if [ $INDEX -ne 0 ]; then echo Only one master should be running.; exit 1; fi; "]
       - name: wait-for-zk
         image: busybox
-        command:  ["sh", "-c", "until ping -c 1 -W 1 zk-hs > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
+        command:  ["sh", "-c", "until echo ok | nc zk-hs 2181 > /dev/null; do echo waiting for zookeeper host; sleep 2; done;"]
       # since we're mounting a separate volume, reset permission to dremio uid/gid
       - name: chown-data-directory
         image: {{.Values.image}}:{{.Values.imageTag}}
