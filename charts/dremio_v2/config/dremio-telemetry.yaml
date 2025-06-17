@@ -1,0 +1,6 @@
+auto-reload:
+  enabled: False
+  period: 100
+  unit: MILLISECONDS
+
+metrics: []
