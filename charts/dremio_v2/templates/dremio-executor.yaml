@@ -88,6 +88,8 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        - containerPort: 9090
+          name: metrics
         {{- include "dremio.executor.metricsPort" (list $ $engineName) | nindent 8 }}
       initContainers:
       {{- include "dremio.executor.extraInitContainers" (list $ $engineName) | nindent 6 }}
