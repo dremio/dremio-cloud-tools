@@ -87,6 +87,8 @@ spec:
           name: server-fabric
         - containerPort: 45679
           name: server-conduit
+        - containerPort: 9090
+          name: metrics
         startupProbe:
           httpGet:
             path: /
