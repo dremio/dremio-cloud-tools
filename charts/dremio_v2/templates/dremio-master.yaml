@@ -47,6 +47,9 @@ spec:
           requests:
             cpu: {{ $.Values.coordinator.cpu }}
             memory: {{ $.Values.coordinator.memory }}Mi
+          limits:
+            cpu: {{ $.Values.coordinator.cpu }}
+            memory: {{ $.Values.coordinator.memory }}Mi
         volumeMounts:
         - name: dremio-master-volume
           mountPath: /opt/dremio/data
