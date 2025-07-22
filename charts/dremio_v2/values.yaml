@@ -409,15 +409,18 @@ distStorage:
   #
   # bucketName: The name of the S3 bucket for distributed storage.
   # path: The path, relative to the bucket, to create Dremio's directories.
-  # authentication: Valid types are: accessKeySecret, instanceMetadata, or awsProfile.
-  #   - Note: Instance metadata is only supported in AWS EKS and requires that the
-  #       EKS worker node IAM role is configured with sufficient access rights. At this time,
-  #       Dremio does not support using an K8s service account based IAM role.
+  # authentication: Valid types are: accessKeySecret, instanceMetadata, awsProfile, or podIdentity.
+  #   - instanceMetadata: Only supported in AWS EKS and requires that the
+  #       EKS worker node IAM role is configured with sufficient access rights.
+  #   - podIdentity: Uses EKS Pod Identity for authentication. Requires EKS cluster with Pod Identity
+  #       enabled and proper IAM role associations configured externally.
   # credentials: If using accessKeySecret authentication, uncomment the credentials section below.
   aws:
     bucketName: "AWS Bucket Name"
     path: "/"
     authentication: "metadata"
+    # For EKS Pod Identity, use:
+    # authentication: "podIdentity"
     # If using accessKeySecret for authentication against S3, uncomment the lines below and use the values
     # to configure the appropriate credentials.
     #
@@ -430,6 +433,14 @@ distStorage:
     #
     #credentials:
     #  awsProfileName: "default"
+    #
+    # If using podIdentity for authentication against S3, no additional credentials are required.
+    # Pod Identity uses the IAM role associated with the Kubernetes service account.
+    # Ensure that:
+    # 1. EKS cluster has Pod Identity enabled
+    # 2. IAM role is created with S3 permissions
+    # 3. Pod Identity association is created between the service account and IAM role
+    # 4. Kubernetes service account is specified in coordinator.serviceAccount and executor.serviceAccount
     #
     # Extra Properties
     # Use the extra properties block to provide additional parameters to configure the distributed
@@ -515,6 +526,20 @@ distStorage:
 # Kubernetes Service Account
 # Uncomment the below line to provide a Kubernetes service account that Dremio should run with.
 #serviceAccount: ""
+
+# Pod Identity Configuration
+# Configuration for EKS Pod Identity support. This requires:
+# 1. EKS cluster with Pod Identity enabled
+# 2. IAM roles created with appropriate permissions
+# 3. Pod Identity associations created externally (outside of Helm)
+# 4. Kubernetes service accounts configured (can be managed by Helm or externally)
+podIdentity:
+  # Enable Pod Identity support
+  enabled: false
+
+  # Auto-detect Pod Identity availability based on environment variables
+  # When enabled, Dremio will automatically detect if Pod Identity is available
+  autoDetect: true
 
 # Extra Volumes
 # Array to add extra volumes to all Dremio resources.

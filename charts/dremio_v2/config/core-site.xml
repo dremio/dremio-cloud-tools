@@ -103,6 +103,12 @@
     <description>The credential provider type.</description>
     <value>com.dremio.plugins.s3.store.AWSProfileCredentialsProviderV1</value>
   </property>
+  {{ else if eq $.Values.distStorage.aws.authentication "podIdentity" -}}
+  <property>
+    <n>fs.s3a.aws.credentials.provider</n>
+    <description>The credential provider type for EKS Pod Identity.</description>
+    <value>software.amazon.awssdk.auth.credentials.WebIdentityTokenFileCredentialsProvider</value>
+  </property>
   {{- else -}}
     {{ fail "Unrecognized AWS authentication mode." }}
   {{- end -}}
