@@ -99,6 +99,10 @@ coordinator:
   #nodeSelector: {}
   #tolerations: []
 
+  # Kubernetes Service Account
+  # Service account for coordinator (required for Pod Identity)
+  serviceAccount: "dremio-coordinator"
+
   # Web UI
   web:
     port: 9047
@@ -171,8 +175,8 @@ executor:
   volumeSize: 128Gi
 
   # Kubernetes Service Account
-  # Uncomment below to use a custom Kubernetes service account for executors.
-  #serviceAccount: ""
+  # Service account for executors (required for Pod Identity)
+  serviceAccount: "dremio-executor"
 
   # Uncomment the lines below to use a custom set of extra startup parameters for executors.
   #extraStartParams: >-
@@ -418,9 +422,7 @@ distStorage:
   aws:
     bucketName: "AWS Bucket Name"
     path: "/"
-    authentication: "metadata"
-    # For EKS Pod Identity, use:
-    # authentication: "podIdentity"
+    authentication: "podIdentity"
     # If using accessKeySecret for authentication against S3, uncomment the lines below and use the values
     # to configure the appropriate credentials.
     #
@@ -524,8 +526,8 @@ distStorage:
 #    command: ["echo", "Hello World"]
 
 # Kubernetes Service Account
-# Uncomment the below line to provide a Kubernetes service account that Dremio should run with.
-#serviceAccount: ""
+# Global service account for Dremio components (used as fallback)
+serviceAccount: "dremio-coordinator"
 
 # Pod Identity Configuration
 # Configuration for EKS Pod Identity support. This requires:
@@ -535,7 +537,7 @@ distStorage:
 # 4. Kubernetes service accounts configured (can be managed by Helm or externally)
 podIdentity:
   # Enable Pod Identity support
-  enabled: false
+  enabled: true
 
   # Auto-detect Pod Identity availability based on environment variables
   # When enabled, Dremio will automatically detect if Pod Identity is available
