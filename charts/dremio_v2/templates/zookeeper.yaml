@@ -60,7 +60,7 @@ spec:
       labels:
         app: zk
         {{- include "dremio.zookeeper.podLabels" $ | nindent 8 }}
-      {{- include "dremio.zookeeper.podAnnotations" $ | nindent 8 }}
+      {{- include "dremio.zookeeper.podAnnotations" $ | nindent 6 }}
     spec:
       {{- include "dremio.zookeeper.serviceAccount" $ | nindent 6 }}
       affinity:
@@ -111,6 +111,9 @@ spec:
         image: "{{ $.Values.zookeeper.image }}:{{ $.Values.zookeeper.imageTag }}"
         resources:
           requests:
+            cpu: {{ $.Values.zookeeper.cpu }}
+            memory: {{ $.Values.zookeeper.memory }}Mi
+          limits:
             cpu: {{ $.Values.zookeeper.cpu }}
             memory: {{ $.Values.zookeeper.memory }}Mi
         ports:
