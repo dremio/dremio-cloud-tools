@@ -1,5 +1,11 @@
 Quick Links: [Dremio](https://dremio.com/) | [Dremio Documentation](https://docs.dremio.com/) | **[Helm Chart Documentation](./docs/)**
 
+# ⚠️ Deprecation Notice ⚠️
+
+***This version of the Dremio Helm chart is deprecated.*** Please refer to [documentation to deploy Dremio on Kubernetes.](https://docs.dremio.com/current/deploy-dremio/deploy-on-kubernetes/).
+
+Dremio no longer maintains this Helm chart and will not perform additional improvements and bug fixes. The repository is kept for historical reference.
+
 # Installing Dremio on Kubernetes
 
 You can follow these instructions to install Dremio in a Kubernetes cluster provisioned through a cloud provider or running in an on-premises environment. Supported cloud providers are Amazon Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), and Microsoft Azure Kubernetes Service (AKS).
@@ -115,6 +121,6 @@ To upgrade to the official Zookeeper image set the following tags in `values.loc
 ```
 zookeeper:
   image: zookeeper
-  imageTag: 3.8.0
+  imageTag: 3.8.3-jre-17
 ```
 

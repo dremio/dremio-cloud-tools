@@ -1,0 +1,32 @@
+{{- range $engineIndex, $engineName := $.Values.executor.engines -}}
+{{- $executorName := ternary "dremio-executor" (printf "dremio-executor-%s" $engineName) (eq $engineName "default") -}}
+{{ $isEnabled := include "dremio.hpa.isEnabled" (list $ $engineName) }}
+{{ if eq $isEnabled "true" }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $executorName }}
+spec:
+  {{- include "dremio.hpa.executorReplicaCounts" (list $ $engineName) | nindent 2 }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: {{ $executorName }}
+  metrics:
+    {{- include "dremio.hpa.scaleMetrics.defaults" (list $ $engineName) | nindent 4 }}
+    {{- include "dremio.hpa.scaleMetrics.userDefined" (list $ $engineName) | nindent 4 }}
+  behavior:
+    scaleDown:
+      {{- include "dremio.hpa.behavior.scaleDown.stabilizationWindowSeconds" (list $ $engineName) | nindent 6 }}
+      policies:
+        {{- include "dremio.hpa.behavior.scaleDown.policies.default" (list $ $engineName) | nindent 6 }}
+        {{- include "dremio.hpa.behavior.scaleDown.policies.userDefined" (list $ $engineName) | nindent 6 }}
+    scaleUp:
+      {{- include "dremio.hpa.behavior.scaleUp.stabilizationWindowSeconds" (list $ $engineName) | nindent 6 }}
+      policies:
+        {{- include "dremio.hpa.behavior.scaleUp.policies.default" (list $ $engineName) | nindent 6 }}
+        {{- include "dremio.hpa.behavior.scaleUp.policies.userDefined" (list $ $engineName) | nindent 6 }}
+      selectPolicy: Max
+{{ end -}}
+{{- end -}}

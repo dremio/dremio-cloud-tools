@@ -1,0 +1,660 @@
+templates:
+  - dremio-hpa.yaml
+tests:
+  - it: HPA template should not render by default
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: HPA for default engine should render if ExecutorNodeLifecycleService is enabled
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: dremio-executor
+      - isKind:
+          of: HorizontalPodAutoscaler
+  - it: HPA for default engine should not render but HPA for additional engine should render
+    set:
+      executor:
+        engines: ["default", "test-engine"]
+        engineOverride:
+          test-engine:
+            nodeLifecycleService:
+              enabled: true
+              scalingMetrics:
+                default:
+                  enabled: true
+              scalingBehavior:
+                scaleDown:
+                  defaultPolicy:
+                    enabled: true
+                scaleUp:
+                  defaultPolicy:
+                    enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: dremio-executor-test-engine
+      - isKind:
+          of: HorizontalPodAutoscaler
+  - it: Default minReplicas should be set if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.minReplicas
+          value: 3
+  - it: Default maxReplicas should be set if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.maxReplicas
+          value: 50
+  - it: Minimum count of engines should be configurable
+    set:
+      executor:
+        count: 30
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.minReplicas
+          value: 30
+  - it: Maximum count of engines should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          maxEngines: 500
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.maxReplicas
+          value: 500
+  - it: Default Scaling Metrics based on Memory and CPU are set if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: memory
+              target:
+                type: Utilization
+                averageUtilization: 70
+  - it: CPU average utilization should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+              cpuAverageUtilization: 25
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 25
+  - it: Memory average utilization should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+              memoryAverageUtilization: 25
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: memory
+              target:
+                type: Utilization
+                averageUtilization: 25
+  - it: User defined scaling metrics are added to the default scaling metrics
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+            userDefinedMetrics:
+              - pods:
+                  metric:
+                    name: threads_waiting_count
+                  target:
+                    averageValue: "20"
+                    type: AverageValue
+                type: Pods
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: memory
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - contains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - contains:
+          path: spec.metrics
+          content:
+            pods:
+              metric:
+                name: threads_waiting_count
+              target:
+                averageValue: "20"
+                type: AverageValue
+            type: Pods
+  - it: Only use User defined scaling metrics and disable default scaling metrics
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: false
+            userDefinedMetrics:
+              - pods:
+                  metric:
+                    name: threads_waiting_count
+                  target:
+                    averageValue: "20"
+                    type: AverageValue
+                type: Pods
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - notContains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: memory
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - notContains:
+          path: spec.metrics
+          content:
+            type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 70
+      - contains:
+          path: spec.metrics
+          content:
+            pods:
+              metric:
+                name: threads_waiting_count
+              target:
+                averageValue: "20"
+                type: AverageValue
+            type: Pods
+  - it: Scale down stabilizationWindowSeconds should default if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.behavior.scaleDown.stabilizationWindowSeconds
+          value: 300
+  - it: Scale down stabilizationWindowSeconds should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              stabilizationWindowSeconds: 999
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.behavior.scaleDown.stabilizationWindowSeconds
+          value: 999
+  - it: Scale up stabilizationWindowSeconds should default if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.behavior.scaleUp.stabilizationWindowSeconds
+          value: 300
+  - it: Scale up stabilizationWindowSeconds should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              stabilizationWindowSeconds: 999
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - equal:
+          path: spec.behavior.scaleUp.stabilizationWindowSeconds
+          value: 999
+  - it: Default scale down policy should be set if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.behavior.scaleDown.policies
+          content:
+            type: Pods
+            value: 1
+            periodSeconds: 600
+  - it: Default scale down policy scale down value should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+                value: 30
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.behavior.scaleDown.policies
+          content:
+            type: Pods
+            value: 30
+            periodSeconds: 600
+  - it: Default scale down policy scale down periodSeconds should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+                periodSeconds: 30
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.behavior.scaleDown.policies
+          content:
+            type: Pods
+            value: 1
+            periodSeconds: 30
+  - it: User Defined scale down policies should be added to the default
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: true
+              userDefinedPolicies:
+                - type: testType
+                  value: 1
+                  periodSeconds: 10
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.behavior.scaleDown.policies
+          content:
+            type: testType
+            value: 1
+            periodSeconds: 10
+  - it: Only use User defined scale down behavior disable scale down behavior
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: false
+              userDefinedPolicies:
+                - type: testType
+                  value: 1
+                  periodSeconds: 10
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.behavior.scaleDown.policies
+          content:
+            type: testType
+            value: 1
+            periodSeconds: 10
+      - notContains:
+          path: spec.behavior.scaleDown.policies
+          content:
+            type: Pods
+            value: 1
+            periodSeconds: 30
+  - it: Default scale up policy should be set if not specified
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: false
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+    asserts:
+      - contains:
+          path: spec.behavior.scaleUp.policies
+          content:
+            type: Percent
+            value: 900
+            periodSeconds: 60
+  - it: Default scale up policy value should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: false
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+                value: 30
+    asserts:
+      - contains:
+          path: spec.behavior.scaleUp.policies
+          content:
+            type: Percent
+            value: 30
+            periodSeconds: 60
+  - it: Default scale up policy periodSeconds should be configurable
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: false
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+                periodSeconds: 30
+    asserts:
+      - contains:
+          path: spec.behavior.scaleUp.policies
+          content:
+            type: Percent
+            value: 900
+            periodSeconds: 30
+  - it: User Defined scale up policies are added to the default scale up policy
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: false
+            scaleUp:
+              defaultPolicy:
+                enabled: true
+              userDefinedPolicies:
+                - type: testType
+                  value: 9000
+                  periodSeconds: 1
+    asserts:
+      - contains:
+          path: spec.behavior.scaleUp.policies
+          content:
+            type: Percent
+            value: 900
+            periodSeconds: 60
+      - contains:
+          path: spec.behavior.scaleUp.policies
+          content:
+            type: testType
+            value: 9000
+            periodSeconds: 1
+  - it: Only use User defined scale up policy and disable default scale up policy
+    set:
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          scalingMetrics:
+            default:
+              enabled: true
+          scalingBehavior:
+            scaleDown:
+              defaultPolicy:
+                enabled: false
+            scaleUp:
+              defaultPolicy:
+                enabled: false
+              userDefinedPolicies:
+                - type: testType
+                  value: 9000
+                  periodSeconds: 1
+    asserts:
+      - notContains:
+          path: spec.behavior.scaleUp.policies
+          content:
+            type: Percent
+            value: 900
+            periodSeconds: 60
+      - contains:
+          path: spec.behavior.scaleUp.policies
+          content:
+            type: testType
+            value: 9000
+            periodSeconds: 1

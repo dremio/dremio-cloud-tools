@@ -18,6 +18,7 @@ spec:
       labels:
         app: dremio-coordinator
         role: dremio-cluster-pod
+        diagnostics-collector-role: dremio-coordinator
         {{- include "dremio.coordinator.podLabels" $ | nindent 8 }}
       annotations:
         dremio-configmap/checksum: {{ (tpl ($.Files.Glob "config/*").AsConfig $) | sha256sum }}
@@ -27,8 +28,10 @@ spec:
       terminationGracePeriodSeconds: 120
       {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
+      {{- include "dremio.podSecurityContext" $ | nindent 6 }}
       containers:
       - name: dremio-coordinator
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         resources:
@@ -51,6 +54,7 @@ spec:
           mountPath: /opt/dremio/tls
         {{- end }}
         {{- include "dremio.coordinator.extraVolumeMounts" $ | nindent 8 }}
+        {{- include "dremio.coordinator.log.volumeMount" $ | nindent 8 }}
         env:
         - name: DREMIO_MAX_HEAP_MEMORY_SIZE_MB
           value: "{{ template "dremio.coordinator.heapMemory" $ }}"
@@ -65,10 +69,13 @@ spec:
             -Dservices.coordinator.master.embedded-zookeeper.enabled=false
             -Dservices.executor.enabled=false
             -Dservices.conduit.port=45679
+            -XX:ActiveProcessorCount={{- include "dremio.coordinator.activeProcessorCount" $ }}
         - name: AWS_CREDENTIAL_PROFILES_FILE
           value: "/opt/dremio/aws/credentials"
         - name: AWS_SHARED_CREDENTIALS_FILE
           value: "/opt/dremio/aws/credentials"
+        {{- include "dremio.coordinator.log.path" $ | nindent 8 }}
+        {{- include "dremio.coordinator.extraEnvs" $ | nindent 8 }}
         command: ["/opt/dremio/bin/dremio"]
         args: ["start-fg"]
         ports:
@@ -101,10 +108,12 @@ spec:
       initContainers:
       {{- include "dremio.coordinator.extraInitContainers" $ | nindent 6 }}
       - name: wait-for-dremio-master
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: busybox
         command:  ["sh", "-c", "until nc -z dremio-client {{ $.Values.coordinator.web.port }} > /dev/null; do echo Waiting for Dremio master.; sleep 2; done;"]
       {{- if $.Values.coordinator.web.tls.enabled }}
       - name: generate-ui-keystore
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
@@ -117,6 +126,7 @@ spec:
       {{- end }}
       {{- if $.Values.coordinator.client.tls.enabled }}
       - name: generate-client-keystore
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
@@ -129,6 +139,7 @@ spec:
       {{- end }}
       {{- if $.Values.coordinator.flight.tls.enabled }}
       - name: generate-flight-keystore
+        {{- include "dremio.containerSecurityContext" $ | nindent 8 }}
         image: {{ $.Values.image }}:{{ $.Values.imageTag }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
@@ -185,4 +196,6 @@ spec:
       {{- end }}
       {{- include "dremio.coordinator.extraVolumes" $ | nindent 6 }}
       {{- include "dremio.imagePullSecrets" $ | nindent 6}}
+  volumeClaimTemplates:
+  {{- include "dremio.coordinator.log.volumeClaimTemplate" $ | nindent 2 }}
 {{- end -}}

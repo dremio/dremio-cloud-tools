@@ -1,0 +1,229 @@
+templates:
+  - dremio-executor.yaml
+tests:
+  - it: default engine should render
+    set:
+      distStorage:
+        type: "gcp"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: dremio-executor
+      - isKind:
+          of: StatefulSet
+  - it: Prometheus annotations should be included if ExecutorNodeLifecycle Service is enabled
+    set:
+      distStorage:
+        type: "gcp"
+      executor:
+        nodeLifecycleService:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.template.metadata.annotations["prometheus.io/port"]
+          value: "9010"
+      - equal:
+          path: spec.template.metadata.annotations["prometheus.io/scrape"]
+          value: "true"
+      - equal:
+          path: spec.template.metadata.annotations["prometheus.io/path"]
+          value: "/metrics"
+  - it: Pod terminationGracePeriodSeconds should be set to a default value if not specified
+    set:
+      distStorage:
+        type: "gcp"
+    asserts:
+      - equal:
+          path: spec.template.spec.terminationGracePeriodSeconds
+          value: 720
+  - it: Pod terminationGracePeriodSeconds should configurable
+    set:
+      distStorage:
+        type: "gcp"
+      executor:
+        nodeLifecycleService:
+          terminationGracePeriodSeconds: 480
+    asserts:
+      - equal:
+          path: spec.template.spec.terminationGracePeriodSeconds
+          value: 600
+  - it: Metrics port should be exposed if ExecutorNodeLifecycle is enabled
+    set:
+      distStorage:
+        type: "gcp"
+      executor:
+        nodeLifecycleService:
+          enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: prometheus
+            containerPort: 9010
+  - it: Metrics port should be configurable
+    set:
+      distStorage:
+        type: "gcp"
+      executor:
+        nodeLifecycleService:
+          enabled: true
+          metricsPort: 777
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: prometheus
+            containerPort: 777
+  - it: should not include extra environment variables by default
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: TEST_VARIABLE
+            value: test_value
+  - it: should include extra environment variables set at the root level in values.yaml
+    set:
+      extraEnvs:
+        - name: TEST_VARIABLE_1
+          value: test_value
+        - name: TEST_VARIABLE_2
+          value: test_value
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: TEST_VARIABLE_1
+            value: test_value
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: TEST_VARIABLE_2
+            value: test_value
+  - it: environment variables set at executor.extraEnvs should take
+      precedence over environment variables set at root level
+    set:
+      extraEnvs:
+        - name: TEST_ROOT_VARIABLE_1
+          value: test_value
+        - name: TEST_ROOT_VARIABLE_2
+          value: test_value
+      executor:
+        extraEnvs:
+          - name: TEST_EXECUTOR_VARIABLE_1
+            value: test_value
+          - name: TEST_EXECUTOR_VARIABLE_2
+            value: test_value
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            - name: TEST_ROOT_VARIABLE_1
+              value: test_value
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            - name: TEST_ROOT_VARIABLE_2
+              value: test_value
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: TEST_EXECUTOR_VARIABLE_1
+            value: test_value
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: TEST_EXECUTOR_VARIABLE_2
+            value: test_value
+  - it: environment variable names cannot begin with 'DREMIO_'
+    set:
+      executor:
+        extraEnvs:
+          - name: DREMIO_TEST
+            value: test_value
+    asserts:
+      - failedTemplate:
+          errorMessage: "Environment variables cannot begin with DREMIO"
+  - it: environment variable names can contain 'DREMIO'
+    set:
+      executor:
+        extraEnvs:
+          - name: TEST_DREMIO
+            value: test_value
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: TEST_DREMIO
+            value: test_value
+  - it: should write logs to console by default
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "0"
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+            value: /opt/dremio/log
+  - it: should write logs to file when global writeLogsToFile is true
+    set:
+      writeLogsToFile: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "0"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+            value: /opt/dremio/log
+  - it: should not write logs to file when global writeLogsToFile is false
+    set:
+      writeLogsToFile: false
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "1"
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+  - it: should not write logs to file when executor writeLogsToFile is false
+    set:
+      writeLogsToFile: true
+      executor:
+        writeLogsToFile: false
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "1"
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+  - it: should write logs to file when executor writeLogsToFile is true
+    set:
+      writeLogsToFile: false
+      executor:
+        writeLogsToFile: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_DIR
+            value: /opt/dremio/log
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DREMIO_LOG_TO_CONSOLE
+            value: "0"

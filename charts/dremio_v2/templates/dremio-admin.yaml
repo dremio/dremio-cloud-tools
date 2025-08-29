@@ -13,8 +13,10 @@ metadata:
   {{- include "dremio.admin.podLabels" $ | nindent 2}}
 spec:
   {{- include "dremio.admin.serviceAccount" $ | nindent 2 }}
+  {{- include "dremio.podSecurityContext" $ | nindent 2 }}
   containers:
   - name: dremio-admin
+    {{- include "dremio.containerSecurityContext" $ | nindent 4 }}
     image: {{ $.Values.image }}:{{ $.Values.imageTag }}
     imagePullPolicy: IfNotPresent
     stdin: true
@@ -28,6 +30,12 @@ spec:
       mountPath: /opt/dremio/data
     - name: dremio-config
       mountPath: /opt/dremio/conf
+    {{- if (include "dremio.coordinator.extraStartParams" $) }}
+    env:
+    - name: DREMIO_JAVA_EXTRA_OPTS
+      value: >-
+        {{- include "dremio.coordinator.extraStartParams" $ | nindent 8 }}
+    {{- end }}
     command: ["sleep", "infinity"]
   {{- include "dremio.imagePullSecrets" $ | nindent 2 }}
   {{- include "dremio.admin.nodeSelector" $ | nindent 2 }}

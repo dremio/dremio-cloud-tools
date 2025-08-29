@@ -1,8 +1,8 @@
-
 {{/*
 Executor - Dremio Heap Memory Allocation
 */}}
 {{- define "dremio.executor.heapMemory" -}}
+{{- $reserveMemory := 0 -}}
 {{- $context := index . 0 -}}
 {{- $engineName := index . 1 -}}
 {{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
@@ -10,6 +10,12 @@ Executor - Dremio Heap Memory Allocation
 {{- if gt 4096 $engineMemory -}}
 {{ fail "Dremio's minimum memory requirement is 4 GB." }}
 {{- end -}}
+{{- if le 64000 $engineMemory -}}
+{{- $reserveMemory = 6000 -}}
+{{- else -}}
+{{- $reserveMemory = mulf $engineMemory .05 | int -}}
+{{- end -}}
+{{- $engineMemory = sub $engineMemory $reserveMemory}}
 {{- if le 32786 $engineMemory -}}
 8192
 {{- else if le 6144 $engineMemory -}}
@@ -18,11 +24,11 @@ Executor - Dremio Heap Memory Allocation
 2048
 {{- end -}}
 {{- end -}}
-
 {{/*
 Executor - Dremio Direct Memory Allocation
 */}}
 {{- define "dremio.executor.directMemory" -}}
+{{- $reserveMemory := 0 -}}
 {{- $context := index . 0 -}}
 {{- $engineName := index . 1 -}}
 {{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
@@ -30,15 +36,20 @@ Executor - Dremio Direct Memory Allocation
 {{- if gt 4096 $engineMemory -}}
 {{ fail "Dremio's minimum memory requirement is 4 GB." }}
 {{- end -}}
+{{- if le 64000 $engineMemory -}}
+{{- $reserveMemory = 6000 -}}
+{{- else -}}
+{{- $reserveMemory = mulf $engineMemory .05 | int -}}
+{{- end -}}
+{{- $engineMemory = sub $engineMemory $reserveMemory}}
 {{- if le 32786 $engineMemory -}}
 {{- sub $engineMemory 8192 -}}
 {{- else if le 6144 $engineMemory -}}
-{{- sub $engineMemory 6144 -}}
+{{- sub $engineMemory 4096 -}}
 {{- else -}}
 {{- sub $engineMemory 2048 -}}
 {{- end -}}
 {{- end -}}
-
 {{/*
 Executor - CPU Resource Request
 */}}
@@ -58,7 +69,7 @@ Executor - Memory Resource Request
 {{- $engineName := index . 1 -}}
 {{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
 {{- $engineMemory := default ($context.Values.executor.memory) $engineConfiguration.memory -}}
-{{- $engineMemory -}}Mi
+{{- $engineMemory -}}
 {{- end -}}
 
 {{/*
@@ -151,6 +162,78 @@ Executor - Pod Extra Volume Mounts
 {{- end -}}
 
 {{/*
+Executor - Container Extra Environment Variables
+*/}}
+{{- define "dremio.executor.extraEnvs" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $engineExtraEnvs := coalesce $engineConfiguration.extraEnvs $context.Values.executor.extraEnvs $context.Values.extraEnvs -}}
+{{- range $index, $environmentVariable:= $engineExtraEnvs -}}
+{{- if hasPrefix "DREMIO" $environmentVariable.name -}}
+{{ fail "Environment variables cannot begin with DREMIO"}}
+{{- end -}}
+{{- end -}}
+{{- if $engineExtraEnvs -}}
+{{ toYaml $engineExtraEnvs }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Log Path
+*/}}
+{{- define "dremio.executor.log.path" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $writeLogsToFile := include "dremio.booleanCoalesce" (list $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile nil) -}}
+{{- if $writeLogsToFile -}}
+- name: DREMIO_LOG_TO_CONSOLE
+  value: "0"
+- name: DREMIO_LOG_DIR
+  value: /opt/dremio/log
+{{- else -}}
+- name: DREMIO_LOG_TO_CONSOLE
+  value: "1"
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Log Volume Mount
+*/}}
+{{- define "dremio.executor.log.volumeMount" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $writeLogsToFile := include "dremio.booleanCoalesce" (list $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile nil) -}}
+{{- if $writeLogsToFile -}}
+- name: dremio-log-volume
+  mountPath: /opt/dremio/log
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Logs Volume Claim Template
+*/}}
+{{- define "dremio.executor.log.volumeClaimTemplate" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $writeLogsToFile := include "dremio.booleanCoalesce" (list $engineConfiguration.writeLogsToFile $context.Values.executor.writeLogsToFile $context.Values.writeLogsToFile nil) -}}
+{{- $volumeSize := coalesce $engineConfiguration.volumeSize $context.Values.executor.volumeSize $context.Values.volumeSize -}}
+{{- if $writeLogsToFile -}}
+- metadata:
+    name: dremio-log-volume
+  spec:
+    accessModes: ["ReadWriteOnce"]
+    {{ include "dremio.executor.log.storageClass" $ }}
+    resources:
+      requests:
+        storage: {{ $volumeSize }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Executor - Persistent Volume Storage Class
 */}}
 {{- define "dremio.executor.storageClass" -}}
@@ -160,6 +243,19 @@ Executor - Persistent Volume Storage Class
 {{- $engineStorageClass := coalesce $engineConfiguration.storageClass $context.Values.executor.storageClass $context.Values.storageClass -}}
 {{- if $engineStorageClass -}}
 storageClassName: {{ $engineStorageClass }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Logs Storage Class
+*/}}
+{{- define "dremio.executor.log.storageClass" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $logStorageClass := coalesce $engineConfiguration.logStorageClass $context.Values.executor.logStorageClass $context.Values.logStorageClass -}}
+{{- if $logStorageClass -}}
+storageClassName: {{ $logStorageClass }}
 {{- end -}}
 {{- end -}}
 
@@ -203,27 +299,6 @@ Executor - Cloud Cache Peristent Volume Mounts
 - name: {{ coalesce $cloudCacheVolumeConfig.name (printf "dremio-%s-executor-c3-%d" $engineName $index) }}
   mountPath: /opt/dremio/cloudcache/c{{ $index }}
 {{- end -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Executor - Cloud Cache Peristent Volume Mounts
-*/}}
-{{- define "dremio.executor.cloudCache.initContainers" -}}
-{{- $context := index . 0 -}}
-{{- $engineName := index . 1 -}}
-{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
-{{- $cloudCacheConfig := coalesce $engineConfiguration.cloudCache $context.Values.executor.cloudCache -}}
-{{- if $cloudCacheConfig.enabled -}}
-- name: chown-cloudcache-directory
-  image: {{ $context.Values.image }}:{{ $context.Values.imageTag }}
-  imagePullPolicy: IfNotPresent
-  securityContext:
-    runAsUser: 0
-  volumeMounts:
-  {{- include "dremio.executor.cloudCache.volumeMounts" (list $context $engineName) | nindent 2 }}
-  command: ["bash"]
-  args: ["-c", "chown dremio:dremio /opt/dremio/cloudcache/c*"]
 {{- end -}}
 {{- end -}}
 
@@ -328,5 +403,93 @@ Executor - Pod Tolerations
 {{- if $engineTolerations -}}
 tolerations:
   {{- toYaml $engineTolerations | nindent 2 }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Prometheus Metrics Port Number
+*/}}
+{{ define "dremio.executor.metricsPortNumber" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
+{{- if $nodeLifecycleServiceConfig.enabled -}}
+{{- $metricsPortNumber := default 9010 $nodeLifecycleServiceConfig.metricsPort -}}
+{{- $metricsPortNumber }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Prometheus Executor Metrics Port
+*/}}
+{{- define "dremio.executor.metricsPort" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
+{{- if $nodeLifecycleServiceConfig.enabled -}}
+- containerPort: {{ include "dremio.executor.metricsPortNumber" $ }}
+  name: prometheus
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Prometheus Pod Annotations
+*/}}
+{{- define "dremio.executor.prometheusAnnotations" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
+{{- if $nodeLifecycleServiceConfig.enabled -}}
+prometheus.io/port: {{ include "dremio.executor.metricsPortNumber" $ | quote }}
+prometheus.io/scrape: "true"
+prometheus.io/path: "/metrics"
+{{- end -}}
+{{- end -}}
+
+{{/*
+Executor - Kubernetes Termination Graceful Period Based on
+           Dremio Graceful Termination Period
+*/}}
+{{- define "dremio.executor.kubernetes.terminationGracePeriodSeconds" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
+{{- $dremioTerminationGracePeriodSeconds := default 600 $nodeLifecycleServiceConfig.terminationGracePeriodSeconds }}
+{{- $kubernetesTerminationGracePeriodSeconds := add $dremioTerminationGracePeriodSeconds 120 -}}
+terminationGracePeriodSeconds: {{ $kubernetesTerminationGracePeriodSeconds }}
+{{- end -}}
+
+{{/*
+Executor - Dremio JVM Graceful Shutdown Parameters
+*/}}
+{{- define "dremio.executor.gracefulShutdownParams" -}}
+{{- $context := index . 0 -}}
+{{- $engineName := index . 1 -}}
+{{- $engineConfiguration := default (dict) (get (default (dict) $context.Values.executor.engineOverride) $engineName) -}}
+{{- $nodeLifecycleServiceConfig := coalesce $engineConfiguration.nodeLifecycleService $context.Values.executor.nodeLifecycleService $context.Values.nodeLifecycleService -}}
+{{- if $nodeLifecycleServiceConfig.enabled -}}
+{{- $dremioTerminationGracePeriodSeconds := default 600 $nodeLifecycleServiceConfig.terminationGracePeriodSeconds }}
+-Ddremio.termination_grace_period_seconds={{ $dremioTerminationGracePeriodSeconds }}
+-Dservices.web-admin.port={{ include "dremio.executor.metricsPortNumber" $ }}
+-Dservices.web-admin.host=0.0.0.0
+-Dservices.executor.node_lifecycle_service_enabled=true
+{{- end -}}
+{{- end -}}
+
+
+{{/*
+Executor - Active Processor Count
+*/}}
+{{- define "dremio.executor.activeProcessorCount" -}}
+{{- $executorCpu := include "dremio.executor.cpu" $ -}}
+{{- $executorCpu = floor $executorCpu | int -}}
+{{- if gt 1 $executorCpu -}}
+1
+{{- else -}}
+{{- $executorCpu -}}
 {{- end -}}
 {{- end -}}

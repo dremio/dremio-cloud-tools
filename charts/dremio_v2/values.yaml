@@ -43,12 +43,14 @@ coordinator:
 
   # This count is used for slave coordinators only.
   # The total number of coordinators will always be count + 1.
+  # If this is greater than zero then the client and flight ports on the master
+  # will be deactivated to steer these requests away from the master node.
   count: 0
 
   # Coordinator data volume size (applies to the master coordinator only).
   # In most managed Kubernetes environments (AKS, GKE, etc.), the size of the disk has a direct impact on
   # the provisioned and maximum performance of the disk.
-  volumeSize: 128Gi
+  volumeSize: 512Gi
 
   # Kubernetes Service Account
   # Uncomment below to use a custom Kubernetes service account for the coordinator.
@@ -85,8 +87,20 @@ coordinator:
     - name: timezone
       mountPath: /etc/timezone
       
+  # Extra Environment Variables
+  # Uncomment below to add extra environment variables for the coordinator.
+  #extraEnvs: []
+
   # Uncomment this value to use a different storage class for the coordinator.
   #storageClass:
+
+  # Uncomment this value to use a different storage class for the coordinator logs.
+  #logStorageClass:
+
+  # Whether to write coordinator logs to a file on disk. Disabled by default.
+  # When enabled, log messages are logged to the console and written to a persistent volume mounted at /opt/dremio/log.
+  # When disabled, log messages are logged to the console only.
+  #writeLogsToFile: true
 
   # These values, when defined, override the provided shared annotations, labels, node selectors, or tolerations.
   # Uncomment only if you are trying to override the chart's shared values.
@@ -203,8 +217,20 @@ executor:
     - name: timezone
       mountPath: /etc/timezonee
 
+  # Extra Environment Variables
+  # Uncomment below to add extra environment variables for the executors.
+  #extraEnvs: []
+
   # Uncomment this value to use a different storage class for executors.
   storageClass: nfs
+
+  # Uncomment this value to use a different storage class for the executor logs.
+  #logStorageClass:
+
+  # Whether to write executor logs to a file on disk. Disabled by default.
+  # When enabled, log messages are logged to the console and written to a persistent volume mounted at /opt/dremio/log.
+  # When disabled, log messages are logged to the console only.
+  #writeLogsToFile: true
 
   # Dremio C3
   # Designed for use with NVMe storage devices, performance may be impacted when using
@@ -235,6 +261,22 @@ executor:
   #nodeSelector: {}
   #tolerations: []
 
+  # DEPRECATION NOTICE: The nodeLifecycleService feature has been deprecated and is no longer supported.
+  # By default, the number of Engines is static. Enable the Node Lifecycle Service
+  # to enable dynamic scaling.
+  # nodeLifecycleService:
+  #   enabled: true
+  #   scalingMetrics:
+  #     default:
+  #       enabled: true
+  #   scalingBehavior:
+  #     scaleDown:
+  #       defaultPolicy:
+  #         enabled: true
+  #     scaleUp:
+  #       defaultPolicy:
+  #         enabled: true
+
   # Engine Overrides
   #
   # The settings above are overridable on a per-engine basis. These
@@ -263,6 +305,19 @@ executor:
   #     nodeSelector: {}
   #     tolerations: []
   #
+  #     nodeLifecycleService:
+  #       enabled: true
+  #       scalingMetrics:
+  #         default:
+  #           enabled: true
+  #       scalingBehavior:
+  #         scaleDown:
+  #           defaultPolicy:
+  #             enabled: true
+  #         scaleUp:
+  #           defaultPolicy:
+  #             enabled: true
+  #
   #     serviceAccount: ""
   #
   #     extraStartParams: >-
@@ -276,9 +331,11 @@ executor:
   #
   #     extraVolumes: []
   #     extraVolumeMounts: []
+  #     extraEnvs: []
   #
   #     volumeSize: 50Gi
   #     storageClass: managed-premium
+  #     logStorageClass: ""
   #     volumeClaimName: dremio-default-executor-volume
   #
   #     cloudCache:
@@ -295,7 +352,7 @@ executor:
 zookeeper:
   # The Zookeeper image used in the cluster.
   image: zookeeper
-  imageTag: 3.8-temurin
+  imageTag: 3.8.4-jre-17
 
   # CPU & Memory
   # Memory allocated to each zookeeper, expressed in MB.
@@ -330,8 +387,9 @@ distStorage:
   # local: (<21.0.0 only) Not recommended for production use. When using local, dist-caching is disabled.
   # aws: AWS S3, additional parameters required, see "aws" section.
   # azure: ADLS Gen 1, additional parameters required, see "azure" section.
-  # azureStorage: Azure Storage Gen2, additional paramters required, see "azureStorage" section.
+  # azureStorage: Azure Storage Gen2, additional parameters required, see "azureStorage" section.
   # gcp: Google Cloud Storage, additional parameters required, see "gcp" section.
+  # type: "local"
   type: "aws"
 
   # Google Cloud Storage
@@ -436,15 +494,25 @@ distStorage:
   # https://docs.dremio.com/deployment/dist-store-config.html#azure-storage
   #
   # accountName: The name of the storage account.
+  # authentication: Valid types are: accessKey or entraID
   # filesystem: The name of the blob container to use within the storage account.
   # path: The path, relative to the filesystem, to create Dremio's directories.
   # credentials:
   azureStorage:
     accountName: "Azure Storage Account Name"
+    authentication: "accessKey"
     filesystem: "Azure Storage Account Blob Container"
     path: "/"
     credentials:
-      accessKey: "Azure Storage Account Access Key"
+      # If using accessKey for authentication against Azure Storage, uncomment the lines below and use the values
+      # to configure the appropriate credentials.
+      #accessKey: "Azure Storage Account Access Key"
+
+      # If using entraID for authentication against Azure Storage, uncomment the lines below and use the values
+      # to configure the appropriate credentials.
+      #clientId: "Azure Application Client ID"
+      #tokenEndpoint: "Azure Entra ID Token Endpoint"
+      #clientSecret: "Azure Application Client Secret"
 
     # Extra Properties
     # Use the extra properties block to provide additional parameters to configure the distributed
@@ -457,7 +525,8 @@ distStorage:
     #  </property>
 
 # Dremio Start Parameters
-# Uncomment the below lines to provide extra start paramaters to be passed directly to Dremio during startup.
+# Uncomment the below lines to provide extra start paramaters to be passed directly to Dremio
+# applications (coordinator. executor and dremio-admin) during startup.
 #extraStartParams: >-
 #  -DsomeKey=someValue
 
@@ -489,6 +558,15 @@ distStorage:
       mountPath: /etc/localtime
     - name: timezone
       mountPath: /etc/timezone
+
+# Extra Environment Variables
+# Array to add extra environment variables to Dremio's pods
+extraEnvs: []
+
+# Whether to write logs to a file on disk for all Dremio resources. Disabled by default.
+# When enabled, log messages are logged to the console and written to a persistent volume mounted at /opt/dremio/log.
+# When disabled, log messages are logged to the console only.
+#writeLogsToFile: true
 
 # Dremio Service
 # The dremio-client service exposes the service for access outside of the Kubernetes cluster.

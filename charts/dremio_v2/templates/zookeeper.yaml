@@ -122,12 +122,12 @@ spec:
           name: leader-election
         readinessProbe:
           exec:
-            command: ["/bin/bash", "-c", "[ \"$(echo ruok | nc 127.0.0.1 2181)\" == \"imok\" ]" ]
+            command: ["/bin/bash", "-c", "[ \"$(echo ruok | (exec 3<>/dev/tcp/127.0.0.1/2181; cat >&3; cat <&3; exec 3<&-))\" == \"imok\" ]" ]
           initialDelaySeconds: 10
           timeoutSeconds: 5
         livenessProbe:
           exec:
-            command: ["/bin/bash", "-c", "[ \"$(echo ruok | nc 127.0.0.1 2181)\" == \"imok\" ]" ]
+            command: ["/bin/bash", "-c", "[ \"$(echo ruok | (exec 3<>/dev/tcp/127.0.0.1/2181; cat >&3; cat <&3; exec 3<&-))\" == \"imok\" ]" ]
           initialDelaySeconds: 10
           timeoutSeconds: 5
         volumeMounts:

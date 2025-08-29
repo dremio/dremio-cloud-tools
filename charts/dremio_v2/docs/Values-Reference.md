@@ -43,7 +43,7 @@ Type: String
 
 By default, this value is not set and will use the default service account configured for the Kubernetes cluster.
 
-This value is independently overridable in each section ([`coordinator`](#coordinator), [`executor`](#executor), [`zookeeper`](#zookeeper)).
+This value can be independently overridden in each section ([`coordinator`](#coordinator), [`executor`](#executor), [`zookeeper`](#zookeeper)).
 
 More Info: See the [Service Accounts](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) documentation for Kubernetes.
 
@@ -55,13 +55,13 @@ Type: String
 
 By default, this value is not set and will use the default storage class configured for the Kubernetes cluster.
 
-Storage class has a direct impact on the performance of the Dremio cluster. Optionally set this value to use the same storage class for all persistent volumes created. This value is independently overridable in each section ([`coordinator`](#coordinator), [`executor`](#executor), [`zookeeper`](#zookeeper)).
+Storage class has a direct impact on the performance of the Dremio cluster. Optionally set this value to use the same storage class for all persistent volumes created. This value can be independently overridden in each section ([`coordinator`](#coordinator), [`executor`](#executor), [`zookeeper`](#zookeeper)).
 
 More Info: See the [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) documentation for Kubernetes.
 
 ### Annotations, Labels, Node Selectors, Tags, and Tolerations
 
-By default, these values are set to empty. These values are independently overridable in each section ([`coordinator`](#coordinator), [`executor`](#executor), [`zookeeper`](#zookeeper)).
+By default, these values are set to empty. These values can be independently overridden in each section ([`coordinator`](#coordinator), [`executor`](#executor), [`zookeeper`](#zookeeper)).
 
 #### `annotations`
 
@@ -165,6 +165,20 @@ tolerations:
 
 More Info: See the [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) documentation for Kubernetes.
 
+###  Write Logs to a File
+
+#### `writeLogsToFile`
+
+Type: Boolean
+
+By default, logs are written to stdout. To write logs to a file on disk, set this value to true.
+
+For example, to write logs to a file:
+
+```yaml
+writeLogsToFile: true
+```
+
 ### Dremio Configuration
 
 #### `coordinator`
@@ -235,6 +249,22 @@ extraInitContainers: |
 [...]
 ```
 
+### `extraEnvs`
+
+Type: Array
+
+By default, this value is not set.
+
+This value controls additional environment variables that are set in Dremio's pods.
+
+For example, to set environment variables:
+
+```yaml
+extraEnvs:
+  - name: EXAMPLE_ENVIRONMENT_VARIABLE
+    value: example_value
+```
+
 #### `extraVolumes`
 
 Type: Array
@@ -296,7 +326,7 @@ Increasing this number controls the *secondary* coordinators that are launched a
 
 Type: String
 
-By default, the value is set to `128Gi`.
+By default, the value is set to `512Gi`.
 
 The coordinator volume is used to store the RocksDB KV store and requires a performant disk. In most hosted Kubernetes environments, disk performance is determined by the size of the volume.
 
@@ -556,6 +586,16 @@ Storage class has a direct impact on the performance of the Dremio cluster. On t
 
 More Info: Refer to the [`storageClass`](#storageclass) section of this reference.
 
+#### `coordinator.logStorageClass`
+
+Type: String
+
+By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `logStorageClass`.
+
+### `coordinator.writeLogsToFile`
+
+By default, logs are written to stdout. To write logs to a file on disk, set this value to true. If this value is omitted or set to an empty string, this value will be inherited from the top level `writeLogsToFile`.
+
 #### `coordinator.serviceAccount`
 
 Type: String
@@ -679,7 +719,7 @@ Type: Integer
 
 By default, the value is set to `3`. This value can be set on a **per-engine basis**, see the [Per-Engine Configuration](#per-engine-configuration) section.
 
-Increasing this number controls the number of executors that are launched as part of the engine. Without per-engine overrides, the total number of executor pods started is calulated as the `length(executor.engines) * executor.count`.
+Increasing this number controls the number of executors that are launched as part of the engine. Without per-engine overrides, the total number of executor pods started is calculated as the `length(executor.engines) * executor.count`.
 
 #### `executor.volumeSize`
 
@@ -835,6 +875,17 @@ By default, this value is not set. If this value is omitted or set to an empty s
 
 More Info: Refer to the [`storageClass`](#storageclass) section of this reference.
 
+#### `executor.logStorageClass`
+
+Type: String
+
+By default, this value is not set. If this value is omitted or set to an empty string, this value will be inherited from the top level `logStorageClass`.
+
+### `executor.writeLogsToFile`
+
+By default, logs are written to stdout. To write logs to a file on disk, set this value to true. If this value is omitted or set to an empty string, this value will be inherited from the top level `writeLogsToFile`.
+This value can be set on a **per-engine basis**, see the [Per-Engine Configuration](#per-engine-configuration) section.
+
 #### `executor.serviceAccount`
 
 Type: String
@@ -927,6 +978,315 @@ executor:
 ```
 
 More Info: Refer to the [`extraVolumeMounts`](#extravolumemounts) section of this reference.
+### DEPRECATION NOTICE: The nodeLifecycleService feature has been deprecated and is no longer supported.
+
+#### `executor.nodeLifecycleService`
+Type: Dictionary
+
+
+**Prerequisite**: To use this feature, [Prometheus Adapter](https://github.com/kubernetes-sigs/prometheus-adapter) must be installed in your cluster.
+
+To enable this service with minimum configuration and all default values, set `executor.nodeLifeCycleService` to:
+
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    scalingMetrics:
+      default:
+        enabled: true
+    scalingBehavior:
+      scaleDown:
+        defaultPolicy:
+          enabled: true
+      scaleUp:
+        defaultPolicy:
+          enabled: true
+  [...]
+```
+
+Here's an example of a full configuration:
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    maxEngines: 10
+    metricsPort: 9010
+    terminationGracePeriodSeconds: 60
+    scalingMetrics:
+      default:
+        enabled: true
+        cpuAverageUtilization: 50
+        memoryAverageUtilization: 50
+      userDefinedMetrics:
+        - pods:
+          metric:
+            name: threads_waiting_count
+          target:
+            averageValue: "20"
+            type: AverageValue
+          type: Pods
+    scalingBehavior:
+      scaleDown:
+        defaultPolicy:
+          enabled: true
+          value: 1
+          periodSeconds: 30
+        userDefinedPolicies:
+          - type: Pods
+            value: 2
+            periodSeconds: 10
+      scaleUp:
+        defaultPolicy:
+          enabled: true
+          value: 900
+          periodSeconds: 60
+        userDefinedPolicies:
+          - type: Percent
+            value: 30
+            periodSeconds: 30
+  [...]
+```
+
+`executor.nodeLifecycleService.enabled`
+
+Type: Boolean
+
+To enable dynamic scaling, this key must be present and set to `true`.
+
+`executor.nodeLifecycleService.metricsPort`
+
+Type: Integer
+
+By default, this value is set to 9010. This is the port where the `/metrics` endpoint is available for a pod.
+
+`executor.nodeLifecycleService.terminationGracePeriodSeconds`
+
+Type: Integer
+
+By default, this value is set to `600`. The Dremio process will wait this period to allow for running work to complete. After this,
+time has passed, any running work will be canceled.
+
+`executor.nodeLifecycleService.maxEngines`
+
+Type: Integer
+
+By default, this value is set to `50`
+
+`executor.nodeLifecycleService.scalingMetrics`
+
+Type: Dictionary
+
+The calculation of the desired number of engines is based on scaling metrics and a target value for this metric.
+
+`executor.nodeLifecycleService.scalingMetrics.default`
+
+Type: Boolean
+
+By default, default scaling metrics are enabled. The default metrics are based on CPU and Memory average utilization.
+
+`executor.nodeLifecycleService.scalingMetrics.cpuAverageUtilization`
+
+By default, this value is omitted. If left omitted, this value will default to `70`. To configure this value, this key must be present. Example:
+
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    scalingMetrics:
+      default:
+        enabled: true
+        cpuAverageUtilization: 50
+  [...]
+```
+`executor.nodeLifecycleService.scalingMetrics.memoryAverageUtilization`
+
+By default this value is omitted. If left omitted, this value will default to `70`. To configure this value, this key must be present. Example:
+
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    scalingMetrics:
+      default:
+        enabled: true
+        memoryAverageUtilization: 50
+  [...]
+```
+
+`executor.nodeLifecycleService.scalingMetrics.userDefinedMetrics`
+
+Type: Array
+
+By default, this value is omitted. Below is an example of adding a user defined scaling metric:
+
+
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    scalingMetrics:
+      default:
+        enabled: true
+      userDefinedMetrics:
+        - pods:
+            metric:
+              name: threads_waiting_count
+            target:
+              averageValue: "10"
+              type: AverageValue
+          type: Pods
+  [...]
+```
+`executor.nodeLifecycleService.scalingBehavior.scaleDown.stabilizationWindowSeconds`
+
+Type: Int
+
+By default, this is set to `300` seconds. This value indicates the amount of time the HPA controller should consider
+previous recommendations to prevent flapping of the number of replicas
+
+`executor.nodeLifecycleService.scalingBehavior.scaleDown.defaultPolicy.enabled`
+
+Type: Boolean
+
+By default, default scale down behavior is enabled. The default behavior is scale down 1 engine every 10 minutes.
+
+`executor.nodeLifecycleService.scalingBehavior.scaleDown.defaultPolicy.value`
+
+Type: Integer
+
+By default, this is set to scale down `1` engine at a time. Example of configuring this value:
+
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    [...]
+    scalingBehavior:
+      scaleDown:
+        defaultPolicy:
+          enabled: true
+          value: 3
+    [...]
+  [...]
+```
+
+`executor.nodeLifecycleService.scalingBehavior.scaleDown.defaultPolicy.value`
+Type: Integer
+
+By default, this value is set trigger a scale down event every `600` seconds. Example of configuring this value:
+
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    [...]
+    scalingBehavior:
+      scaleDown:
+        defaultPolicy:
+          enabled: true
+          periodSeconds: 30
+    [...]
+  [...]
+```
+
+
+`executor.nodeLifecycleService.scalingBehavior.scaleDown.userDefinedPolicies`
+
+Type: Array
+
+By default, this value is omitted. Example of adding user defined scale down policies:
+
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    [...]
+    scalingBehavior:
+      scaleDown:
+        userDefined:
+          - type: Pods
+            value: 2
+            periodSeconds: 10
+    [...]
+  [...]
+```
+
+`executor.nodeLifecycleService.scalingBehavior.scaleUp.stabilizationWindowSeconds`
+
+Type: Int
+
+By default, this is set to `300` seconds. This value indicates the amount of time the HPA controller should consider
+previous recommendations to prevent flapping of the number of replicas
+
+`executor.nodeLifecycleService.scalingBehavior.scaleUp.defaultPolicy.enabled`
+
+Type: Boolean
+
+The default scale up policy designed to respond to a traffic increase quickly. This is the default scale up policy:
+
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    [...]
+    scalingBehavior:
+      scaleUp:
+        defaultPolicy:
+          - type: Percent
+            value: 900
+            periodSeconds: 60
+    [...]
+  [...]
+```
+
+The 900 implies that 9 times the current number of pods can be added, effectively making the number of replicas 10
+times the current size. If the application is started with 1 pod, it will scale up with the following number of pods:
+
+`1 -> 10 -> 100 -> 1000`
+
+`executor.nodeLifecycleService.scalingBehavior.scaleUp.defaultPolicy.value`
+
+Type: Integer
+
+By default, this value is set to `900`. See `executor.nodeLifecycleService.scalingBehavior.scaleUp.defaultPolicy.enabled`
+for more information.
+
+`executor.nodeLifecycleService.scalingBehavior.scaleUp.defaultPolicy.periodSeconds`
+
+By default, this value is set to `60`. See `executor.nodeLifecycleService.scalingBehavior.scaleUp.defaultPolicy.enabled`
+for more information.
+
+`executor.nodeLifecycleService.scalingBehavior.scaleUp.userDefinedPolicies`
+
+Type: Array
+
+By default, this value is omitted. Example of adding user defined scale up policies:
+
+```yaml
+executor:
+  [...]
+  nodeLifecycleService:
+    enabled: true
+    [...]
+    scalingBehavior:
+      scaleUp:
+        userDefined:
+          - type: Percent
+            value: 100
+            periodSeconds: 60
+    [...]
+  [...]
+```
 
 ### Per-Engine Configuration
 
@@ -979,6 +1339,10 @@ executor:
           image: {{ $.Values.image }}:{{ $.Values.imageTag }}
           command: ["echo", "Hello World"]
 
+      extraEnvs:
+        - name: EXAMPLE_ENVIRONMENT_VARIABLE
+          value: example_value
+
       extraVolumes:
       - name: dremio-additional-files
         configMap:
@@ -1003,7 +1367,21 @@ executor:
           storageClass: "local-nvme"
         - size: 50Gi
           storageClass: "local-nvme"
-[...]
+          
+      nodeLifecycleService:
+        enabled: true
+        scalingMetrics:
+          default:
+            enabled: true
+        scalingBehavior:
+          scaleDown:
+            defaultPolicy:
+              enabled: true
+          scaleUp:
+            defaultPolicy:
+              enabled: true
+
+  [...]
 ```
 
 #### `executor.engineOverride.<engine-name>.volumeClaimName`
@@ -1012,7 +1390,7 @@ Type: String
 
 By default, this value is not set.
 
-When set, this will be the volume claim name used for the peristent volume by an engine. Unless moving from an old Helm chart with existing volume claims that must be retained, this value should not be used. This value should only be used for the `default` engine as persistent volume claims are pod name dependent as well and non-`default` engines will not match the pod name required.
+When set, this will be the volume claim name used for the persistent volume by an engine. Unless moving from an old Helm chart with existing volume claims that must be retained, this value should not be used. This value should only be used for the `default` engine as persistent volume claims are pod name dependent as well and non-`default` engines will not match the pod name required.
 
 For example, if moving from an old Helm chart that used `dremio-executor-volume`, you can continue to use the volumes for the `default` engine by specifying the following:
 
@@ -1250,13 +1628,48 @@ Dremio will write to the root path of the provided Azure Storage blob container.
 
 #### Credentials for Azure Storage Gen2
 
+##### `distStorage.azureStorage.authentication`
+
+Type: String
+
+Dremio supports authentication using an access key or Microsoft EntraID.
+
+The valid values for `distStorage.azureStorage.authentication` are `accessKey` or `entraID`.
+
+By default, this value is set to `accessKey`.
+
 ##### `distStorage.azureStorage.credentials.accessKey`
 
 Type: String
 
 By default, this value is set to `Azure Storage Account Access Key` and must be changed to a valid access key.
 
-For Dremio to authenticate to the provided Azure Storage blob container, provide a valid access key.
+For Dremio to authenticate to the provided Azure Storage blob container via access key, provide a valid access key.
+
+##### `distStorage.azureStorage.credentials.clientId`
+
+Type: String
+
+By default, this value is set to `Azure Application Client ID` and must be changed to a valid application client ID.
+
+For Dremio to authenticate to the provided Azure Storage blob container via Entra ID, provide a valid application client ID.
+
+##### `distStorage.azureStorage.credentials.tokenEndpoint`
+
+Type: String
+
+By default, this value is set to `Azure Entra ID Token Endpoint` and must be changed to a valid token endpoint.
+
+For Dremio to authenticate to the provided Azure Storage blob container via Entra ID, provide a valid token endpoint.
+
+##### `distStorage.azureStorage.credentials.clientSecret`
+
+Type: String
+
+By default, this value is set to `Azure Application Client Secret` and must be changed to a valid client secret.
+
+For Dremio to authenticate to the provided Azure Storage blob container via Entra ID, provide a valid client secret.
+
 
 #### Advanced Configuration for Azure Storage Gen2
 

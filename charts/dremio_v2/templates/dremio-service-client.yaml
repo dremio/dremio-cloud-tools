@@ -1,4 +1,3 @@
-{{- if not $.Values.DremioAdmin -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -38,4 +37,3 @@ spec:
   clusterIP: None
   selector:
     role: dremio-cluster-pod
-{{- end -}}
