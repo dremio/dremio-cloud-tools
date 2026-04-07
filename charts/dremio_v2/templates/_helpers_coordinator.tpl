@@ -247,3 +247,13 @@ Coordinator - Active Processor Count
 {{- $coordinatorCpu -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Coordinator - Volume Claim Annotations
+*/}}
+{{- define "dremio.coordinator.volumeClaimAnnotations" -}}
+{{- if $.Values.coordinator.volumeClaimAnnotations -}}
+annotations:
+  {{- toYaml $.Values.coordinator.volumeClaimAnnotations | nindent 2 }}
+{{- end -}}
+{{- end -}}

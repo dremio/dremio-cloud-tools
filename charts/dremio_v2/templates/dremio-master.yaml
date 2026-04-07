@@ -47,6 +47,9 @@ spec:
           requests:
             cpu: {{ $.Values.coordinator.cpu }}
             memory: {{ $.Values.coordinator.memory }}Mi
+          limits:
+            cpu: {{ $.Values.coordinator.cpu }}
+            memory: {{ $.Values.coordinator.memory }}Mi
         volumeMounts:
         - name: dremio-master-volume
           mountPath: /opt/dremio/data
@@ -232,6 +235,7 @@ spec:
   {{- include "dremio.coordinator.log.volumeClaimTemplate" $ | nindent 2 }}
   - metadata:
       name: dremio-master-volume
+      {{- include "dremio.coordinator.volumeClaimAnnotations" $ | nindent 6}}
     spec:
       accessModes: ["ReadWriteOnce"]
       {{- include "dremio.coordinator.storageClass" $ | nindent 6 }}

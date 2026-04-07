@@ -42,6 +42,9 @@ spec:
           requests:
             cpu: {{ template "dremio.executor.cpu" (list $ $engineName) }}
             memory: "{{ template "dremio.executor.memory" (list $ $engineName) }}Mi"
+          limits:
+            cpu: {{ template "dremio.executor.cpu" (list $ $engineName) }}
+            memory: "{{ template "dremio.executor.memory" (list $ $engineName) }}Mi"
         volumeMounts:
         - name: {{ template "dremio.executor.volumeClaimName" (list $ $engineName) }}
           mountPath: /opt/dremio/data

@@ -52,6 +52,9 @@ coordinator:
   # the provisioned and maximum performance of the disk.
   volumeSize: 512Gi
 
+  # Annotations specifically for the dremio-master PVC.
+  #volumeClaimAnnotations: {}
+  
   # Kubernetes Service Account
   # Uncomment below to use a custom Kubernetes service account for the coordinator.
   #serviceAccount: ""
