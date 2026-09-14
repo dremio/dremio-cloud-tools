@@ -1,5 +1,5 @@
 templates:
-  - dremio-coordinator.yaml
+  - dremio-master.yaml
 tests:
   - it: should not include extra environment variables by default
     asserts:

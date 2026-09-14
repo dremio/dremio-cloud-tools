@@ -314,14 +314,6 @@ The values for `cpu` and `memory` control the amount of CPU and memory in MB bei
 
 ***Note***: While the values specified are not upper bounds, the value of `memory` specified here is used by the chart to calculate the allocation of heap and direct memory used by Dremio.
 
-#### `coordinator.count`
-
-Type: Integer
-
-By default, the value is set to `0`.
-
-Increasing this number controls the *secondary* coordinators that are launched as part of the deployment. Regardless of this value, at minimum one master coordinator is launched as part of the deployment. The total number of coordinator instances launched will always be `coordinator.count + 1`.
-
 #### `coordinator.volumeSize`
 
 Type: String
@@ -1835,7 +1827,7 @@ Type: Boolean
 
 By default, this value is not set, which defaults to `false`.
 
-To enable session affinity, set this value to `ClientIP`. Session affinity is critical for the web UI when there `coordinator.count` is greater than 0.
+To enable session affinity, set this value to `ClientIP`.
 
 If utilizing Flight, please see [Important Setup Considerations](https://github.com/dremio/dremio-cloud-tools/blob/master/charts/dremio_v2/docs/setup/Important-Setup-Considerations.md) for more information about enabling session affinity.
 

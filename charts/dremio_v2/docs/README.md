@@ -8,7 +8,7 @@
   * [Custom Dremio Image](./setup/Custom-Dremio-Image.md)
 * **Administration**
   * [Dremio Administration](./administration/Dremio-Administration.md)
-  * [Scaling Coordinators and Executors](./administration/Scaling-Coordinators-and-Executors.md)
+  * [Scaling Executors](./administration/Scaling-Executors.md)
   * [Upgrading Dremio](./administration/Upgrading-Dremio.md)
   * [Viewing Logs](./administration/Viewing-Logs.md)
 * [`Values.yaml` Reference](./Values-Reference.md)

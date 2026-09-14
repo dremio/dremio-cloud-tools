@@ -24,16 +24,6 @@ spec:
         {{- include "dremio.coordinator.podAnnotations" $ | nindent 8}}
     spec:
       {{- include "dremio.coordinator.serviceAccount" $ | nindent 6 }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values:
-                    - dremio-coordinator
-              topologyKey: "kubernetes.io/hostname"
       terminationGracePeriodSeconds: 120
       {{- include "dremio.coordinator.nodeSelector" $ | nindent 6 }}
       {{- include "dremio.coordinator.tolerations" $ | nindent 6 }}
@@ -93,12 +83,10 @@ spec:
         ports:
         - containerPort: 9047
           name: web
-        {{- if (le (int $.Values.coordinator.count) 0) }}
         - containerPort: 31010
           name: client
         - containerPort: 32010
           name: flight
-        {{- end }}
         - containerPort: 45678
           name: server-fabric
         - containerPort: 45679

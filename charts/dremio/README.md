@@ -114,7 +114,7 @@ the console simultaneously. You can view the logs using kubectl.  ```
 kubectl logs <container-name> ``` You can also tail the logs using the
 -f parameter.  ``` kubectl logs -f <container-name> ```
 
-#### Scale by adding additional Coordinators or Executors (optional)
+#### Scale by adding additional Executors (optional)
 
 Get the name of the helm release. In the example below, the release
 name is plundering-alpaca:
@@ -123,12 +123,6 @@ name is plundering-alpaca:
 helm list
 NAME             	REVISION	UPDATED                 	STATUS  	CHART       	NAMESPACE
 plundering-alpaca	1       	Wed Jul 18 09:36:14 2018	DEPLOYED	dremio-0.0.5	default
-```
-
-Add additional coordinators:
-
-```bash
-helm upgrade <release name> dremio --set coordinator.count=3
 ```
 
 Add additional executors:
