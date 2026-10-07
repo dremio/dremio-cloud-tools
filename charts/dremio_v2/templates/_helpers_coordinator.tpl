@@ -1,5 +1,5 @@
 {{/*
-Coordinator - Dremio Heap Memory allocation
+Coordinator - Dremio Heap Memory Allocation
 */}}
 {{- define "dremio.coordinator.heapMemory" -}}
 {{- $coordinatorMemory := int $.Values.coordinator.memory -}}
@@ -21,7 +21,7 @@ Coordinator - Dremio Heap Memory allocation
 {{- end -}}
 
 {{/*
-Coordiantor - Dremio Direct Memory Allocation
+Coordinator - Dremio Direct Memory Allocation
 */}}
 {{- define "dremio.coordinator.directMemory" -}}
 {{- $coordinatorMemory := int $.Values.coordinator.memory -}}
